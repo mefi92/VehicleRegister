@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entity
 {
-    internal class Vehicle
+    public class Vehicle
     {
         public string type;
         public string registrationNumber; 

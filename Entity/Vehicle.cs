@@ -9,10 +9,10 @@ namespace Entity
     public class Vehicle
     {
         public string type;
-        public string registrationNumber; 
+        public int registrationNumber; 
         public string engineNumber;
 
-        public Vehicle(string vehicleType, string vehicleRegistrationNumber, string vehicleEngineNumber)
+        public Vehicle(string vehicleType, int vehicleRegistrationNumber, string vehicleEngineNumber)
         {
             type = vehicleType;
             registrationNumber = vehicleRegistrationNumber;

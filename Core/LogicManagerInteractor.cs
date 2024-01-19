@@ -9,17 +9,18 @@ namespace Core
     public class LogicManagerInteractor : VehicleManagerInBoundary
     {
         private PersistentVehicleGateway persistentVehicleGateway;
-        private
+        private VehicleManagerPresenterOutBoundary presenterOutBoundary;
 
-
-        public LogicManagerInteractor()
+        public LogicManagerInteractor(PersistentVehicleGateway persistentVehicleGateway, VehicleManagerPresenterOutBoundary presenterOutBoundary)
         {
-            
+            this.persistentVehicleGateway = persistentVehicleGateway;
+
+            this.presenterOutBoundary = presenterOutBoundary;
         }
 
-        public void registerNewVehicle(string carType, string engineNumber)
+        public void registerNewVehicle(string vehicleType, string engineNumber)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

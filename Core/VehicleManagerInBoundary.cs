@@ -8,6 +8,6 @@ namespace Core
 {
     internal interface VehicleManagerInBoundary
     {
-        void registerNewVehicle(string carType, string engineNumber);
+        void registerNewVehicle(string vehicleType, string engineNumber);
     }
 }

@@ -9,7 +9,7 @@ using Entity;
 
 namespace Core
 {
-    internal interface PersistentVehicleGateway
+    public interface PersistentVehicleGateway
     {
         Vehicle loadVehicle(string carRegistrationNumber);
         void saveVehicle(Vehicle vehicle);

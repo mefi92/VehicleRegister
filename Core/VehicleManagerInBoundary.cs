@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    internal interface VehicleManagerInBoundary
+    public interface VehicleManagerInBoundary
     {
         void registerNewVehicle(string vehicleType, string engineNumber);
     }

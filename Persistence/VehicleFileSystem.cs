@@ -4,7 +4,7 @@ using System.IO.Enumeration;
 
 namespace Persistence
 {
-    internal class VehicleFileSystem : PersistentVehicleGateway
+    public class VehicleFileSystem : PersistentVehicleGateway
     {
         private string fileType = ".txt";
 

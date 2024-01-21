@@ -39,11 +39,12 @@ namespace Persistence
             {
                 FileStream stream = File.Open(fileName, FileMode.Create);
                 StreamWriter writer = new StreamWriter(stream);
-                writer.Write(vehicle.type);
-                writer.WriteLine(true);
-                writer.Write(vehicle.engineNumber);
-                writer.WriteLine(true);
-                writer.Write(vehicle.registrationNumber.ToString());
+                writer.Write("Vehicle brand: " + vehicle.type);
+                writer.Write("\n");
+                writer.Write("Eninge number: " + vehicle.engineNumber);
+                writer.Write("\n");
+                writer.Write("Registration number: " + vehicle.registrationNumber.ToString());
+                writer.Write("\n");
                 writer.Close();
             }
             catch

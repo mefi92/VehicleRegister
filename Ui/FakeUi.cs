@@ -21,10 +21,8 @@ namespace Ui
 
         public void mainLoop(VehicleManagerInBoundary vehicleManager)
         {
-            vehicleManager.registerNewVehicle("Volkswagen", "1Z1961206115613");
-            Console.WriteLine("Melyik autóhoz adjuk az új tulajdonost?");
-            Console.WriteLine("Kérem a rendszámot:");
-            //int plateNumber = Convert.ToInt32(Console.ReadLine());
+            vehicleManager.registerNewVehicle("Volkswagen", "1Z1961206115613");           
+           
 
         }
 

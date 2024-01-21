@@ -23,7 +23,7 @@ namespace Core
         {
             Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber);
             persistentVehicleGateway.saveVehicle(newVehicle);
-            presenterManager.displayMessage("Car is registered with plate number:" + newVehicle.registrationNumber); 
+            presenterManager.displayMessage("Car is registered with plate number: " + newVehicle.registrationNumber); 
         }
     }
 }

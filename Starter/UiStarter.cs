@@ -1,7 +1,8 @@
 ﻿using Core;
 using Persistence;
+using MainUi;
 
-namespace MainUi
+namespace Starter
 {
     public class UiStarter
     {

@@ -2,7 +2,7 @@
 
 namespace MainUi
 {
-    internal class UiPresenter : VehicleManagerPresenterOutBoundary
+    public class UiPresenter : VehicleManagerPresenterOutBoundary
     {
         private ConsoleUi consoleUi;
 

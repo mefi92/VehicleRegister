@@ -104,8 +104,8 @@ namespace Persistence
         }
 
         private static string FormatPlateNumber(string plateNumber)
-        {
-            return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4)}";
+        {            
+            return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4, 3)}";
         }
 
         private static string RawPlateNumber(string plateNumber)

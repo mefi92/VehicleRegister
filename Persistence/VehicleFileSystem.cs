@@ -1,6 +1,5 @@
 ﻿using Core;
 using Entity;
-using System.IO.Enumeration;
 
 namespace Persistence
 {
@@ -16,10 +15,17 @@ namespace Persistence
                 FileStream stream = File.Open(fileName, FileMode.Open);
                 StreamReader reader = new StreamReader(stream);
 
+                
 
                 string vehicleType = reader.ReadLine().Trim();
                 string engineNumber = reader.ReadLine().Trim();
-                string registrationNumber = reader.ReadLine().Trim();
+
+
+                // todo: 
+                string[] regSpit = reader.ReadLine().Split(" :");
+                string registrationNumber = regSpit[1].Trim();
+                registrationNumber = "tbc";
+                
                 reader.Close();
 
                 Vehicle vehicle = new Vehicle(vehicleType, registrationNumber, engineNumber);
@@ -43,7 +49,7 @@ namespace Persistence
                 writer.Write("\n");
                 writer.Write("Eninge number: " + vehicle.engineNumber);
                 writer.Write("\n");
-                writer.Write("Registration number: " + vehicle.registrationNumber.ToString());
+                writer.Write("Registration number: " + FormatPlateNumber(vehicle.registrationNumber));
                 writer.Write("\n");
                 writer.Close();
             }
@@ -71,17 +77,17 @@ namespace Persistence
                     int weigth = 0;
 
                     try { weigth = GetPlateValue(file.Name); }                    
-                    catch { return defaultPlateNumber; }
+                    catch { return FormatPlateNumber(defaultPlateNumber); }
 
                     if (weigth > highestWeigth) { highestWeigth = weigth; latestPlateText = file.Name; }
                 }
                 
-                if (highestWeigth != 0) { return latestPlateText; }                
+                if (highestWeigth != 0) { return FormatPlateNumber(latestPlateText); }                
             }
-            return defaultPlateNumber;
+            return FormatPlateNumber(defaultPlateNumber);
         }
 
-        public static int GetPlateValue(string plateNumber)
+        private static int GetPlateValue(string plateNumber)
         {            
             int finalValue = 0;
             if (plateNumber.Length != 11) { return 0; }            
@@ -100,6 +106,11 @@ namespace Persistence
             }
 
             return finalValue;
+        }
+
+        private static string FormatPlateNumber(string plateNumber)
+        {
+            return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4)}";
         }
 
     }

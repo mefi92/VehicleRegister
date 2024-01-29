@@ -13,7 +13,8 @@ namespace MainUi
 
         public void mainLoop()
         {
-            uiController.addNewVehicle("VW", "1J123456789");
+            OperationHandler operationHandler = new OperationHandler(uiController);
+            operationHandler.OperationSelection();
         }
 
         public void getMessageFromApplication(string message)

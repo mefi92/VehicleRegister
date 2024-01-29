@@ -19,7 +19,7 @@ namespace Core
             string? latestRegNumber =  persistentVehicleGateway.GetLatestRegNumber();
             Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegNumber);            
             persistentVehicleGateway.saveVehicle(newVehicle);
-            presenterManager.displayMessage("Car is registered with plate number: " + newVehicle.registrationNumber); 
+            presenterManager.displayMessage("Sikeres regsztráció!\nA jármű rendszáma:\n" + newVehicle.registrationNumber); 
         }
     }
 }

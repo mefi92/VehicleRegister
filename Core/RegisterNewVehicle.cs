@@ -12,9 +12,12 @@ namespace Core
 
         public string GetNextRegistrationNumber(string plateNumber) 
         {
-            string firstPart = plateNumber.Substring(0, 4);
+            // Remove Formating
+            string firstPartOne = plateNumber.Substring(0, 2);
+            string firstPartTwo = plateNumber.Substring(3, 2);
+            string firstPart = firstPartOne + firstPartTwo;
 
-            string secondPart = plateNumber.Substring(4, 3);
+            string secondPart = plateNumber.Substring(6, 3);
             secondPart = secondPart.TrimStart('0');
             int secondPartValue = 0;
 
@@ -58,8 +61,13 @@ namespace Core
             }
             sb.Append(secondPartValue.ToString("000"));
 
-            return sb.ToString();
+            return FormatPlateNumber(sb.ToString());
         }
-            
+
+        private static string FormatPlateNumber(string plateNumber) // M: ez már létezik máshol is...
+        {
+            return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4)}";
+        }
+
     }
 }

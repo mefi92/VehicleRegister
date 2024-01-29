@@ -10,59 +10,64 @@ namespace Core
             return new Vehicle(vehicleType, GetNextRegistrationNumber(latestRegNumber), engineNumber);
         }
 
-        public string GetNextRegistrationNumber(string plateNumber) 
+        public string GetNextRegistrationNumber(string plateNumber)
+        {          
+            string firstPart = RemoveFormatting(plateNumber);            
+            int secondPartValue = ExtractSecondPartValue(plateNumber);
+
+            secondPartValue = UpdateSecondPartValue(secondPartValue, out bool increment);
+
+            string incrementedFirstPart = IncrementFirstPart(firstPart, increment);
+
+            return $"{incrementedFirstPart}{secondPartValue:D3}";
+        }
+
+        private static string RemoveFormatting(string plateNumber)
         {
-            // Remove Formating
             string firstPartOne = plateNumber.Substring(0, 2);
             string firstPartTwo = plateNumber.Substring(3, 2);
             string firstPart = firstPartOne + firstPartTwo;
+            return firstPart;
+        }
 
-            string secondPart = plateNumber.Substring(6, 3);
-            secondPart = secondPart.TrimStart('0');
-            int secondPartValue = 0;
+        private int ExtractSecondPartValue(string plateNumber)
+        {
+            string secondPart = plateNumber.Substring(6, 3).TrimStart('0');
+            return string.IsNullOrEmpty(secondPart) ? 0 : int.Parse(secondPart);
+        }
 
-            if (secondPart != "")
+        private int UpdateSecondPartValue(int value, out bool increment)
+        {
+            increment = false;
+
+            if (value > 999)
             {
-                secondPartValue = Int32.Parse(secondPart);
-            }
-
-            secondPartValue += 1;
-            bool increment = false;
-
-            if (secondPartValue > 999)
-            {
-                secondPartValue = 1;
+                value = 1;
                 increment = true;
             }
 
+            return value + 1;
+        }
+
+        private string IncrementFirstPart(string firstPart, bool increment)
+        {
             var sb = new StringBuilder();
 
             foreach (char c in firstPart.Reverse())
             {
                 if (increment)
                 {
-                    int new_c = c + 1;
-                    if (new_c > 90)
-                    {
-                        sb.Insert(0, 'A');
-                        increment = true;
-                    }
-                    else
-                    {
-                        sb.Insert(0, (char)new_c);
-                        increment = false;
-                    }
+                    int newCharValue = c + 1;
+                    sb.Insert(0, newCharValue > 90 ? 'A' : (char)newCharValue);
+                    increment = newCharValue > 90;
                 }
                 else
                 {
                     sb.Insert(0, c);
                 }
-
             }
-            sb.Append(secondPartValue.ToString("000"));
 
             return sb.ToString();
         }
-
     }
 }

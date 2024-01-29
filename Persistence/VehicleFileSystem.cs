@@ -48,7 +48,7 @@ namespace Persistence
                 writer.Write("\n");
                 writer.Close();
             }
-            catch
+            catch 
             {
                 throw new Exception();
             }

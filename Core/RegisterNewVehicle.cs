@@ -61,12 +61,7 @@ namespace Core
             }
             sb.Append(secondPartValue.ToString("000"));
 
-            return FormatPlateNumber(sb.ToString());
-        }
-
-        private static string FormatPlateNumber(string plateNumber) // M: ez már létezik máshol is...
-        {
-            return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4)}";
+            return sb.ToString();
         }
 
     }

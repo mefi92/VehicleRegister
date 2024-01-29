@@ -29,7 +29,7 @@ namespace MainUi
         private bool SelectAction(string input)
         {
             bool isSelected = false;
-            switch (input)
+            switch (input.ToLower())
             {
                 case "r":
                     RegisterNewVehicleInput();
@@ -50,16 +50,16 @@ namespace MainUi
         public void RegisterNewVehicleInput()
         {
             Console.WriteLine("Jármű típusa: ");
-            string vehicleType = Console.ReadLine();
+            string vehicleType = Console.ReadLine().ToUpper();
             Console.WriteLine("Motor száma: ");
-            string engineNumber = Console.ReadLine();
+            string engineNumber = Console.ReadLine().ToUpper();
             uiController.addNewVehicle(vehicleType, engineNumber);
         }
 
         public void LoadVehicleDataInput()
         {
             Console.WriteLine("Írja be a rendszámot a következő formátumba: AAAA123");
-            string plateNumber = Console.ReadLine();
+            string plateNumber = Console.ReadLine().ToUpper();
             uiController.LoadVehicle(plateNumber);
         }
 

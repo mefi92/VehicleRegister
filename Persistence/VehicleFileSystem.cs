@@ -33,7 +33,8 @@ namespace Persistence
 
         public void saveVehicle(Vehicle vehicle)
         {
-            string fileName = vehicle.registrationNumber + fileType;
+            string rawRegNumber = RawPlateNumber(vehicle.registrationNumber);
+            string fileName = rawRegNumber + fileType;
 
             try
             {
@@ -107,12 +108,17 @@ namespace Persistence
             return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4)}";
         }
 
+        private static string RawPlateNumber(string plateNumber)
+        {            
+            string rawPlateNumber = new string(plateNumber.Where(c => Char.IsLetterOrDigit(c)).ToArray());
+            rawPlateNumber = rawPlateNumber.ToUpper();
+            return rawPlateNumber;
+        }
+
         private static string InputSplitter(string input)
         {            
-            string[] parts = input.Split(new string[] { ": " }, StringSplitOptions.None);
-            
+            string[] parts = input.Split(new string[] { ": " }, StringSplitOptions.None);            
             string result = parts.Length > 1 ? parts[1].Trim() : string.Empty;
-
             return result;
         }
 

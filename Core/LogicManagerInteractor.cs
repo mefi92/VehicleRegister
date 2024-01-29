@@ -33,7 +33,7 @@ namespace Core
                 return;
             }
 
-            presenterManager.displayMessage("Vehicle brand: " + vehicle.type + "\nEninge number: " + vehicle.engineNumber);
+            presenterManager.displayMessage("Jármű márkája: " + vehicle.type + "\nMotor száma: " + vehicle.engineNumber + "\nRendszáma: " + vehicle.registrationNumber);
 
         }
     }

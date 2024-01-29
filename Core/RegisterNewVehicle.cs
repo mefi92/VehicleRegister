@@ -16,7 +16,13 @@ namespace Core
 
             string secondPart = plateNumber.Substring(4, 3);
             secondPart = secondPart.TrimStart('0');
-            int secondPartValue = Int32.Parse(secondPart);
+            int secondPartValue = 0;
+
+            if (secondPart != "")
+            {
+                secondPartValue = Int32.Parse(secondPart);
+            }
+
             secondPartValue += 1;
             bool increment = false;
 

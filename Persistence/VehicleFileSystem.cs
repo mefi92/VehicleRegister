@@ -57,25 +57,34 @@ namespace Persistence
         public string? GetLatestRegNumber()
         {
             string? latestPlateText = null;
+            string defaultPlateNumber = "AAAA000";
             int highestWeigth = 0;
 
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             DirectoryInfo d = new DirectoryInfo(baseDirectory);
             FileInfo[] Files = d.GetFiles("*.txt");
 
-            foreach (FileInfo file in Files)
-            {
-                int weigth = GetPlateValue(file.Name);
+            if (Files.Length > 0 ) 
+            {             
+                foreach (FileInfo file in Files)
+                {
+                    int weigth = 0;
 
-                if (weigth > highestWeigth) { highestWeigth = weigth; latestPlateText = file.Name; }
+                    try { weigth = GetPlateValue(file.Name); }                    
+                    catch { return defaultPlateNumber; }
+
+                    if (weigth > highestWeigth) { highestWeigth = weigth; latestPlateText = file.Name; }
+                }
+                
+                if (highestWeigth != 0) { return latestPlateText; }                
             }
-
-            return latestPlateText;
+            return defaultPlateNumber;
         }
 
         public static int GetPlateValue(string plateNumber)
-        {
+        {            
             int finalValue = 0;
+            if (plateNumber.Length != 11) { return 0; }            
 
             string secondPart = plateNumber.Substring(4, 3);
             secondPart = secondPart.TrimStart('0');

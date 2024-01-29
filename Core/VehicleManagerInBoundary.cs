@@ -9,5 +9,7 @@ namespace Core
     public interface VehicleManagerInBoundary
     {
         void registerNewVehicle(string vehicleType, string engineNumber);
+
+        void LoadVehicle(string registrationNumber);
     }
 }

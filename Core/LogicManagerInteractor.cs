@@ -21,5 +21,20 @@ namespace Core
             persistentVehicleGateway.saveVehicle(newVehicle);
             presenterManager.displayMessage("Sikeres regsztráció!\nA jármű rendszáma:\n" + newVehicle.registrationNumber); 
         }
+
+        public void LoadVehicle(string registrationNumber)
+        {
+            
+            Vehicle vehicle = persistentVehicleGateway.loadVehicle(registrationNumber);
+
+            if (vehicle == null)
+            {
+                presenterManager.displayMessage("A megadott rendszám nem létezik!\nPróbálja újra.");
+                return;
+            }
+
+            presenterManager.displayMessage("Vehicle brand: " + vehicle.type + "\nEninge number: " + vehicle.engineNumber);
+
+        }
     }
 }

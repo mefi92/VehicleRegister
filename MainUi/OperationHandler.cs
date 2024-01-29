@@ -58,7 +58,9 @@ namespace MainUi
 
         public void LoadVehicleDataInput()
         {
-            Console.WriteLine("Load data");
+            Console.WriteLine("Írja be a rendszámot a következő formátumba: AAAA123");
+            string plateNumber = Console.ReadLine();
+            uiController.LoadVehicle(plateNumber);
         }
 
         private static bool QuitProgram()

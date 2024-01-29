@@ -15,24 +15,18 @@ namespace Persistence
                 FileStream stream = File.Open(fileName, FileMode.Open);
                 StreamReader reader = new StreamReader(stream);
 
-                
+                                
+                string vehicleType = InputSplitter(reader.ReadLine());
+                string engineNumber = InputSplitter(reader.ReadLine());                
+                string registrationNumber = InputSplitter(reader.ReadLine()); 
 
-                string vehicleType = reader.ReadLine().Trim();
-                string engineNumber = reader.ReadLine().Trim();
-
-
-                // todo: 
-                string[] regSpit = reader.ReadLine().Split(" :");
-                string registrationNumber = regSpit[1].Trim();
-                registrationNumber = "tbc";
-                
                 reader.Close();
 
                 Vehicle vehicle = new Vehicle(vehicleType, registrationNumber, engineNumber);
                 return vehicle;
             }
-            catch 
-            {
+            catch(FileNotFoundException) 
+            {                
                 return null;
             }
         }
@@ -111,6 +105,15 @@ namespace Persistence
         private static string FormatPlateNumber(string plateNumber)
         {
             return $"{plateNumber.Substring(0, 2)}:{plateNumber.Substring(2, 2)}-{plateNumber.Substring(4)}";
+        }
+
+        private static string InputSplitter(string input)
+        {            
+            string[] parts = input.Split(new string[] { ": " }, StringSplitOptions.None);
+            
+            string result = parts.Length > 1 ? parts[1].Trim() : string.Empty;
+
+            return result;
         }
 
     }

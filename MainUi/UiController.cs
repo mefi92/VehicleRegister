@@ -16,5 +16,10 @@ namespace MainUi
             vehicleManagerInBoundary.registerNewVehicle(vehicleType, engineNumber);
         }
 
+        public void LoadVehicle(string registrationNumber)
+        {
+            vehicleManagerInBoundary.LoadVehicle(registrationNumber);
+        }
+
     }
 }

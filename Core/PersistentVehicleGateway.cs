@@ -13,6 +13,6 @@ namespace Core
     {
         Vehicle loadVehicle(string carRegistrationNumber);
         void saveVehicle(Vehicle vehicle);
-         
+        string? GetLatestRegNumber();
     }
 }

@@ -122,10 +122,5 @@ namespace Persistence
             return result;
         }
 
-        public bool IsExistsEngineNumber(string engineNumber)
-        {
-            return true;
-            //throw new NotImplementedException();
-        }
     }
 }

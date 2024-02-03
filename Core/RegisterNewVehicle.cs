@@ -11,8 +11,8 @@ namespace Core
         }
 
         public string GetNextRegistrationNumber(string plateNumber)
-        {          
-            string firstPart = RemoveFormatting(plateNumber);            
+        {
+            string firstPart = RemoveFormatting(plateNumber);
             int secondPartValue = ExtractSecondPartValue(plateNumber);
 
             secondPartValue = UpdateSecondPartValue(secondPartValue, out bool increment);

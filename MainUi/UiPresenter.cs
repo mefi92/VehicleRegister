@@ -1,4 +1,8 @@
 ﻿using Core;
+using MainUi.MessageObjects;
+using MainUi.MessageObjects.Commands;
+using Newtonsoft.Json;
+using System;
 
 namespace MainUi
 {
@@ -13,11 +17,29 @@ namespace MainUi
 
         public void displayMessage(string message)
         {
-            if (consoleUi != null)
+            if (consoleUi != null && message != null)
             {
-                if (message != null)
+
+                var deserializedMessage = JsonConvert.DeserializeObject<dynamic>(message);
+
+                string command = deserializedMessage.Command;
+
+                if (deserializedMessage.Error != null)
                 {
-                    consoleUi.getMessageFromApplication(message);
+                    Console.WriteLine(deserializedMessage.Error.Message);
+                    return;
+                }
+
+                switch (command)
+                {
+                    case "RegisterNewVehicle":
+                        string registrationNumber = deserializedMessage.Data.RegistrationNumber;
+                        if (registrationNumber != null)
+                        {
+                            Console.WriteLine("Sikeres jármű regisztráció!");
+                            Console.WriteLine($"Az jármű rendszáma {registrationNumber}.");
+                        }
+                        break;
                 }
             }
         }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entity;
- 
+
 
 namespace Core
 {
@@ -14,5 +14,7 @@ namespace Core
         Vehicle loadVehicle(string carRegistrationNumber);
         void saveVehicle(Vehicle vehicle);
         string? GetLatestRegNumber();
+
+        bool IsExistsEngineNumber(string engineNumber);
     }
 }

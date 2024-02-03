@@ -1,4 +1,5 @@
-﻿using Entity;
+﻿using Core.MessageObjects;
+using Entity;
 
 namespace Core
 {
@@ -16,15 +17,15 @@ namespace Core
 
         public void registerNewVehicle(string vehicleType, string engineNumber)
         {
-            string? latestRegNumber =  persistentVehicleGateway.GetLatestRegNumber();            
-            Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegNumber);            
-            persistentVehicleGateway.saveVehicle(newVehicle);
-            presenterManager.displayMessage("Sikeres regsztráció!\nA jármű rendszáma:\n" + latestRegNumber); 
+            RegisterNewVehicleManager registerManager = new RegisterNewVehicleManager(persistentVehicleGateway, presenterManager);
+            registerManager.RegisterNewVehicle(vehicleType, engineNumber);
         }
+
+
 
         public void LoadVehicle(string registrationNumber)
         {
-            
+
             Vehicle vehicle = persistentVehicleGateway.loadVehicle(registrationNumber);
 
             if (vehicle == null)

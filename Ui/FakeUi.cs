@@ -8,18 +8,18 @@ using Persistence;
 
 namespace Ui
 {
-    public class FakeUi : VehicleManagerPresenterOutBoundary
+    public class FakeUi : IVehicleManagerPresenterOutBoundary
     {     
         
         static void Main(string[] args)
         {
-            PersistentVehicleGateway pvg = new VehicleFileSystem();
+            IPersistentVehicleGateway pvg = new VehicleFileSystem();
             FakeUi fakeUi = new FakeUi();
-            VehicleManagerInBoundary lmi = new LogicManagerInteractor(pvg, fakeUi);
+            IVehicleManagerInBoundary lmi = new LogicManagerInteractor(pvg, fakeUi);
             fakeUi.mainLoop(lmi);
         }
 
-        public void mainLoop(VehicleManagerInBoundary vehicleManager)
+        public void mainLoop(IVehicleManagerInBoundary vehicleManager)
         {
             vehicleManager.registerNewVehicle("Volkswagen", "1Z1961206115613");           
            

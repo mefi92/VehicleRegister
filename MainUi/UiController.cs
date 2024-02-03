@@ -1,12 +1,14 @@
 ﻿using Core;
+using MainUi.MessageObjects.Commands;
+using MainUi.MessageObjects;
 
 namespace MainUi
 {
     public class UiController
     {
-        private VehicleManagerInBoundary vehicleManagerInBoundary;
+        private IVehicleManagerInBoundary vehicleManagerInBoundary;
 
-        public UiController(VehicleManagerInBoundary vehicleManagerInBoundary)
+        public UiController(IVehicleManagerInBoundary vehicleManagerInBoundary)
         {
             this.vehicleManagerInBoundary = vehicleManagerInBoundary;
         }
@@ -18,7 +20,14 @@ namespace MainUi
 
         public void LoadVehicle(string registrationNumber)
         {
-            vehicleManagerInBoundary.LoadVehicle(registrationNumber);
+            //vehicleManagerInBoundary.LoadVehicle(registrationNumber);
+            
+
+            GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
+            CreateCommand createCommand = new CreateCommand();
+
+            outputMessage = createCommand.CreateLoadVehicleDataCommand(registrationNumber);
+            vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }
 
     }

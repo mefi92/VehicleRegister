@@ -6,7 +6,7 @@ namespace MainUi
     {
         private UiController uiController;
 
-        public ConsoleUi(VehicleManagerInBoundary vehicleManagerInBoundary)
+        public ConsoleUi(IVehicleManagerInBoundary vehicleManagerInBoundary)
         {
             uiController = new UiController(vehicleManagerInBoundary);
         }

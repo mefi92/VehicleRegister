@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    public interface VehicleManagerPresenterOutBoundary
+    public interface IVehicleManagerPresenterOutBoundary
     {
         void displayMessage(string message);
     }

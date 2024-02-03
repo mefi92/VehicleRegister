@@ -6,7 +6,7 @@ using System;
 
 namespace MainUi
 {
-    public class UiPresenter : VehicleManagerPresenterOutBoundary
+    public class UiPresenter : IVehicleManagerPresenterOutBoundary
     {
         private ConsoleUi consoleUi;
 

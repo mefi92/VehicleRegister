@@ -3,7 +3,7 @@ using Entity;
 
 namespace Persistence
 {
-    public class VehicleFileSystem : PersistentVehicleGateway
+    public class VehicleFileSystem : IPersistentVehicleGateway
     {
         private string fileType = ".txt";
 

@@ -34,7 +34,7 @@ namespace Core.MessageObjects.Commands
             return registerVehicleMessage;
         }
 
-        public GenericCommandMessage<LoadVehicleDataCommand> CreateLoadVehicleCommand(string vehicleType = "", string registrationNumber = "", string engineNumber = "", int error = 0)
+        public GenericCommandMessage<LoadVehicleDataCommand> CreateLoadVehicleDataCommand(string vehicleType = "", string registrationNumber = "", string engineNumber = "", int error = 0)
         {
             var loadVehicleDataMessage = new GenericCommandMessage<LoadVehicleDataCommand>
             {

@@ -8,6 +8,8 @@ namespace MainUi.MessageObjects.Commands
 {
     internal class RegisterNewVehicleCommand
     {
+        public string VehicleType { get; set; }
         public string RegistrationNumber { get; set; }
+        public string EngineNumber { get; set;}
     }
 }

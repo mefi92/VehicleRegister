@@ -30,7 +30,7 @@ namespace Core
                 Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegNumber);
                 persistentVehicleGateway.saveVehicle(newVehicle);
 
-                outputMessage = createCommand.CreateRegisterVehicleCommand(latestRegNumber);
+                outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle.registrationNumber);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());

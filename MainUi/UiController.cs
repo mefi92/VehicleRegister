@@ -7,6 +7,8 @@ namespace MainUi
     public class UiController
     {
         private IVehicleManagerInBoundary vehicleManagerInBoundary;
+        
+        private CreateCommand createCommand = new CreateCommand();
 
         public UiController(IVehicleManagerInBoundary vehicleManagerInBoundary)
         {
@@ -14,17 +16,15 @@ namespace MainUi
         }
 
         public void addNewVehicle(string vehicleType, string engineNumber)
-        {
-            vehicleManagerInBoundary.registerNewVehicle(vehicleType, engineNumber);
+        {            
+            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
+            outputMessage = createCommand.CreateRegisterVehicleCommand(vehicleType, engineNumber);
+            vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }
 
         public void LoadVehicle(string registrationNumber)
-        {
-            //vehicleManagerInBoundary.LoadVehicle(registrationNumber);            
-
+        { 
             GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
-            CreateCommand createCommand = new CreateCommand();
-
             outputMessage = createCommand.CreateLoadVehicleDataCommand(registrationNumber);
             vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }

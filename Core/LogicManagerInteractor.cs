@@ -23,22 +23,20 @@ namespace Core
             registerManager.RegisterNewVehicle(vehicleType, engineNumber);
         }
 
-
-
         public void LoadVehicle(string registrationNumber)
         { 
             Vehicle vehicle = persistentVehicleGateway.loadVehicle(registrationNumber);
 
+            var createCommand = new CreateCommand();
             GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
-            CreateCommand createCommand = new CreateCommand();
 
             if (vehicle == null)
             {
-                outputMessage = createCommand.CreateLoadVehicleCommand(error: 102); 
+                outputMessage = createCommand.CreateLoadVehicleDataCommand(error: 102); 
             }
             else
             {
-                outputMessage = createCommand.CreateLoadVehicleCommand(vehicle.type, vehicle.registrationNumber, vehicle.engineNumber);
+                outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle.type, vehicle.registrationNumber, vehicle.engineNumber);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());
@@ -47,33 +45,30 @@ namespace Core
                  
         public void ProcessTrafficMessage(string message)
         {
-            if (message != null)
+            if (message == null) return;
+
+            var deserializedMessage = JsonConvert.DeserializeObject<dynamic>(message);
+            string command = deserializedMessage.Command;
+
+            if (deserializedMessage.Error != null)
             {
-                var deserializedMessage = JsonConvert.DeserializeObject<dynamic>(message);
-                string command = deserializedMessage.Command;
-
-                if (deserializedMessage.Error != null)
-                {
-                    // todo: itt valami választ lehetne a későbbiekben dobni a ui felé, ha hiba lenne bármiért is.                    
-                }
-
-                switch (command)
-                {
-                    case "load_vehicle_data":
-                        string registrationNumber = deserializedMessage.Data.RegistrationNumber;
-                        LoadVehicle(registrationNumber);
-                        break;
-
-                }
-
+                // todo: itt valami választ lehetne a későbbiekben dobni a ui felé, ha hiba lenne bármiért is.                    
             }
-                     
-            
 
-            
-
+            switch (command)
+            {
+                case "load_vehicle_data":
+                    string registrationNumber = deserializedMessage.Data.RegistrationNumber;
+                    LoadVehicle(registrationNumber);
+                    break;
+                case "register_new_vehicle":
+                    string vehicleType = deserializedMessage.Data.VehicleType;
+                    string engineNumber = deserializedMessage.Data.EngineNumber;
+                    registerNewVehicle(vehicleType, engineNumber);
+                    break;
+                default:
+                    break;
+            }
         }
-
-        
     }
 }

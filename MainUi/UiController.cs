@@ -20,8 +20,7 @@ namespace MainUi
 
         public void LoadVehicle(string registrationNumber)
         {
-            //vehicleManagerInBoundary.LoadVehicle(registrationNumber);
-            
+            //vehicleManagerInBoundary.LoadVehicle(registrationNumber);            
 
             GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
             CreateCommand createCommand = new CreateCommand();

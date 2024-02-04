@@ -1,4 +1,5 @@
 ﻿using Core.MessageObjects;
+using Core.MessageObjects.Commands;
 using Entity;
 using Newtonsoft.Json;
 
@@ -28,14 +29,20 @@ namespace Core
         { 
             Vehicle vehicle = persistentVehicleGateway.loadVehicle(registrationNumber);
 
+            GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
+            CreateCommand createCommand = new CreateCommand();
+
             if (vehicle == null)
             {
-                presenterManager.displayMessage("A megadott rendszám nem létezik!\nPróbálja újra.");
-                return;
+                outputMessage = createCommand.CreateLoadVehicleCommand(error: 102); 
+            }
+            else
+            {
+                outputMessage = createCommand.CreateLoadVehicleCommand(vehicle.type, vehicle.registrationNumber, vehicle.engineNumber);
             }
 
-            presenterManager.displayMessage("Jármű márkája: " + vehicle.type + "\nMotor száma: " + vehicle.engineNumber + "\nRendszáma: " + vehicle.registrationNumber);
-            
+            presenterManager.displayMessage(outputMessage.Serialize());
+
         }
                  
         public void ProcessTrafficMessage(string message)
@@ -53,7 +60,7 @@ namespace Core
                 switch (command)
                 {
                     case "load_vehicle_data":
-                        string registrationNumber = deserializedMessage.RegistrationNumber;
+                        string registrationNumber = deserializedMessage.Data.RegistrationNumber;
                         LoadVehicle(registrationNumber);
                         break;
 

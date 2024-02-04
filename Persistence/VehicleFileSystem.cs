@@ -1,5 +1,6 @@
 ﻿using Core;
 using Entity;
+using System.Xml;
 
 namespace Persistence
 {
@@ -9,7 +10,8 @@ namespace Persistence
 
         public Vehicle loadVehicle(string carRegistrationNumber)
         {
-            string fileName = carRegistrationNumber + fileType;
+            string fileName = FindVehicleTextFile(carRegistrationNumber);
+            
             try
             {
                 FileStream stream = File.Open(fileName, FileMode.Open);
@@ -28,8 +30,8 @@ namespace Persistence
             catch (FileNotFoundException)
             {
                 return null;
-            }
-        }
+            }            
+        }        
 
         public void saveVehicle(Vehicle vehicle)
         {
@@ -55,15 +57,30 @@ namespace Persistence
 
         }
 
+        private static string? FindVehicleTextFile(string carRegistrationNumber)
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string[] files = Directory.GetFiles(baseDirectory);
+
+            foreach (string file in files)
+            {
+                string fileName = Path.GetFileName(file);
+
+                if (fileName != null && fileName.Length >= 7 && fileName.Substring(0, 7).Equals(carRegistrationNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    return fileName;
+                }
+            }
+            return null;
+        }
+
         public string? GetLatestRegNumber()
         {
             string? latestPlateText = null;
             string defaultPlateNumber = "AAAA000";
             int highestWeigth = 0;
 
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            DirectoryInfo d = new DirectoryInfo(baseDirectory);
-            FileInfo[] Files = d.GetFiles("*.txt");
+            FileInfo[] Files = CollectTextFilesInBaseDirecotry();
 
             if (Files.Length > 0)
             {
@@ -80,6 +97,14 @@ namespace Persistence
                 if (highestWeigth != 0) { return FormatPlateNumber(latestPlateText); }
             }
             return FormatPlateNumber(defaultPlateNumber);
+        }
+
+        private static FileInfo[] CollectTextFilesInBaseDirecotry()
+        {
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            DirectoryInfo d = new DirectoryInfo(baseDirectory);
+            FileInfo[] Files = d.GetFiles("*.txt");
+            return Files;
         }
 
         private static int GetPlateValue(string plateNumber)

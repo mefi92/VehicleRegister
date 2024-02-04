@@ -22,7 +22,7 @@ namespace Core
 
             if (persistentVehicleGateway.IsExistsEngineNumber(engineNumber))
             {
-                outputMessage = createCommand.CreateRegisterVehicleCommand("100", false);
+                outputMessage = createCommand.CreateRegisterVehicleCommand(error: 100);
             }
             else
             {
@@ -30,7 +30,7 @@ namespace Core
                 Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegNumber);
                 persistentVehicleGateway.saveVehicle(newVehicle);
 
-                outputMessage = createCommand.CreateRegisterVehicleCommand(latestRegNumber, true);
+                outputMessage = createCommand.CreateRegisterVehicleCommand(latestRegNumber);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());

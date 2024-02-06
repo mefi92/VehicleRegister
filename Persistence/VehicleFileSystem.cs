@@ -8,7 +8,7 @@ namespace Persistence
     {
         private string fileType = ".txt";
 
-        public Vehicle loadVehicle(string carRegistrationNumber)
+        public Vehicle LoadVehicle(string carRegistrationNumber)
         {
             string fileName = FindVehicleTextFile(carRegistrationNumber);
             
@@ -16,7 +16,6 @@ namespace Persistence
             {
                 FileStream stream = File.Open(fileName, FileMode.Open);
                 StreamReader reader = new StreamReader(stream);
-
 
                 string vehicleType = InputSplitter(reader.ReadLine());
                 string engineNumber = InputSplitter(reader.ReadLine());
@@ -33,7 +32,7 @@ namespace Persistence
             }            
         }        
 
-        public void saveVehicle(Vehicle vehicle)
+        public void SaveVehicle(Vehicle vehicle)
         {
             string rawRegNumber = RawPlateNumber(vehicle.registrationNumber);
             string fileName = rawRegNumber + "_" + vehicle.engineNumber + fileType;
@@ -147,7 +146,7 @@ namespace Persistence
             return result;
         }
 
-        public bool IsExistsEngineNumber(string engineNumber)
+        public bool IsEngineNumberInUse(string engineNumber)
         {
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;  //refactor later. These lines used multiple times in this project.
             DirectoryInfo d = new DirectoryInfo(baseDirectory);

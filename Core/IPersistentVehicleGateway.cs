@@ -11,10 +11,10 @@ namespace Core
 {
     public interface IPersistentVehicleGateway
     {
-        Vehicle loadVehicle(string carRegistrationNumber);
-        void saveVehicle(Vehicle vehicle);
+        Vehicle LoadVehicle(string carRegistrationNumber);
+        void SaveVehicle(Vehicle vehicle);
         string? GetLatestRegNumber();
 
-        bool IsExistsEngineNumber(string engineNumber);
+        bool IsEngineNumberInUse(string engineNumber);
     }
 }

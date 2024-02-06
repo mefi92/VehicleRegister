@@ -19,13 +19,13 @@ namespace Core
 
         public void registerNewVehicle(string vehicleType, string engineNumber)
         {
-            RegisterNewVehicleManager registerManager = new RegisterNewVehicleManager(persistentVehicleGateway, presenterManager);
+            VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway, presenterManager);
             registerManager.RegisterNewVehicle(vehicleType, engineNumber);
         }
 
         public void LoadVehicle(string registrationNumber)
         { 
-            Vehicle vehicle = persistentVehicleGateway.loadVehicle(registrationNumber);
+            Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
 
             var createCommand = new CreateCommand();
             GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
@@ -52,7 +52,7 @@ namespace Core
 
             if (deserializedMessage.Error != null)
             {
-                // todo: itt valami választ lehetne a későbbiekben dobni a ui felé, ha hiba lenne bármiért is.                    
+                // Később, ha a UI felől hibát küldenénk itt le lehet kezelni.                    
             }
 
             switch (command)

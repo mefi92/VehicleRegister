@@ -4,12 +4,12 @@ using Entity;
 
 namespace Core
 {
-    internal class RegisterNewVehicleManager
+    internal class VehicleRegistrationManager
     {
         private IPersistentVehicleGateway persistentVehicleGateway;
         private IVehicleManagerPresenterOutBoundary presenterManager;        
 
-        public RegisterNewVehicleManager(IPersistentVehicleGateway persistentVehicleGateway, IVehicleManagerPresenterOutBoundary presenterManager)
+        public VehicleRegistrationManager(IPersistentVehicleGateway persistentVehicleGateway, IVehicleManagerPresenterOutBoundary presenterManager)
         {
             this.persistentVehicleGateway = persistentVehicleGateway;
             this.presenterManager = presenterManager;
@@ -17,10 +17,10 @@ namespace Core
 
         public void RegisterNewVehicle(string vehicleType, string engineNumber)
         {
-            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
-            CreateCommand createCommand = new CreateCommand();
+            var createCommand = new CreateCommand();
+            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;            
 
-            if (persistentVehicleGateway.IsExistsEngineNumber(engineNumber))
+            if (persistentVehicleGateway.IsEngineNumberInUse(engineNumber))
             {
                 outputMessage = createCommand.CreateRegisterVehicleCommand(error: 100);
             }
@@ -28,16 +28,12 @@ namespace Core
             {
                 string? latestRegNumber = persistentVehicleGateway.GetLatestRegNumber();
                 Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegNumber);
-                persistentVehicleGateway.saveVehicle(newVehicle);
+                persistentVehicleGateway.SaveVehicle(newVehicle);
 
                 outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle.registrationNumber);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());
-        }
-
-
-        
-
+        } 
     }
 }

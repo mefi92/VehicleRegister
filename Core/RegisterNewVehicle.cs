@@ -11,8 +11,8 @@ namespace Core
         }
 
         public string GetNextRegistrationNumber(string plateNumber)
-        {
-            string firstPart = RemoveFormatting(plateNumber);
+        {            
+            string firstPart = plateNumber.Substring(0, 4); // todo: át kéne gondolni, hogy milyen formátumban mentjük a reg számot mert ez igy katyvasz
             int secondPartValue = ExtractSecondPartValue(plateNumber);
 
             secondPartValue = UpdateSecondPartValue(secondPartValue, out bool increment);

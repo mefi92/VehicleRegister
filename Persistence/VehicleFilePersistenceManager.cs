@@ -6,14 +6,18 @@ namespace Persistence
 {
     public class VehicleFilePersistenceManager : IPersistentVehicleGateway
     {
-        public string? GetLatestRegNumber()
+        public string GetLatestRegNumber()
         {
-            throw new NotImplementedException();
+            string firstRegistrationNumber = "AAAA001";
+            FileInfo[] Files = GetTxtFileArray();
+
+            if (Files != null) { return Files[-1].Name.Substring(0, 7); }
+            return firstRegistrationNumber;
         }
 
         public bool IsEngineNumberInUse(string engineNumber)
         {
-            foreach (FileInfo file in GetJsonFileArray())
+            foreach (FileInfo file in GetTxtFileArray())
             {
                 if (file.Name.Contains("_" + engineNumber + "."))
                     return true;                                 
@@ -70,7 +74,7 @@ namespace Persistence
 
         private static string FindFileByRegistrationNumber(string registrationNumber)
         {
-            foreach (FileInfo file in GetJsonFileArray())
+            foreach (FileInfo file in GetTxtFileArray())
             {
                 string fileName = file.Name;
 
@@ -82,12 +86,19 @@ namespace Persistence
             return null;
         }
 
-        private static FileInfo[] GetJsonFileArray()
+        private static FileInfo[] GetTxtFileArray()
         {
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;  //refactor later. These lines used multiple times in this project.
-            DirectoryInfo d = new DirectoryInfo(baseDirectory);
-            FileInfo[] files = d.GetFiles("*.json");
-            return files;
+            try
+            {
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                DirectoryInfo d = new DirectoryInfo(baseDirectory);
+                FileInfo[] files = d.GetFiles("*.txt").OrderBy(file => file.Name).ToArray();
+                return files;
+            }
+            catch (Exception)
+            {                
+                return null;
+            }
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using Entity;
 using System.Text;
 
+
 namespace Core
 {
     public class RegisterNewVehicle
@@ -11,28 +12,21 @@ namespace Core
         }
 
         public string GetNextRegistrationNumber(string plateNumber)
-        {            
-            string firstPart = plateNumber.Substring(0, 4); // todo: át kéne gondolni, hogy milyen formátumban mentjük a reg számot mert ez igy katyvasz
+        {
+            RegistrationNumberFormatter registrationNumberFormatter = new RegistrationNumberFormatter(); 
+            string firstPart = plateNumber.Substring(0, 4); 
             int secondPartValue = ExtractSecondPartValue(plateNumber);
 
             secondPartValue = UpdateSecondPartValue(secondPartValue, out bool increment);
-
             string incrementedFirstPart = IncrementFirstPart(firstPart, increment);
+            string mergedRegistrationNumber = $"{incrementedFirstPart}{secondPartValue:D3}";
 
-            return $"{incrementedFirstPart}{secondPartValue:D3}";
-        }
-
-        private static string RemoveFormatting(string plateNumber)
-        {
-            string firstPartOne = plateNumber.Substring(0, 2);
-            string firstPartTwo = plateNumber.Substring(3, 2);
-            string firstPart = firstPartOne + firstPartTwo;
-            return firstPart;
+            return registrationNumberFormatter.FormatRegistrationNumber(mergedRegistrationNumber);
         }
 
         private int ExtractSecondPartValue(string plateNumber)
         {
-            string secondPart = plateNumber.Substring(6, 3).TrimStart('0');
+            string secondPart = plateNumber.Substring(4, 3).TrimStart('0');
             return string.IsNullOrEmpty(secondPart) ? 0 : int.Parse(secondPart);
         }
 

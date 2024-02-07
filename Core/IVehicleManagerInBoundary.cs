@@ -10,7 +10,7 @@ namespace Core
     {
         void registerNewVehicle(string vehicleType, string engineNumber);
 
-        void LoadVehicle(string registrationNumber);
+        void LoadVehicleManager(string registrationNumber);
 
         void ProcessTrafficMessage(string message);
     }

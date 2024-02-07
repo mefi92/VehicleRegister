@@ -26,8 +26,8 @@ namespace Core
             }
             else
             {
-                string? latestRegNumber = persistentVehicleGateway.GetLatestRegNumber();
-                Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegNumber);
+                string latestRegistrationNumber = persistentVehicleGateway.GetLatestRegNumber();
+                Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegistrationNumber);
                 persistentVehicleGateway.SaveVehicle(newVehicle);
 
                 outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle.registrationNumber);

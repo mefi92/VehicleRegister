@@ -11,7 +11,7 @@ namespace Persistence
             string firstRegistrationNumber = "AAAA001";
             FileInfo[] Files = GetTxtFileArray();
 
-            if (Files != null) { return Files[-1].Name.Substring(0, 7); }
+            if (Files != null) { return Files[Files.Length - 1].Name.Substring(0, 7); }
             return firstRegistrationNumber;
         }
 
@@ -39,20 +39,15 @@ namespace Persistence
 
         public void SaveVehicle(Vehicle vehicle)
         {
-            string registrationNumber = FormatRegistrationNumberToRaw(vehicle.registrationNumber);
+            RegistrationNumberFormatter registrationNumberFormatter = new RegistrationNumberFormatter();
+
+            string registrationNumber = registrationNumberFormatter.CleanRegistrationNumber(vehicle.registrationNumber);
             string engineNumber = vehicle.engineNumber;
-            string filePath = registrationNumber + "_" + engineNumber + ".json";
-            SaveVehicleToJsonFile(filePath, vehicle);
+            string filePath = registrationNumber + "_" + engineNumber + ".txt";
+            SaveVehicleToTextFile(filePath, vehicle);
         }
 
-        private static string FormatRegistrationNumberToRaw(string registrationNumber)
-        {
-            string rawRegistrationNumber = new string(registrationNumber.Where(c => Char.IsLetterOrDigit(c)).ToArray());
-            rawRegistrationNumber = rawRegistrationNumber.ToUpper();
-            return rawRegistrationNumber;
-        }
-
-        private static void SaveVehicleToJsonFile(string filePath, Vehicle vehicle)
+        private static void SaveVehicleToTextFile(string filePath, Vehicle vehicle)
         {
             string jsonData = JsonConvert.SerializeObject(vehicle);
             File.WriteAllText(filePath, jsonData);

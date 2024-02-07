@@ -23,8 +23,11 @@ namespace Core
             registerManager.RegisterNewVehicle(vehicleType, engineNumber);
         }
 
-        public void LoadVehicle(string registrationNumber)
-        { 
+        public void LoadVehicleManager(string registrationNumber)
+        {
+            // UI ->  load -> AAAA001 -> core.load (itt ha úgy van akkor rawba visszalakít) -> persistence.load (AAAA001_asd123) -> JsonLoadToVehicle (AA:AA-001)
+
+            // todo: reg number verification -> format
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
 
             var createCommand = new CreateCommand();
@@ -59,7 +62,7 @@ namespace Core
             {
                 case "load_vehicle_data":
                     string registrationNumber = deserializedMessage.Data.RegistrationNumber;
-                    LoadVehicle(registrationNumber);
+                    LoadVehicleManager(registrationNumber);
                     break;
                 case "register_new_vehicle":
                     string vehicleType = deserializedMessage.Data.VehicleType;

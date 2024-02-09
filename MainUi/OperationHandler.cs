@@ -53,7 +53,7 @@ namespace MainUi
             string vehicleType = Console.ReadLine().ToUpper();
             Console.WriteLine("Motor száma: ");
             string engineNumber = Console.ReadLine().ToUpper();
-            uiController.addNewVehicle(vehicleType, engineNumber);
+            uiController.RegisterVehicle(vehicleType, engineNumber);
         }
 
         public void LoadVehicleDataInput()

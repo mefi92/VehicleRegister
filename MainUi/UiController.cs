@@ -15,7 +15,7 @@ namespace MainUi
             this.vehicleManagerInBoundary = vehicleManagerInBoundary;
         }
 
-        public void addNewVehicle(string vehicleType, string engineNumber)
+        public void RegisterVehicle(string vehicleType, string engineNumber)
         {            
             GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
             outputMessage = createCommand.CreateRegisterVehicleCommand(vehicleType, engineNumber);

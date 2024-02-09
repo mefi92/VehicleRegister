@@ -26,8 +26,7 @@ namespace Persistence
         }
 
         public Vehicle LoadVehicle(string vehicleRegistrationNumber)
-        {
-            //Todo: this will return a null if loading has failed.
+        {            
             vehicleRegistrationNumber = FindFileByRegistrationNumber(vehicleRegistrationNumber);
             if (vehicleRegistrationNumber != null) 
             {
@@ -49,8 +48,9 @@ namespace Persistence
 
         private static void SaveVehicleToTextFile(string filePath, Vehicle vehicle)
         {
+            // itt esetleg doni egy exceptiont, ha sikertelen a mentés. 
             string jsonData = JsonConvert.SerializeObject(vehicle);
-            File.WriteAllText(filePath, jsonData);
+            File.WriteAllText(filePath, jsonData);  
         }
 
         private T LoadJsonDataFromFile<T>(string filePath)

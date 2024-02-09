@@ -28,7 +28,7 @@ namespace MainUi
 
                 if (deserializedMessage.Error != null)
                 {
-                    Console.WriteLine(deserializedMessage.Error.Message);
+                    Console.WriteLine("\n" + deserializedMessage.Error.Message);
                     return;
                 }
 
@@ -38,7 +38,7 @@ namespace MainUi
                         string registrationNumber = deserializedMessage.Data.RegistrationNumber;
                         if (registrationNumber != null)
                         {
-                            Console.WriteLine("\tSikeres jármű regisztráció!");
+                            Console.WriteLine("\nSikeres jármű regisztráció!");
                             Console.WriteLine($"\tA jármű rendszáma {registrationNumber}.");
                         }
                         break;
@@ -48,7 +48,7 @@ namespace MainUi
                         JObject data = deserializedMessage.Data;
                         if (data != null)
                         {
-                            Console.WriteLine("\tJármű adatai");
+                            Console.WriteLine("\nJármű adatai");
                             Console.WriteLine("\tTípus: " +  deserializedMessage.Data.VehicleType);
                             Console.WriteLine("\tMotorszám: " +  deserializedMessage.Data.EngineNumber);
                             Console.WriteLine("\tRendszám: " +  deserializedMessage.Data.RegistrationNumber);

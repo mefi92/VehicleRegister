@@ -47,31 +47,15 @@ namespace Core
 
         private void ErrorMessageHandler(List<int> errorCodes)
         {
-            foreach (int code in errorCodes)
-            {
-                int a = code;
-            }
-            /*
             var createCommand = new CreateCommand();
             GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
 
-            if (persistentVehicleGateway.IsEngineNumberInUse(engineNumber))
+            foreach (int code in errorCodes)
             {
-                outputMessage = createCommand.CreateRegisterVehicleCommand(error: 100);
+                outputMessage = createCommand.CreateRegisterVehicleCommand(error: code);
+                presenterManager.displayMessage(outputMessage.Serialize());
             }
-            else
-            {
-                string latestRegistrationNumber = persistentVehicleGateway.GetLatestRegNumber();
-                Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegistrationNumber);
-                persistentVehicleGateway.SaveVehicle(newVehicle);
-
-                outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle.registrationNumber);
-            }
-
-            presenterManager.displayMessage(outputMessage.Serialize()); ;
-            */
-
-
+            
             // IMPORTANT: a hiba validator egy hiba listát adjon vissza és az errorba legyen lekezelve! ez most egész jó ötletnek tűnik
 
         }

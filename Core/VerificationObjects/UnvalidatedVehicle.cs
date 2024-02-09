@@ -48,32 +48,15 @@ namespace Core.VerificationObjects
 
         public List<int> ValidateVehiceDataFormat()
         {
-            //StringBuilder stringBuilder = new StringBuilder();
-            //stringBuilder.AppendLine("Kérlek javítsd a következőket:");
-            bool valid = true;
-
             if (!IsVehicleType(VehicleType))
-            {
-                valid = false;
+            {                
                 errorCodes.Add(201);
-                //stringBuilder.AppendLine("\t-Nem létező jármű kategória!");
-                //stringBuilder.AppendLine("\t Válssz az albábiak közül:");
-                //stringBuilder.AppendLine("\t M1, N1, N2, N3, O1, O2, O3, L3E\n");
+                
             }
             if (!IsEngineNumber(EngineNumber))
             {
-                valid = false;
-                errorCodes.Add(202);
-                //stringBuilder.AppendLine("\t-Hibás motorszám formátum!");
-                //stringBuilder.AppendLine("\t Példa: IK260220055445\n");
+                errorCodes.Add(202);                
             }
-
-            /*
-            if ( valid)
-            {
-                return string.Empty;
-            }
-            return stringBuilder.ToString();*/
 
             return errorCodes;
             }

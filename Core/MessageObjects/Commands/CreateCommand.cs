@@ -30,6 +30,22 @@ namespace Core.MessageObjects.Commands
                     ErrorCode = error
                 };
             }
+            else if (error == 201)
+            {
+                registerVehicleMessage.Error = new ErrorData
+                {
+                    Message = "Nem létező jármű kategória!\nVálssz az albábiak közül:\n\t M1, N1, N2, N3, O1, O2, O3, L3E\n",
+                    ErrorCode = error
+                };
+            }
+            else if (error == 202)
+            {
+                registerVehicleMessage.Error = new ErrorData
+                {
+                    Message = "Hibás motorszám formátum!\n\t Példa: IK260220055445\n",
+                    ErrorCode = error
+                };
+            }
 
             return registerVehicleMessage;
         }

@@ -55,9 +55,6 @@ namespace Core
                 outputMessage = createCommand.CreateRegisterVehicleCommand(error: code);
                 presenterManager.displayMessage(outputMessage.Serialize());
             }
-            
-            // IMPORTANT: a hiba validator egy hiba listát adjon vissza és az errorba legyen lekezelve! ez most egész jó ötletnek tűnik
-
         }
                  
         public void ProcessTrafficMessage(string message)
@@ -66,9 +63,6 @@ namespace Core
 
             var deserializedMessage = JsonConvert.DeserializeObject<dynamic>(message);            
             string command = deserializedMessage.Command;
-
-            // todo: reg number verification -> format before loading!!
-            // all fomrat check? vagy ide vagy a reg load-ba
 
             if (deserializedMessage.Error != null)
             {

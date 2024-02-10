@@ -15,10 +15,10 @@ namespace MainUi
             this.vehicleManagerInBoundary = vehicleManagerInBoundary;
         }
 
-        public void RegisterVehicle(string vehicleType, string engineNumber)
+        public void RegisterVehicle(RegisterNewVehicleCommand vehicleParameters)
         {            
             GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
-            outputMessage = createCommand.CreateRegisterVehicleCommand(vehicleType, engineNumber);
+            outputMessage = createCommand.CreateRegisterVehicleCommand(vehicleParameters);
             vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }
 
@@ -28,6 +28,7 @@ namespace MainUi
             outputMessage = createCommand.CreateLoadVehicleDataCommand(registrationNumber);
             vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }
+
 
     }
 }

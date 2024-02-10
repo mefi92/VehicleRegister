@@ -45,7 +45,6 @@ namespace Core.VerificationObjects
             return !string.IsNullOrEmpty(data) && Regex.IsMatch(data, pattern);
         }
 
-
         public List<int> ValidateVehiceDataFormat()
         {
             if (!IsVehicleType(VehicleType))
@@ -63,24 +62,10 @@ namespace Core.VerificationObjects
 
         public List<int> ValidateRegistrationNumberFormat()
         {
-            //StringBuilder stringBuilder = new StringBuilder();
-            //stringBuilder.AppendLine("Kérlek javítsd a következőket:");
-            bool valid = true;
-
             if (!IsRegistrationNumber(RegistrationNumber))
             {
-
-                valid = false;
-                errorCodes.Add(203);                
-                //stringBuilder.AppendLine("\t-Hibás rendszám formátum!");
-                //stringBuilder.AppendLine("\t Példa: ABCD012\n");
+                errorCodes.Add(203);
             }
-
-            /*if (valid)
-            {
-                return string.Empty;
-            }
-            return stringBuilder.ToString();*/
 
             return errorCodes;
         }

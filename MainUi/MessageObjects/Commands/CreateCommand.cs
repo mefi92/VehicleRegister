@@ -17,16 +17,12 @@ namespace MainUi.MessageObjects.Commands
             return loadVehicleMessage;
         }
 
-        public GenericCommandMessage<RegisterNewVehicleCommand> CreateRegisterVehicleCommand(string vehicleType = "", string engineNumber = "")
+        public GenericCommandMessage<RegisterNewVehicleCommand> CreateRegisterVehicleCommand(RegisterNewVehicleCommand vehicleParameters)
         {
             var registerVehicleMessage = new GenericCommandMessage<RegisterNewVehicleCommand>
             {
                 Command = "register_new_vehicle",
-                Data = new RegisterNewVehicleCommand
-                {
-                    VehicleType = vehicleType,
-                    EngineNumber = engineNumber
-                }
+                Data = vehicleParameters                
             };
 
             return registerVehicleMessage;

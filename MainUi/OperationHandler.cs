@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using MainUi.MessageObjects.Commands;
+using System.Runtime.InteropServices;
 
 namespace MainUi
 {
@@ -49,13 +48,19 @@ namespace MainUi
 
         public void RegisterNewVehicleInput()
         {
-            Console.WriteLine("Jármű típusa: ");
-            string vehicleType = Console.ReadLine().ToUpper();
-            Console.WriteLine("Motor száma: ");
-            string engineNumber = Console.ReadLine().ToUpper();
-            uiController.RegisterVehicle(vehicleType, engineNumber);
-        }
+            RegisterNewVehicleCommand vehicleParameters = new RegisterNewVehicleCommand();
 
+            Console.WriteLine("Adja meg következő adatok");
+
+            GatherPersonalDetails(vehicleParameters);
+
+            GatherAddressDetails(vehicleParameters);
+
+            GatherVehicleDetails(vehicleParameters);
+
+            uiController.RegisterVehicle(vehicleParameters);
+        }
+        
         public void LoadVehicleDataInput()
         {
             Console.WriteLine("Írja be a rendszámot a következő formátumba: AAAA123");
@@ -67,6 +72,66 @@ namespace MainUi
         {
             Console.WriteLine("A program leáll.");
             return true;
+        }
+
+        private void GatherPersonalDetails(RegisterNewVehicleCommand vehicleParameters)
+        {
+            Console.WriteLine("\nSzemélyes adatok");            
+            vehicleParameters.LastName = GetInput("Vezetéknév");
+            vehicleParameters.FirstName = GetInput("Keresztnév");
+        }
+
+        private void GatherAddressDetails(RegisterNewVehicleCommand vehicleParameters)
+        {
+            Console.WriteLine("\nLakcím adatok");
+            vehicleParameters.AdPostalCode = GetInput("Irányítószám");
+            vehicleParameters.AdCity = GetInput("Város");
+            vehicleParameters.AdStreet = GetInput("Utca");
+            vehicleParameters.AdStreetNumber = GetInput("Házszám");
+        }
+        private void GatherVehicleDetails(RegisterNewVehicleCommand vehicleParameters)
+        {
+            Console.WriteLine("\nJármű adatok");
+            vehicleParameters.VehicleType = GetInput("Kategória");
+            vehicleParameters.Make = GetInput("Gyártmány");
+            vehicleParameters.Model = GetInput("Típus");
+            vehicleParameters.EngineNumber = GetInput("Motorszám");
+            vehicleParameters.MotorEmissionType = GetInput("Környezetvédelmi osztályba sorolás");
+            vehicleParameters.FirstRegistrationDate = GetInput("Első nyilvántartásba vétel időpontja");
+            vehicleParameters.NumberOfSeats = GetIntegerInput("Ülések száma");
+            vehicleParameters.Color = GetInput("Szín");
+            vehicleParameters.MassInService = GetIntegerInput("Saját tömeg");
+            vehicleParameters.MaxMass = GetIntegerInput("Össztömeg");
+            vehicleParameters.BrakedTrailer = GetIntegerInput("Fékezett vontatmány");
+            vehicleParameters.UnbrakedTrailer = GetIntegerInput("Fékezetlen vontatmány");
+        }
+
+        private string GetInput(string prompt)
+        {
+            Console.Write($"{prompt}: ");
+            return Console.ReadLine().ToUpper();
+        }
+
+        private int GetIntegerInput(string prompt)
+        {
+            int result;
+            string input;
+            bool isValid;
+
+            do
+            {
+                Console.Write($"{prompt}: ");
+                input = Console.ReadLine();
+                isValid = int.TryParse(input, out result);
+
+                if (!isValid)
+                {
+                    Console.WriteLine("Hibás adat.");
+                }
+
+            } while (!isValid);
+
+            return result;
         }
     }
 }

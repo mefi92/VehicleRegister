@@ -19,10 +19,10 @@ namespace Core
             this.presenterManager = presenterManager;
         }
 
-        public void registerNewVehicle(string vehicleType, string engineNumber)
+        public void ProcessUserDataForRegistration(VehicleRegistrationInfo validatedUserData)
         {
             VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway, presenterManager);
-            registerManager.RegisterNewVehicle(vehicleType, engineNumber);
+            registerManager.SeparatePersonalAndVehicelData(validatedUserData);
         }
 
         public void LoadVehicleManager(string registrationNumber)
@@ -38,7 +38,7 @@ namespace Core
             }
             else
             {
-                outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle.type, vehicle.registrationNumber, vehicle.engineNumber);
+                outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle.VehicleType, vehicle.RegistrationNumber, vehicle.EngineNumber);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());
@@ -75,16 +75,16 @@ namespace Core
                     string registrationNumber = deserializedMessage.Data.RegistrationNumber;
                     LoadVehicleManager(registrationNumber);
                     break;
-                case "register_new_vehicle":                    
-                    UnvalidatedVehicle unvalidatedVehicle = new UnvalidatedVehicle(deserializedMessage.Data);
-                    List<int> validationOutcome = unvalidatedVehicle.ValidateVehiceDataFormat();
+                case "register_new_vehicle":
+                    VehicleRegistrationInfo userDataForRegistration = new VehicleRegistrationInfo(deserializedMessage.Data);
+                    List<int> validationOutcome = userDataForRegistration.ValidateVehiceDataFormat();
 
                     if(validationOutcome.Count != 0)
                     {
                         ErrorMessageHandler(validationOutcome);
                         break;
                     }
-                    registerNewVehicle(unvalidatedVehicle.VehicleType, unvalidatedVehicle.EngineNumber);
+                    ProcessUserDataForRegistration(userDataForRegistration);
                     break;
                 default:
                     break;

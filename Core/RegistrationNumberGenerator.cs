@@ -4,13 +4,8 @@ using System.Text;
 
 namespace Core
 {
-    public class RegisterNewVehicle
+    public class RegistrationNumberGenerator
     {
-        public Vehicle addNewVehicle(string vehicleType, string engineNumber, string latestRegNumber)
-        {
-            return new Vehicle(vehicleType, GetNextRegistrationNumber(latestRegNumber), engineNumber);
-        }
-
         public string GetNextRegistrationNumber(string plateNumber)
         {
             RegistrationNumberFormatter registrationNumberFormatter = new RegistrationNumberFormatter(); 

@@ -21,7 +21,7 @@ namespace Ui
 
         public void mainLoop(IVehicleManagerInBoundary vehicleManager)
         {
-            vehicleManager.registerNewVehicle("Volkswagen", "1Z1961206115613");           
+            vehicleManager.RegisterNewVehicle("Volkswagen", "1Z1961206115613");           
            
 
         }

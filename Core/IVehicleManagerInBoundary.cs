@@ -7,11 +7,7 @@ using System.Threading.Tasks;
 namespace Core
 {
     public interface IVehicleManagerInBoundary
-    {
-        void registerNewVehicle(string vehicleType, string engineNumber);
-
-        void LoadVehicleManager(string registrationNumber);
-
+    { 
         void ProcessTrafficMessage(string message);
     }
 }

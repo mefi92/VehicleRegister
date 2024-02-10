@@ -37,11 +37,9 @@ namespace Persistence
         }
 
         public void SaveVehicle(Vehicle vehicle)
-        {
-            RegistrationNumberFormatter registrationNumberFormatter = new RegistrationNumberFormatter();
-
-            string registrationNumber = registrationNumberFormatter.CleanRegistrationNumber(vehicle.registrationNumber);
-            string engineNumber = vehicle.engineNumber;
+        { 
+            string registrationNumber = new RegistrationNumberFormatter().CleanRegistrationNumber(vehicle.RegistrationNumber);
+            string engineNumber = vehicle.EngineNumber;
             string filePath = registrationNumber + "_" + engineNumber + ".txt";
             SaveVehicleToTextFile(filePath, vehicle);
         }

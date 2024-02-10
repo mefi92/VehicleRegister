@@ -1,13 +1,16 @@
 ﻿using Core.MessageObjects;
 using Core.MessageObjects.Commands;
+using Core.VerificationObjects;
 using Entity;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Core
 {
     internal class VehicleRegistrationManager
     {
         private IPersistentVehicleGateway persistentVehicleGateway;
-        private IVehicleManagerPresenterOutBoundary presenterManager;        
+        private IVehicleManagerPresenterOutBoundary presenterManager;
 
         public VehicleRegistrationManager(IPersistentVehicleGateway persistentVehicleGateway, IVehicleManagerPresenterOutBoundary presenterManager)
         {
@@ -15,25 +18,47 @@ namespace Core
             this.presenterManager = presenterManager;
         }
 
-        public void RegisterNewVehicle(string vehicleType, string engineNumber)
+        public void SeparatePersonalAndVehicelData(VehicleRegistrationInfo validatedUserData)
         {
             var createCommand = new CreateCommand();
-            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;            
+            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
 
-            if (persistentVehicleGateway.IsEngineNumberInUse(engineNumber))
+            if (persistentVehicleGateway.IsEngineNumberInUse(validatedUserData.EngineNumber))
             {
                 outputMessage = createCommand.CreateRegisterVehicleCommand(error: 100);
             }
             else
             {
-                string latestRegistrationNumber = persistentVehicleGateway.GetLatestRegNumber();
-                Vehicle newVehicle = new RegisterNewVehicle().addNewVehicle(vehicleType, engineNumber, latestRegistrationNumber);
-                persistentVehicleGateway.SaveVehicle(newVehicle);
+                string previousRegistrationNumber = persistentVehicleGateway.GetLatestRegNumber();
+                string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
 
-                outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle.registrationNumber);
+                string peronHash = RegisterPerson(validatedUserData);
+                RegisterVehice(validatedUserData, newRegistrationNumber, peronHash);                
+
+                outputMessage = createCommand.CreateRegisterVehicleCommand(newRegistrationNumber);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());
-        } 
+        }
+
+        private string RegisterPerson(VehicleRegistrationInfo validatedUserData)
+        {
+            //todo: check if person already exists
+            Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
+                                        validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
+
+            //todo: save file
+            return person.GenerateHash();
+        }
+
+        private void RegisterVehice(VehicleRegistrationInfo validatedUserData, string registrationNumber, string personHash)
+        {
+            Vehicle vehicle = new Vehicle(registrationNumber, validatedUserData.VehicleType, validatedUserData.Make, validatedUserData.Model,
+                                            validatedUserData.EngineNumber, validatedUserData.MotorEmissionType, validatedUserData.FirstRegistrationDate,
+                                            validatedUserData.NumberOfSeats, validatedUserData.Color, validatedUserData.MassInService, validatedUserData.MaxMass,
+                                            validatedUserData.BrakedTrailer, validatedUserData.UnbrakedTrailer, personHash);
+
+            persistentVehicleGateway.SaveVehicle(vehicle);
+        }
     }
 }

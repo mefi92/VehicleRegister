@@ -28,6 +28,7 @@ namespace Core
         public void LoadVehicleManager(string registrationNumber)
         {                        
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
+            
 
             var createCommand = new CreateCommand();
             GenericCommandMessage<Vehicle> outputMessage;
@@ -38,6 +39,8 @@ namespace Core
             }
             else
             {
+                Person person = persistentVehicleGateway.LoadPerson(vehicle.OwnerHash);
+                vehicle.OwnerHash = $"{person.LastName} {person.FirstName}";
                 outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle);
             }
 
@@ -71,11 +74,10 @@ namespace Core
 
             switch (command)
             {
-                case "load_vehicle_data":
-                    string registrationNumber = deserializedMessage.Data.RegistrationNumber;
-                    LoadVehicleManager(registrationNumber);
+                case CommandConstants.LoadVehicleData:
+                    ProcessLoadVehicleData(deserializedMessage);
                     break;
-                case "register_new_vehicle":
+                case CommandConstants.RegisterNewVehicle:
                     VehicleRegistrationInfo userDataForRegistration = new VehicleRegistrationInfo(deserializedMessage.Data);
                     List<int> validationOutcome = userDataForRegistration.ValidateVehiceDataFormat();
 
@@ -89,6 +91,18 @@ namespace Core
                 default:
                     break;
             }
+        }
+
+        private void ProcessLoadVehicleData(dynamic deserializedMessage)
+        {
+            string registrationNumber = deserializedMessage.Data.RegistrationNumber;
+            LoadVehicleManager(registrationNumber);
+        }
+
+        public static class CommandConstants
+        {
+            public const string RegisterNewVehicle = "register_new_vehicle";
+            public const string LoadVehicleData = "load_vehicle_data";
         }
     }
 }

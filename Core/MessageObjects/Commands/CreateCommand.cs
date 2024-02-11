@@ -8,7 +8,7 @@ namespace Core.MessageObjects.Commands
         {
             var registerVehicleMessage = new GenericCommandMessage<RegisterNewVehicleCommand>
             {
-                Command = "RegisterNewVehicle"
+                Command = "register_new_vehicle"
             };
 
             if (error == 0 && vehicle != null)

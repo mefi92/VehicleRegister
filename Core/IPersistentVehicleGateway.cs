@@ -15,8 +15,12 @@ namespace Core
 
         void SaveVehicle(Vehicle vehicle);
 
+        Person LoadPerson(string hashNumber);
+
+        void SavePerson(Person person);
+
         string GetLatestRegNumber();
 
-        bool IsEngineNumberInUse(string engineNumber);
+        bool IsItemInUse(string engineNumber);
     }
 }

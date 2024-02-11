@@ -26,17 +26,19 @@ namespace MainUi
 
             dynamic deserializedMessage = JsonConvert.DeserializeObject<dynamic>(message);
 
-            HandleError(deserializedMessage);
+            if (deserializedMessage.Error != null)
+            {
+                HandleError(deserializedMessage);
+                return;
+            }
+                
             ProcessCommand(deserializedMessage);
             
         }
 
         private void HandleError(dynamic deserializedMessage)
         {
-            if (deserializedMessage.Error != null)
-            {
-                Console.WriteLine($"\n{deserializedMessage.Error.Message}");
-            }
+            Console.WriteLine($"\n{deserializedMessage.Error.Message}");
         }
 
         private void ProcessCommand(dynamic deserializedMessage)
@@ -68,10 +70,11 @@ namespace MainUi
         {
             JObject data = deserializedMessage.Data;
             if (data != null)
-            {
+            {                
                 Console.WriteLine("\nJármű adatok");
                 Console.WriteLine("--------------");
 
+                PrintData("Tulajdonos", data["OwnerHash"].ToString());
                 PrintData("Rendszám", data["RegistrationNumber"].ToString());
                 PrintData("Kategória", data["VehicleType"].ToString());
                 PrintData("Gyártmány", data["Make"].ToString());
@@ -96,7 +99,7 @@ namespace MainUi
 
         public static class CommandConstants
         {
-            public const string RegisterNewVehicle = "RegisterNewVehicle";
+            public const string RegisterNewVehicle = "register_new_vehicle";
             public const string LoadVehicleData = "load_vehicle_data";
         }
     }

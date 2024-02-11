@@ -50,7 +50,7 @@ namespace MainUi
         {
             RegisterNewVehicleCommand vehicleParameters = new RegisterNewVehicleCommand();
 
-            Console.WriteLine("\nAdja meg következő adatok");
+            Console.WriteLine("\nAdja meg következő adatokat");
 
             GatherPersonalDetails(vehicleParameters);
 

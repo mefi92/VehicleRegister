@@ -23,7 +23,7 @@ namespace Core
             var createCommand = new CreateCommand();
             GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
 
-            if (persistentVehicleGateway.IsEngineNumberInUse(validatedUserData.EngineNumber))
+            if (persistentVehicleGateway.IsItemInUse(validatedUserData.EngineNumber))
             {
                 outputMessage = createCommand.CreateRegisterVehicleCommand(error: 100);
             }
@@ -42,13 +42,18 @@ namespace Core
         }
 
         private string RegisterPerson(VehicleRegistrationInfo validatedUserData)
-        {
-            //todo: check if person already exists
+        {            
             Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
                                         validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
 
-            //todo: save file
-            return person.GenerateHash();
+            string personHash = person.GenerateHash();
+            
+            if (!persistentVehicleGateway.IsItemInUse(personHash))
+            {
+                persistentVehicleGateway.SavePerson(person);
+            }
+            
+            return personHash;
         }
 
         private Vehicle RegisterVehice(VehicleRegistrationInfo validatedUserData, string registrationNumber, string personHash)

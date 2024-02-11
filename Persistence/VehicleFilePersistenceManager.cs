@@ -8,19 +8,37 @@ namespace Persistence
     {
         public string GetLatestRegNumber()
         {
-            string firstRegistrationNumber = "AAAA001";
+            string firstRegistrationNumber = "AAAA000";
             FileInfo[] Files = GetTxtFileArray();
 
-            if (Files != null) { return Files[Files.Length - 1].Name.Substring(0, 7); }
+            if (Files != null)
+            {
+                for (int i = 1; i < Files.Length; i++)
+                {
+                    if (Files[Files.Length - i].Name.Length == 26)
+                    {
+                        return Files[Files.Length - i].Name.Substring(0, 7);
+                    }
+                }
+            }
             return firstRegistrationNumber;
         }
 
-        public bool IsEngineNumberInUse(string engineNumber)
+        public bool IsItemInUse(string item)
         {
             foreach (FileInfo file in GetTxtFileArray())
             {
-                if (file.Name.Contains("_" + engineNumber + "."))
-                    return true;                                 
+                if (item.Length == 14) // Eninge number length 14
+                {
+                    if (file.Name.Contains("_" + item + "."))
+                        return true;
+                }
+                else if (item.Length == 32) // Name hash length 32
+                {
+                    if (file.Name == $"{item}.txt")
+                        return true;
+                }
+                                                 
             }
             return false;
         }
@@ -41,13 +59,13 @@ namespace Persistence
             string registrationNumber = new RegistrationNumberFormatter().CleanRegistrationNumber(vehicle.RegistrationNumber);
             string engineNumber = vehicle.EngineNumber;
             string filePath = registrationNumber + "_" + engineNumber + ".txt";
-            SaveVehicleToTextFile(filePath, vehicle);
+            SaveObjectToTextFile(filePath, vehicle);
         }
 
-        private static void SaveVehicleToTextFile(string filePath, Vehicle vehicle)
+        private static void SaveObjectToTextFile<T>(string filePath, T inputObject)
         {
-            // itt esetleg doni egy exceptiont, ha sikertelen a mentés. 
-            string jsonData = JsonConvert.SerializeObject(vehicle);
+            // itt esetleg dobni egy exceptiont, ha sikertelen a mentés. 
+            string jsonData = JsonConvert.SerializeObject(inputObject);
             File.WriteAllText(filePath, jsonData);  
         }
 
@@ -94,5 +112,20 @@ namespace Persistence
             }
         }
 
+        public Person LoadPerson(string hashNumber)
+        {
+            if (hashNumber != null)
+            {
+                Person person = LoadJsonDataFromFile<Person>($"{hashNumber}.txt");
+                return person;
+            }
+            return null;
+        }
+
+        public void SavePerson(Person person)
+        {
+            string filePath = person.GenerateHash() + ".txt";
+            SaveObjectToTextFile<Person>(filePath, person);
+        }
     }
 }

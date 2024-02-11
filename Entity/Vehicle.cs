@@ -21,7 +21,7 @@ namespace Entity
         public int MaxMass { get; }
         public int BrakedTrailer { get; }
         public int UnbrakedTrailer { get; }        
-        public string OwnerHash {  get; }
+        public string OwnerHash { get; set; }
 
         public Vehicle(string registrationNumber, string vehicleType, string make, string model, string engineNumber, string motorEmissionType,
                         string firstRegistrationDate, int numberOfSeats, string color, int massInService, int maxMass, int brakedTrailer,

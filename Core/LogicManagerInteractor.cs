@@ -30,7 +30,7 @@ namespace Core
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
 
             var createCommand = new CreateCommand();
-            GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
+            GenericCommandMessage<Vehicle> outputMessage;
 
             if (vehicle == null)
             {
@@ -38,7 +38,7 @@ namespace Core
             }
             else
             {
-                outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle.VehicleType, vehicle.RegistrationNumber, vehicle.EngineNumber);
+                outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());

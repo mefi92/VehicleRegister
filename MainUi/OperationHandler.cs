@@ -19,7 +19,7 @@ namespace MainUi
             bool isSelected = false;
             while (!isSelected)
             {
-                Console.WriteLine("Válassz tevékenységet!\r\nÚj jármű regisztrálása (r), adatlekérdezés rendszám alapján (l),  kilépés (q):");
+                Console.WriteLine("\nVálassz tevékenységet!\r\nÚj jármű regisztrálása (r), adatlekérdezés rendszám alapján (l),  kilépés (q):");
                 string input = Console.ReadLine();
                 isSelected = SelectAction(input);
             }
@@ -50,7 +50,7 @@ namespace MainUi
         {
             RegisterNewVehicleCommand vehicleParameters = new RegisterNewVehicleCommand();
 
-            Console.WriteLine("Adja meg következő adatok");
+            Console.WriteLine("\nAdja meg következő adatok");
 
             GatherPersonalDetails(vehicleParameters);
 
@@ -77,6 +77,7 @@ namespace MainUi
         private void GatherPersonalDetails(RegisterNewVehicleCommand vehicleParameters)
         {
             Console.WriteLine("\nSzemélyes adatok");            
+            Console.WriteLine("-----------------");            
             vehicleParameters.LastName = GetInput("Vezetéknév");
             vehicleParameters.FirstName = GetInput("Keresztnév");
         }
@@ -84,6 +85,7 @@ namespace MainUi
         private void GatherAddressDetails(RegisterNewVehicleCommand vehicleParameters)
         {
             Console.WriteLine("\nLakcím adatok");
+            Console.WriteLine("-------------");
             vehicleParameters.AdPostalCode = GetInput("Irányítószám");
             vehicleParameters.AdCity = GetInput("Város");
             vehicleParameters.AdStreet = GetInput("Utca");
@@ -92,6 +94,7 @@ namespace MainUi
         private void GatherVehicleDetails(RegisterNewVehicleCommand vehicleParameters)
         {
             Console.WriteLine("\nJármű adatok");
+            Console.WriteLine("-------------");
             vehicleParameters.VehicleType = GetInput("Kategória");
             vehicleParameters.Make = GetInput("Gyártmány");
             vehicleParameters.Model = GetInput("Típus");

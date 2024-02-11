@@ -33,9 +33,9 @@ namespace Core
                 string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
 
                 string peronHash = RegisterPerson(validatedUserData);
-                RegisterVehice(validatedUserData, newRegistrationNumber, peronHash);                
+                Vehicle newVehicle = RegisterVehice(validatedUserData, newRegistrationNumber, peronHash);                
 
-                outputMessage = createCommand.CreateRegisterVehicleCommand(newRegistrationNumber);
+                outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle);
             }
 
             presenterManager.displayMessage(outputMessage.Serialize());
@@ -51,7 +51,7 @@ namespace Core
             return person.GenerateHash();
         }
 
-        private void RegisterVehice(VehicleRegistrationInfo validatedUserData, string registrationNumber, string personHash)
+        private Vehicle RegisterVehice(VehicleRegistrationInfo validatedUserData, string registrationNumber, string personHash)
         {
             Vehicle vehicle = new Vehicle(registrationNumber, validatedUserData.VehicleType, validatedUserData.Make, validatedUserData.Model,
                                             validatedUserData.EngineNumber, validatedUserData.MotorEmissionType, validatedUserData.FirstRegistrationDate,
@@ -59,6 +59,8 @@ namespace Core
                                             validatedUserData.BrakedTrailer, validatedUserData.UnbrakedTrailer, personHash);
 
             persistentVehicleGateway.SaveVehicle(vehicle);
+
+            return vehicle;
         }
     }
 }

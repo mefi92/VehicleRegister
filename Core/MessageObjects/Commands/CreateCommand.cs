@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Entity;
 
 namespace Core.MessageObjects.Commands
 {
     internal class CreateCommand
     {
-        public GenericCommandMessage<RegisterNewVehicleCommand> CreateRegisterVehicleCommand(string registrationNumber = "", int error = 0)
+        public GenericCommandMessage<RegisterNewVehicleCommand> CreateRegisterVehicleCommand(Vehicle vehicle = null, int error = 0)
         {
             var registerVehicleMessage = new GenericCommandMessage<RegisterNewVehicleCommand>
             {
                 Command = "RegisterNewVehicle"
             };
 
-            if (error == 0)
+            if (error == 0 && vehicle != null)
             {
                 registerVehicleMessage.Data = new RegisterNewVehicleCommand
                 {
-                    RegistrationNumber = registrationNumber
+                    RegistrationNumber = vehicle.RegistrationNumber,
                 };
             }
             else if (error == 100)
@@ -50,21 +46,16 @@ namespace Core.MessageObjects.Commands
             return registerVehicleMessage;
         }
 
-        public GenericCommandMessage<LoadVehicleDataCommand> CreateLoadVehicleDataCommand(string vehicleType = "", string registrationNumber = "", string engineNumber = "", int error = 0)
+        public GenericCommandMessage<Vehicle> CreateLoadVehicleDataCommand(Vehicle vehicle = null, int error = 0)
         {
-            var loadVehicleDataMessage = new GenericCommandMessage<LoadVehicleDataCommand>
+            var loadVehicleDataMessage = new GenericCommandMessage<Vehicle>
             {
                 Command = "load_vehicle_data"
             };
 
-            if (error == 0)
+            if (error == 0 && vehicle != null)
             {
-                loadVehicleDataMessage.Data = new LoadVehicleDataCommand
-                {
-                    VehicleType = vehicleType,
-                    RegistrationNumber = registrationNumber,    
-                    EngineNumber = engineNumber,
-                };
+                loadVehicleDataMessage.Data = vehicle;
             }
             else if (error == 101)
             {

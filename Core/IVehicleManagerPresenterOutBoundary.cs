@@ -9,5 +9,7 @@ namespace Core
     public interface IVehicleManagerPresenterOutBoundary
     {
         void displayMessage(string message);
+
+        void DisplayVehicleData(string vehicleDataResponse);
     }
 }

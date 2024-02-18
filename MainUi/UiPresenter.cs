@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using BoundaryHelper;
+using Core;
 using MainUi.MessageObjects;
 using MainUi.MessageObjects.Commands;
 using Newtonsoft.Json;
@@ -95,6 +96,13 @@ namespace MainUi
         private void PrintData(string prompt, string data)
         {
             Console.WriteLine($"{prompt}: {data}");
+        }
+
+        public void DisplayVehicleData(string vehicleDataResponse)
+        {
+            RegistrationNumberRequest requestObject = RegistrationNumberRequest.GetRegistrationNumberRequestInObject(vehicleDataResponse);
+
+            throw new NotImplementedException();
         }
 
         public static class CommandConstants

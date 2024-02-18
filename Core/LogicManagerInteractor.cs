@@ -1,4 +1,5 @@
-﻿using Core.MessageObjects;
+﻿using BoundaryHelper;
+using Core.MessageObjects;
 using Core.MessageObjects.Commands;
 using Core.VerificationObjects;
 using Entity;
@@ -97,6 +98,13 @@ namespace Core
         {
             string registrationNumber = deserializedMessage.Data.RegistrationNumber;
             LoadVehicleManager(registrationNumber);
+        }
+
+        public void LoadVehicleData(string registrationNumberRequest)
+        {
+            RegistrationNumberRequest requestObject = RegistrationNumberRequest.GetRegistrationNumberRequestInObject(registrationNumberRequest);
+            //megvan a rendszám, mehet a keresés, és válasz viszaadása
+            throw new NotImplementedException();
         }
 
         public static class CommandConstants

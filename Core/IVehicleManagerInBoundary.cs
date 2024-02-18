@@ -9,5 +9,7 @@ namespace Core
     public interface IVehicleManagerInBoundary
     { 
         void ProcessTrafficMessage(string message);
+
+        void LoadVehicleData(string registrationNumberRequest);
     }
 }

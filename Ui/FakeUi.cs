@@ -13,15 +13,15 @@ namespace Ui
         
         static void Main(string[] args)
         {
-            IPersistentVehicleGateway pvg = new VehicleFileSystem();
-            FakeUi fakeUi = new FakeUi();
-            IVehicleManagerInBoundary lmi = new LogicManagerInteractor(pvg, fakeUi);
-            fakeUi.mainLoop(lmi);
+            //IPersistentVehicleGateway pvg = new VehicleFileSystem();
+            //FakeUi fakeUi = new FakeUi();
+            //IVehicleManagerInBoundary lmi = new LogicManagerInteractor(pvg, fakeUi);
+            //fakeUi.mainLoop(lmi);
         }
 
         public void mainLoop(IVehicleManagerInBoundary vehicleManager)
         {
-            vehicleManager.RegisterNewVehicle("Volkswagen", "1Z1961206115613");           
+            //vehicleManager.RegisterNewVehicle("Volkswagen", "1Z1961206115613");           
            
 
         }
@@ -29,6 +29,11 @@ namespace Ui
         public void displayMessage(string message)
         {
             Console.WriteLine(message);
+        }
+
+        public void DisplayVehicleData(string vehicleDataResponse)
+        {
+            throw new NotImplementedException();
         }
     }
 }

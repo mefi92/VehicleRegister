@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ui", "Ui\Ui.csproj", "{7F78
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MainUi", "MainUi\MainUi.csproj", "{557325EB-F96A-4DC4-8644-1A5CD6A97091}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starter", "Starter\Starter.csproj", "{025F3BEC-BCA1-4414-AF3B-EC1BFF74DE14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starter", "Starter\Starter.csproj", "{025F3BEC-BCA1-4414-AF3B-EC1BFF74DE14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoundaryHelper", "BoundaryHelper\BoundaryHelper.csproj", "{542004BC-4A4B-40C2-A870-65710F80BA1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{025F3BEC-BCA1-4414-AF3B-EC1BFF74DE14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{025F3BEC-BCA1-4414-AF3B-EC1BFF74DE14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{025F3BEC-BCA1-4414-AF3B-EC1BFF74DE14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{542004BC-4A4B-40C2-A870-65710F80BA1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{542004BC-4A4B-40C2-A870-65710F80BA1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{542004BC-4A4B-40C2-A870-65710F80BA1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{542004BC-4A4B-40C2-A870-65710F80BA1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

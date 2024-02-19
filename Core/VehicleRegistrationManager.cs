@@ -44,8 +44,7 @@ namespace Core
         {            
             Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
                                         validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
-
-            person.GenerateHash();
+            
             string personHash = person.Hash;
 
             

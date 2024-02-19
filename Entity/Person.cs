@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Entity
 {
@@ -16,7 +17,8 @@ namespace Entity
         public string AdStreet { get; }
         public string AdStreetNumber { get; }
 
-        public string Hash { get; set; }
+        [JsonIgnore]
+        public string Hash { get; }
 
         public Person(string firstName, string lastName, string postalCode, string city, string street, string streetnumber)
         {
@@ -26,9 +28,10 @@ namespace Entity
             AdCity = city;
             AdStreet = street;
             AdStreetNumber = streetnumber;            
+            Hash = GenerateHash();
         }
 
-        public void GenerateHash()
+        private string GenerateHash()
         {
             string dataToHash = $"{FirstName}{LastName}{AdPostalCode}{AdCity}{AdStreet}{AdStreetNumber}";
 
@@ -47,9 +50,7 @@ namespace Entity
                     hashStringBuilder.Append(b.ToString("x2"));
                 }
 
-                Hash = hashStringBuilder.ToString();
-
-                //return hashStringBuilder.ToString();
+                return hashStringBuilder.ToString();
             }
         }
     }

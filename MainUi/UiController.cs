@@ -16,23 +16,22 @@ namespace MainUi
             this.vehicleManagerInBoundary = vehicleManagerInBoundary;
         }
 
-        public void RegisterVehicle(RegisterNewVehicleCommand vehicleParameters)
+        public void RegisterVehicle(RegisterNewVehicleRequest vehicleParameters)
         {
-            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
-            outputMessage = createCommand.CreateRegisterVehicleCommand(vehicleParameters);
-            vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
+            string jsonRequest = JsonHandler.Serialize(vehicleParameters);
+            vehicleManagerInBoundary.RegisterNewVehicle(jsonRequest);
+
+
+            //GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
+            //outputMessage = createCommand.CreateRegisterVehicleCommand(vehicleParameters);
+            //vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }
 
         public void LoadVehicle(string registrationNumber)
-        {
-            //TODO ezt átalakítani, hogy az interfészen a megfelelő metódust hívja meg
-            RegistrationNumberRequest registrationNumberRequest = new RegistrationNumberRequest { RegistrationNumber = registrationNumber };
-            string jsonRequest = RegistrationNumberRequest.GetRegistraionNumberRequestInJson(registrationNumberRequest);
+        {            
+            LoadVehicleDataRequest registrationNumberRequest = new LoadVehicleDataRequest { RegistrationNumber = registrationNumber };
+            string jsonRequest = JsonHandler.Serialize(registrationNumberRequest);
             vehicleManagerInBoundary.LoadVehicleData(jsonRequest);
-
-            GenericCommandMessage<LoadVehicleDataCommand> outputMessage;
-            outputMessage = createCommand.CreateLoadVehicleDataCommand(registrationNumber);
-            vehicleManagerInBoundary.ProcessTrafficMessage(outputMessage.Serialize());
         }
 
 

@@ -100,11 +100,28 @@ namespace Core
             LoadVehicleManager(registrationNumber);
         }
 
-        public void LoadVehicleData(string registrationNumberRequest)
+        public void LoadVehicleData(string request)
         {
-            RegistrationNumberRequest requestObject = RegistrationNumberRequest.GetRegistrationNumberRequestInObject(registrationNumberRequest);
-            //megvan a rendszám, mehet a keresés, és válasz viszaadása
-            throw new NotImplementedException();
+            LoadVehicleDataRequest registrationNumberRequest = JsonHandler.Deserialize<LoadVehicleDataRequest>(request);
+            LoadVehicleManager(registrationNumberRequest.RegistrationNumber);
+        }
+
+        public void RegisterNewVehicle(string request)
+        {
+            RegisterNewVehicleRequest registerNewVehicleRequest = JsonHandler.Deserialize<RegisterNewVehicleRequest>(request);
+
+            VehicleRegistrationInfo userDataForRegistration = new VehicleRegistrationInfo(registerNewVehicleRequest);
+            List<int> validationOutcome = userDataForRegistration.ValidateVehiceDataFormat();
+
+            // TODO: a validáció simán mehetne a reg classba és akkor már a gui -n lehetne javítani, ha valami hiba van
+
+            if (validationOutcome.Count != 0)
+            {
+                ErrorMessageHandler(validationOutcome);                
+            }            
+
+            ProcessUserDataForRegistration(userDataForRegistration);
+
         }
 
         public static class CommandConstants

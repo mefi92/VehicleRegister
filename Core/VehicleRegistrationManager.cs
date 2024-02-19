@@ -1,4 +1,5 @@
-﻿using Core.MessageObjects;
+﻿using BoundaryHelper;
+using Core.MessageObjects;
 using Core.MessageObjects.Commands;
 using Core.VerificationObjects;
 using Entity;
@@ -20,52 +21,73 @@ namespace Core
 
         public void SeparatePersonalAndVehicelData(VehicleRegistrationInfo validatedUserData)
         {
-            var createCommand = new CreateCommand();
-            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
+            RegisterNewVehicleRequest registerNewVehicleRequest = new RegisterNewVehicleRequest();
 
             if (persistentVehicleGateway.IsItemInUse(validatedUserData.EngineNumber))
-            {
-                outputMessage = createCommand.CreateRegisterVehicleCommand(error: 100);
+            { 
+                registerNewVehicleRequest.Error.Message = "A megadott motorszámmal már regisztráltak járművet!";
+                registerNewVehicleRequest.Error.ErrorCode = 100;
             }
             else
             {
                 string previousRegistrationNumber = persistentVehicleGateway.GetLatestRegNumber();
                 string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
 
-                string peronHash = RegisterPerson(validatedUserData);
-                Vehicle newVehicle = RegisterVehice(validatedUserData, newRegistrationNumber, peronHash);                
-
-                outputMessage = createCommand.CreateRegisterVehicleCommand(newVehicle);
+                Person person = RegisterPerson(validatedUserData);
+                registerNewVehicleRequest = RegisterVehice(validatedUserData, person, newRegistrationNumber);
             }
 
-            presenterManager.displayMessage(outputMessage.Serialize());
+            presenterManager.displayMessage(JsonHandler.Serialize(registerNewVehicleRequest));
         }
 
-        private string RegisterPerson(VehicleRegistrationInfo validatedUserData)
+        private Person RegisterPerson(VehicleRegistrationInfo validatedUserData)
         {            
             Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
                                         validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
 
-            string personHash = person.GenerateHash();
+            person.GenerateHash();
+            string personHash = person.Hash;
+
             
             if (!persistentVehicleGateway.IsItemInUse(personHash))
             {
                 persistentVehicleGateway.SavePerson(person);
             }
             
-            return personHash;
+            return person;
         }
 
-        private Vehicle RegisterVehice(VehicleRegistrationInfo validatedUserData, string registrationNumber, string personHash)
+        private RegisterNewVehicleRequest RegisterVehice(VehicleRegistrationInfo validatedUserData, Person person, string registrationNumber)
         {
             Vehicle vehicle = new Vehicle(registrationNumber, validatedUserData.VehicleType, validatedUserData.Make, validatedUserData.Model,
                                             validatedUserData.EngineNumber, validatedUserData.MotorEmissionType, validatedUserData.FirstRegistrationDate,
                                             validatedUserData.NumberOfSeats, validatedUserData.Color, validatedUserData.MassInService, validatedUserData.MaxMass,
-                                            validatedUserData.BrakedTrailer, validatedUserData.UnbrakedTrailer, personHash);
+                                            validatedUserData.BrakedTrailer, validatedUserData.UnbrakedTrailer, person.Hash);
 
             persistentVehicleGateway.SaveVehicle(vehicle);
 
-            return vehicle;
+            RegisterNewVehicleRequest vehicleReg = new RegisterNewVehicleRequest();
+            vehicleReg.FirstName = person.FirstName;
+            vehicleReg.LastName = person.LastName;
+            vehicleReg.AdPostalCode = person.AdPostalCode;
+            vehicleReg.AdCity = person.AdCity;
+            vehicleReg.AdStreet = person.AdStreet;
+            vehicleReg.AdStreetNumber = person.AdStreetNumber;
+            vehicleReg.VehicleType = vehicle.VehicleType;
+            vehicleReg.RegistrationNumber = registrationNumber;
+            vehicleReg.EngineNumber = vehicle.EngineNumber;
+            vehicleReg.FirstRegistrationDate = vehicle.FirstRegistrationDate;
+            vehicleReg.Make = vehicle.Make;
+            vehicleReg.Model = vehicle.Model;
+            vehicleReg.NumberOfSeats = vehicle.NumberOfSeats;
+            vehicleReg.Color = vehicle.Color;
+            vehicleReg.MassInService = vehicle.MassInService;
+            vehicleReg.MaxMass = vehicle.MaxMass;
+            vehicleReg.BrakedTrailer = vehicle.BrakedTrailer;
+            vehicleReg.UnbrakedTrailer = vehicle.UnbrakedTrailer;
+            vehicleReg.MotorEmissionType = vehicle.MotorEmissionType;
+
+            return vehicleReg;
         }
     }
 }

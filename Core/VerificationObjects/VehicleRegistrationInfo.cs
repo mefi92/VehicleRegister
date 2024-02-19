@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using BoundaryHelper;
+using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -28,27 +29,27 @@ namespace Core.VerificationObjects
 
         private List<int> errorCodes = new List<int>();
 
-        public VehicleRegistrationInfo(JObject vehicle)
+        public VehicleRegistrationInfo(RegisterNewVehicleRequest vehicle)
         {
-            RegistrationNumber = vehicle["RegistrationNumber"].ToString();
-            VehicleType = vehicle["VehicleType"].ToString();
-            Make = vehicle["Make"].ToString();
-            Model = vehicle["Model"].ToString();            
-            EngineNumber = vehicle["EngineNumber"].ToString();
-            MotorEmissionType = vehicle["MotorEmissionType"].ToString();
-            FirstRegistrationDate = vehicle["FirstRegistrationDate"].ToString();
-            NumberOfSeats = Convert.ToInt32(vehicle["NumberOfSeats"].ToString());
-            Color = vehicle["Color"].ToString();
-            MassInService = Convert.ToInt32(vehicle["MassInService"].ToString());
-            MaxMass = Convert.ToInt32(vehicle["MaxMass"].ToString());
-            BrakedTrailer = Convert.ToInt32(vehicle["BrakedTrailer"].ToString());
-            UnbrakedTrailer = Convert.ToInt32(vehicle["UnbrakedTrailer"].ToString());
-            FirstName = vehicle["FirstName"].ToString();
-            LastName = vehicle["LastName"].ToString();
-            AdPostalCode = vehicle["AdPostalCode"].ToString();
-            AdCity = vehicle["AdCity"].ToString();
-            AdStreet = vehicle["AdStreet"].ToString();
-            AdStreetNumber = vehicle["AdStreetNumber"].ToString();
+            RegistrationNumber = vehicle.RegistrationNumber;
+            VehicleType = vehicle.VehicleType;
+            Make = vehicle.Make;
+            Model = vehicle.Model;            
+            EngineNumber = vehicle.EngineNumber;
+            MotorEmissionType = vehicle.MotorEmissionType;
+            FirstRegistrationDate = vehicle.FirstRegistrationDate;
+            NumberOfSeats = vehicle.NumberOfSeats;
+            Color = vehicle.Color;
+            MassInService = vehicle.MassInService;
+            MaxMass = vehicle.MaxMass;
+            BrakedTrailer = vehicle.BrakedTrailer;
+            UnbrakedTrailer = vehicle.UnbrakedTrailer;
+            FirstName = vehicle.FirstName;
+            LastName = vehicle.LastName;
+            AdPostalCode = vehicle.AdPostalCode;
+            AdCity = vehicle.AdCity;
+            AdStreet = vehicle.AdStreet;
+            AdStreetNumber = vehicle.AdStreetNumber;
         }       
 
         private static bool IsVehicleType(string vehicleType)

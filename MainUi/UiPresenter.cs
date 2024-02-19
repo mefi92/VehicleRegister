@@ -100,7 +100,7 @@ namespace MainUi
 
         public void DisplayVehicleData(string vehicleDataResponse)
         {
-            RegistrationNumberRequest requestObject = RegistrationNumberRequest.GetRegistrationNumberRequestInObject(vehicleDataResponse);
+            //RegistrationNumberRequest requestObject = RegistrationNumberRequest.GetRegistrationNumberRequestInObject(vehicleDataResponse);
 
             throw new NotImplementedException();
         }

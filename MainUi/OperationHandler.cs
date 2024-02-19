@@ -1,5 +1,6 @@
 ﻿
 
+using BoundaryHelper;
 using MainUi.MessageObjects.Commands;
 using System.Runtime.InteropServices;
 
@@ -48,7 +49,8 @@ namespace MainUi
 
         public void RegisterNewVehicleInput()
         {
-            RegisterNewVehicleCommand vehicleParameters = new RegisterNewVehicleCommand();
+            //RegisterNewVehicleCommand vehicleParameters = new RegisterNewVehicleCommand();
+            RegisterNewVehicleRequest vehicleParameters = new RegisterNewVehicleRequest();
 
             Console.WriteLine("\nAdja meg következő adatokat");
 
@@ -74,7 +76,7 @@ namespace MainUi
             return true;
         }
 
-        private void GatherPersonalDetails(RegisterNewVehicleCommand vehicleParameters)
+        private void GatherPersonalDetails(RegisterNewVehicleRequest vehicleParameters)
         {
             Console.WriteLine("\nSzemélyes adatok");            
             Console.WriteLine("-----------------");            
@@ -82,7 +84,7 @@ namespace MainUi
             vehicleParameters.FirstName = GetInput("Keresztnév");
         }
 
-        private void GatherAddressDetails(RegisterNewVehicleCommand vehicleParameters)
+        private void GatherAddressDetails(RegisterNewVehicleRequest vehicleParameters)
         {
             Console.WriteLine("\nLakcím adatok");
             Console.WriteLine("-------------");
@@ -91,7 +93,7 @@ namespace MainUi
             vehicleParameters.AdStreet = GetInput("Utca");
             vehicleParameters.AdStreetNumber = GetInput("Házszám");
         }
-        private void GatherVehicleDetails(RegisterNewVehicleCommand vehicleParameters)
+        private void GatherVehicleDetails(RegisterNewVehicleRequest vehicleParameters)
         {
             Console.WriteLine("\nJármű adatok");
             Console.WriteLine("-------------");

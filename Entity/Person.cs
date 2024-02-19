@@ -16,6 +16,8 @@ namespace Entity
         public string AdStreet { get; }
         public string AdStreetNumber { get; }
 
+        public string Hash { get; set; }
+
         public Person(string firstName, string lastName, string postalCode, string city, string street, string streetnumber)
         {
             FirstName = firstName;
@@ -26,7 +28,7 @@ namespace Entity
             AdStreetNumber = streetnumber;            
         }
 
-        public string GenerateHash()
+        public void GenerateHash()
         {
             string dataToHash = $"{FirstName}{LastName}{AdPostalCode}{AdCity}{AdStreet}{AdStreetNumber}";
 
@@ -45,7 +47,9 @@ namespace Entity
                     hashStringBuilder.Append(b.ToString("x2"));
                 }
 
-                return hashStringBuilder.ToString();
+                Hash = hashStringBuilder.ToString();
+
+                //return hashStringBuilder.ToString();
             }
         }
     }

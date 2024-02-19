@@ -124,7 +124,7 @@ namespace Persistence
 
         public void SavePerson(Person person)
         {
-            string filePath = person.GenerateHash() + ".txt";
+            string filePath = person.Hash + ".txt";
             SaveObjectToTextFile<Person>(filePath, person);
         }
     }

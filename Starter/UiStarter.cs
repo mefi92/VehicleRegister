@@ -1,9 +1,6 @@
 ﻿using Core;
 using Persistence;
-using MainUi;
-using System.Text;
-using System.IO;
-using System;
+using ConsoleUi;
 
 
 namespace Starter
@@ -12,13 +9,15 @@ namespace Starter
     {
 
         static void Main(string[] args)
-        {           
-            UiPresenter uiPresenter = new UiPresenter();
+        {
+            ConsoleView consoleView = new ConsoleView();
+            Model model = new Model();
+            Presenter presenter = new Presenter(model, consoleView);
             IPersistentVehicleGateway persistentVehicleGateway = new VehicleFilePersistenceManager();
-            IVehicleManagerInBoundary vehicleManagerInBoundary = new LogicManagerInteractor(persistentVehicleGateway, uiPresenter);
-            ConsoleUi consoleUi = new ConsoleUi(vehicleManagerInBoundary);
-            uiPresenter.setConsoleUI(consoleUi);
-            consoleUi.mainLoop();
+            IVehicleManagerInBoundary vehicleManagerInBoundary = new LogicManagerInteractor(persistentVehicleGateway, presenter);
+
+            presenter.SetVehicleManager(vehicleManagerInBoundary);            
+            presenter.StartApplication();
         }
         
     }

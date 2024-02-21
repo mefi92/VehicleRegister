@@ -45,7 +45,8 @@ namespace Core
                 outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle);
             }
 
-            presenterManager.displayMessage(outputMessage.Serialize());
+            // todo: ezt befejezni, ne a commandos téma menjen vissza hanem egy loadvehicle data request
+            presenterManager.DisplayVehicleData(JsonHandler.Serialize());
 
         }
 

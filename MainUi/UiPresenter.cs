@@ -105,6 +105,11 @@ namespace MainUi
             throw new NotImplementedException();
         }
 
+        public void DisplayRegistrationResult(string registrationResultResponse)
+        {
+            throw new NotImplementedException();
+        }
+
         public static class CommandConstants
         {
             public const string RegisterNewVehicle = "register_new_vehicle";

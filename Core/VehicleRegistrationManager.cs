@@ -37,7 +37,8 @@ namespace Core
                 registerNewVehicleRequest = RegisterVehice(validatedUserData, person, newRegistrationNumber);
             }
 
-            presenterManager.displayMessage(JsonHandler.Serialize(registerNewVehicleRequest));
+            //presenterManager.displayMessage(JsonHandler.Serialize(registerNewVehicleRequest));
+            presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(registerNewVehicleRequest));
         }
 
         private Person RegisterPerson(VehicleRegistrationInfo validatedUserData)
@@ -64,8 +65,12 @@ namespace Core
                                             validatedUserData.BrakedTrailer, validatedUserData.UnbrakedTrailer, person.Hash);
 
             persistentVehicleGateway.SaveVehicle(vehicle);
-
+           
             RegisterNewVehicleRequest vehicleReg = new RegisterNewVehicleRequest();
+            vehicleReg.RegistrationNumber = registrationNumber;
+            return vehicleReg;
+
+            /*
             vehicleReg.FirstName = person.FirstName;
             vehicleReg.LastName = person.LastName;
             vehicleReg.AdPostalCode = person.AdPostalCode;
@@ -85,8 +90,7 @@ namespace Core
             vehicleReg.BrakedTrailer = vehicle.BrakedTrailer;
             vehicleReg.UnbrakedTrailer = vehicle.UnbrakedTrailer;
             vehicleReg.MotorEmissionType = vehicle.MotorEmissionType;
-
-            return vehicleReg;
+            */
         }
     }
 }

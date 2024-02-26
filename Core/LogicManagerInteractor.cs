@@ -4,7 +4,7 @@ using Core.MessageObjects.Commands;
 using Core.VerificationObjects;
 using Entity;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core
 {
@@ -20,34 +20,72 @@ namespace Core
             this.presenterManager = presenterManager;
         }
 
-        public void ProcessUserDataForRegistration(VehicleRegistrationInfo validatedUserData)
+        public void ProcessUserDataForRegistration(RegisterNewVehicleRequest validatedUserData)
         {
             VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway, presenterManager);
             registerManager.SeparatePersonalAndVehicelData(validatedUserData);
         }
 
         public void LoadVehicleManager(string registrationNumber)
-        {                        
+        {
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
-            
-
-            var createCommand = new CreateCommand();
-            GenericCommandMessage<Vehicle> outputMessage;
+            LoadVehicleDataResponse loadVehicleDataResponse = new LoadVehicleDataResponse();
 
             if (vehicle == null)
             {
-                outputMessage = createCommand.CreateLoadVehicleDataCommand(error: 102); 
+                HandleError(loadVehicleDataResponse);
             }
             else
             {
-                Person person = persistentVehicleGateway.LoadPerson(vehicle.OwnerHash);
-                vehicle.OwnerHash = $"{person.LastName} {person.FirstName}";
-                outputMessage = createCommand.CreateLoadVehicleDataCommand(vehicle);
+                LoadVehicleDetails(vehicle, loadVehicleDataResponse);
             }
 
-            // todo: ezt befejezni, ne a commandos téma menjen vissza hanem egy loadvehicle data request
-            presenterManager.DisplayVehicleData(JsonHandler.Serialize());
+            presenterManager.DisplayVehicleData(JsonHandler.Serialize(loadVehicleDataResponse));
+        }
 
+        private void HandleError(LoadVehicleDataResponse loadVehicleDataResponse)
+        {
+            loadVehicleDataResponse.Error = new BoundaryHelper.ErrorData
+            {
+                Message = "A megadott rendszám nem létezik!\nPróbálja újra.",
+                ErrorCode = 102
+            };
+        }
+
+        private void LoadVehicleDetails(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
+        {
+            Person person = persistentVehicleGateway.LoadPerson(vehicle.OwnerHash);
+
+            LoadPersonDetails(person, loadVehicleDataResponse);
+
+            LoadVehicleProperties(vehicle, loadVehicleDataResponse);
+        }
+
+        private void LoadPersonDetails(Person person, LoadVehicleDataResponse loadVehicleDataResponse)
+        {
+            loadVehicleDataResponse.FirstName = person.FirstName;
+            loadVehicleDataResponse.LastName = person.LastName;
+            loadVehicleDataResponse.AdPostalCode = person.AdPostalCode;
+            loadVehicleDataResponse.AdCity = person.AdCity;
+            loadVehicleDataResponse.AdStreet = person.AdStreet;
+            loadVehicleDataResponse.AdStreetNumber = person.AdStreetNumber;
+        }
+
+        private void LoadVehicleProperties(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
+        {
+            loadVehicleDataResponse.VehicleType = vehicle.VehicleType;
+            loadVehicleDataResponse.RegistrationNumber = vehicle.RegistrationNumber;
+            loadVehicleDataResponse.EngineNumber = vehicle.EngineNumber;
+            loadVehicleDataResponse.FirstRegistrationDate = vehicle.FirstRegistrationDate;
+            loadVehicleDataResponse.Make = vehicle.Make;
+            loadVehicleDataResponse.Model = vehicle.Model;
+            loadVehicleDataResponse.NumberOfSeats = vehicle.NumberOfSeats;
+            loadVehicleDataResponse.Color = vehicle.Color;
+            loadVehicleDataResponse.MassInService = vehicle.MassInService;
+            loadVehicleDataResponse.MaxMass = vehicle.MaxMass;
+            loadVehicleDataResponse.BrakedTrailer = vehicle.BrakedTrailer;
+            loadVehicleDataResponse.UnbrakedTrailer = vehicle.UnbrakedTrailer;
+            loadVehicleDataResponse.MotorEmissionType = vehicle.MotorEmissionType;
         }
 
         private void ErrorMessageHandler(List<int> errorCodes)
@@ -62,7 +100,7 @@ namespace Core
             }
         }
                  
-        public void ProcessTrafficMessage(string message)
+        /*public void ProcessTrafficMessage(string message)
         {
             if (message == null) return;            
 
@@ -93,7 +131,7 @@ namespace Core
                 default:
                     break;
             }
-        }
+        }*/
 
         private void ProcessLoadVehicleData(dynamic deserializedMessage)
         {
@@ -107,7 +145,7 @@ namespace Core
             LoadVehicleManager(registrationNumberRequest.RegistrationNumber);
         }
 
-        public void RegisterNewVehicle(string request)
+       /* public void RegisterNewVehicle(string request)
         {
             RegisterNewVehicleRequest registerNewVehicleRequest = JsonHandler.Deserialize<RegisterNewVehicleRequest>(request);
 
@@ -123,12 +161,33 @@ namespace Core
 
             ProcessUserDataForRegistration(userDataForRegistration);
 
-        }
+        }*/
 
         public static class CommandConstants
         {
             public const string RegisterNewVehicle = "register_new_vehicle";
             public const string LoadVehicleData = "load_vehicle_data";
+        }
+
+        public void RegisterNewVehicle(string request)
+        {
+            RegisterNewVehicleRequest registerNewVehicleRequest = JsonHandler.Deserialize<RegisterNewVehicleRequest>(request);
+            RegisterNewVehicleRequestValidator validator = new RegisterNewVehicleRequestValidator();
+
+            ValidatorResult validatorResult = validator.Validate(registerNewVehicleRequest);
+
+            if (validatorResult.IsValid)
+            {
+                ProcessUserDataForRegistration(registerNewVehicleRequest);
+            }
+            else
+            {                
+                foreach (BoundaryHelper.ErrorData error in validatorResult.Errors)
+                {
+                    // response to ui
+                }
+            }
+
         }
     }
 }

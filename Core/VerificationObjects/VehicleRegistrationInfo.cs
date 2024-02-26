@@ -31,7 +31,6 @@ namespace Core.VerificationObjects
 
         public VehicleRegistrationInfo(RegisterNewVehicleRequest vehicle)
         {
-            RegistrationNumber = vehicle.RegistrationNumber;
             VehicleType = vehicle.VehicleType;
             Make = vehicle.Make;
             Model = vehicle.Model;            

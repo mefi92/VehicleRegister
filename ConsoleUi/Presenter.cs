@@ -83,7 +83,7 @@ namespace ConsoleUi
 
         public void DisplayRegistrationResult(string registrationResultResponse)
         {
-            _model.RegistrationNumber = JsonHandler.Deserialize<RegisterNewVehicleRequest>(registrationResultResponse).RegistrationNumber;
+            _model.RegistrationNumber = JsonHandler.Deserialize<RegisterNewVehicleResponse>(registrationResultResponse).RegistrationNumber;
             _view.DisplayVehicleRegistration(_model.RegistrationNumber);
         }
 
@@ -125,7 +125,7 @@ namespace ConsoleUi
 
         public void DisplayVehicleData(string vehicleDataResponse)
         {
-            RegisterNewVehicleRequest vehicleParameters = JsonHandler.Deserialize<RegisterNewVehicleRequest>(vehicleDataResponse);
+            LoadVehicleDataResponse vehicleParameters = JsonHandler.Deserialize<LoadVehicleDataResponse>(vehicleDataResponse);
             
             _view.DisplayMessage("\nJármű adatok");
             _view.DisplayMessage("--------------");

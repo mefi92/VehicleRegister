@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BoundaryHelper
 {
-    public class RegisterNewVehicleRequest
+    public class LoadVehicleDataResponse
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,6 +15,7 @@ namespace BoundaryHelper
         public string AdStreet { get; set; }
         public string AdStreetNumber { get; set; }
         public string VehicleType { get; set; }
+        public string RegistrationNumber { get; set; }
         public string EngineNumber { get; set; }
         public string FirstRegistrationDate { get; set; }
         public string Make { get; set; }
@@ -25,7 +26,7 @@ namespace BoundaryHelper
         public int MaxMass { get; set; }
         public int BrakedTrailer { get; set; }
         public int UnbrakedTrailer { get; set; }
-        public string MotorEmissionType { get; set; } 
-
+        public string MotorEmissionType { get; set; }
+        public ErrorData Error { get; set; }
     }
 }

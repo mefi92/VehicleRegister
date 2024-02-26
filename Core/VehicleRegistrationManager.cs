@@ -19,14 +19,14 @@ namespace Core
             this.presenterManager = presenterManager;
         }
 
-        public void SeparatePersonalAndVehicelData(VehicleRegistrationInfo validatedUserData)
-        {
-            RegisterNewVehicleRequest registerNewVehicleRequest = new RegisterNewVehicleRequest();
-
+        public void SeparatePersonalAndVehicelData(RegisterNewVehicleRequest validatedUserData)
+        { 
             if (persistentVehicleGateway.IsItemInUse(validatedUserData.EngineNumber))
             { 
-                registerNewVehicleRequest.Error.Message = "A megadott motorszámmal már regisztráltak járművet!";
-                registerNewVehicleRequest.Error.ErrorCode = 100;
+                //registerNewVehicleRequest.Error.Message = "A megadott motorszámmal már regisztráltak járművet!";
+                //registerNewVehicleRequest.Error.ErrorCode = 100;
+
+                // TODO: ide validátorba valami funkció ami ezt az error t visszadobja
             }
             else
             {
@@ -34,14 +34,12 @@ namespace Core
                 string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
 
                 Person person = RegisterPerson(validatedUserData);
-                registerNewVehicleRequest = RegisterVehice(validatedUserData, person, newRegistrationNumber);
-            }
-
-            //presenterManager.displayMessage(JsonHandler.Serialize(registerNewVehicleRequest));
-            presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(registerNewVehicleRequest));
+                RegisterNewVehicleResponse registerNewVehicleResponse = RegisterVehice(validatedUserData, person, newRegistrationNumber);
+                presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(registerNewVehicleResponse));
+            }            
         }
 
-        private Person RegisterPerson(VehicleRegistrationInfo validatedUserData)
+        private Person RegisterPerson(RegisterNewVehicleRequest validatedUserData)
         {            
             Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
                                         validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
@@ -57,7 +55,7 @@ namespace Core
             return person;
         }
 
-        private RegisterNewVehicleRequest RegisterVehice(VehicleRegistrationInfo validatedUserData, Person person, string registrationNumber)
+        private RegisterNewVehicleResponse RegisterVehice(RegisterNewVehicleRequest validatedUserData, Person person, string registrationNumber)
         {
             Vehicle vehicle = new Vehicle(registrationNumber, validatedUserData.VehicleType, validatedUserData.Make, validatedUserData.Model,
                                             validatedUserData.EngineNumber, validatedUserData.MotorEmissionType, validatedUserData.FirstRegistrationDate,
@@ -66,31 +64,10 @@ namespace Core
 
             persistentVehicleGateway.SaveVehicle(vehicle);
            
-            RegisterNewVehicleRequest vehicleReg = new RegisterNewVehicleRequest();
-            vehicleReg.RegistrationNumber = registrationNumber;
-            return vehicleReg;
+            RegisterNewVehicleResponse registerNewVehicleResponse = new RegisterNewVehicleResponse();
+            registerNewVehicleResponse.RegistrationNumber = registrationNumber;
+            return registerNewVehicleResponse;
 
-            /*
-            vehicleReg.FirstName = person.FirstName;
-            vehicleReg.LastName = person.LastName;
-            vehicleReg.AdPostalCode = person.AdPostalCode;
-            vehicleReg.AdCity = person.AdCity;
-            vehicleReg.AdStreet = person.AdStreet;
-            vehicleReg.AdStreetNumber = person.AdStreetNumber;
-            vehicleReg.VehicleType = vehicle.VehicleType;
-            vehicleReg.RegistrationNumber = registrationNumber;
-            vehicleReg.EngineNumber = vehicle.EngineNumber;
-            vehicleReg.FirstRegistrationDate = vehicle.FirstRegistrationDate;
-            vehicleReg.Make = vehicle.Make;
-            vehicleReg.Model = vehicle.Model;
-            vehicleReg.NumberOfSeats = vehicle.NumberOfSeats;
-            vehicleReg.Color = vehicle.Color;
-            vehicleReg.MassInService = vehicle.MassInService;
-            vehicleReg.MaxMass = vehicle.MaxMass;
-            vehicleReg.BrakedTrailer = vehicle.BrakedTrailer;
-            vehicleReg.UnbrakedTrailer = vehicle.UnbrakedTrailer;
-            vehicleReg.MotorEmissionType = vehicle.MotorEmissionType;
-            */
         }
     }
 }

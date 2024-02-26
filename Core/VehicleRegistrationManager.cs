@@ -63,9 +63,7 @@ namespace Core
 
             persistentVehicleGateway.SaveVehicle(vehicle);
            
-            RegisterNewVehicleResponse registerNewVehicleResponse = new RegisterNewVehicleResponse();
-            registerNewVehicleResponse.RegistrationNumber = registrationNumber;
-            return registerNewVehicleResponse;
+            return new RegisterNewVehicleResponse { RegistrationNumber = registrationNumber };
 
         }
     }

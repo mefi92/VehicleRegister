@@ -15,13 +15,17 @@ namespace Core
         }
 
         public void SeparatePersonalAndVehicelData(RegisterNewVehicleRequest validatedUserData)
-        { 
+        {
+            RegisterNewVehicleResponse response = new RegisterNewVehicleResponse();
+
             if (persistentVehicleGateway.IsItemInUse(validatedUserData.EngineNumber))
             { 
-                //registerNewVehicleRequest.Error.Message = "A megadott motorszámmal már regisztráltak járművet!";
-                //registerNewVehicleRequest.Error.ErrorCode = 100;
-
-                // TODO: ide validátorba valami funkció ami ezt az error t visszadobja
+                ErrorData error = new ErrorData
+                {
+                    Message = "\nA megadott motorszámmal már regisztráltak járművet!",
+                    ErrorCode = 100
+                };
+                response.Error = error;
             }
             else
             {
@@ -29,9 +33,9 @@ namespace Core
                 string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
 
                 Person person = RegisterPerson(validatedUserData);
-                RegisterNewVehicleResponse registerNewVehicleResponse = RegisterVehice(validatedUserData, person, newRegistrationNumber);
-                presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(registerNewVehicleResponse));
-            }            
+                response = RegisterVehice(validatedUserData, person, newRegistrationNumber);                
+            }
+            presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(response));
         }
 
         private Person RegisterPerson(RegisterNewVehicleRequest validatedUserData)

@@ -1,10 +1,6 @@
 ﻿using BoundaryHelper;
-using Core.MessageObjects;
-using Core.MessageObjects.Commands;
 using Core.VerificationObjects;
 using Entity;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace Core
 {
@@ -45,7 +41,8 @@ namespace Core
 
         private void HandleError(LoadVehicleDataResponse loadVehicleDataResponse)
         {
-            loadVehicleDataResponse.Error = new BoundaryHelper.ErrorData
+            // TODO: ezt valaki külön class ba szervezni!!!
+            loadVehicleDataResponse.Error = new ErrorData
             {
                 Message = "A megadott rendszám nem létezik!\nPróbálja újra.",
                 ErrorCode = 102
@@ -88,85 +85,10 @@ namespace Core
             loadVehicleDataResponse.MotorEmissionType = vehicle.MotorEmissionType;
         }
 
-        private void ErrorMessageHandler(List<int> errorCodes)
-        {
-            var createCommand = new CreateCommand();
-            GenericCommandMessage<RegisterNewVehicleCommand> outputMessage;
-
-            foreach (int code in errorCodes)
-            {
-                outputMessage = createCommand.CreateRegisterVehicleCommand(error: code);
-                presenterManager.displayMessage(outputMessage.Serialize());
-            }
-        }
-                 
-        /*public void ProcessTrafficMessage(string message)
-        {
-            if (message == null) return;            
-
-            var deserializedMessage = JsonConvert.DeserializeObject<dynamic>(message);            
-            string command = deserializedMessage.Command;
-
-            if (deserializedMessage.Error != null)
-            {
-                // Később, ha a UI felől hibát küldenénk itt le lehet kezelni.                    
-            }
-
-            switch (command)
-            {
-                case CommandConstants.LoadVehicleData:
-                    ProcessLoadVehicleData(deserializedMessage);
-                    break;
-                case CommandConstants.RegisterNewVehicle:
-                    VehicleRegistrationInfo userDataForRegistration = new VehicleRegistrationInfo(deserializedMessage.Data);
-                    List<int> validationOutcome = userDataForRegistration.ValidateVehiceDataFormat();
-
-                    if(validationOutcome.Count != 0)
-                    {
-                        ErrorMessageHandler(validationOutcome);
-                        break;
-                    }
-                    ProcessUserDataForRegistration(userDataForRegistration);
-                    break;
-                default:
-                    break;
-            }
-        }*/
-
-        private void ProcessLoadVehicleData(dynamic deserializedMessage)
-        {
-            string registrationNumber = deserializedMessage.Data.RegistrationNumber;
-            LoadVehicleManager(registrationNumber);
-        }
-
         public void LoadVehicleData(string request)
         {
-            LoadVehicleDataRequest registrationNumberRequest = JsonHandler.Deserialize<LoadVehicleDataRequest>(request);
-            LoadVehicleManager(registrationNumberRequest.RegistrationNumber);
-        }
-
-       /* public void RegisterNewVehicle(string request)
-        {
-            RegisterNewVehicleRequest registerNewVehicleRequest = JsonHandler.Deserialize<RegisterNewVehicleRequest>(request);
-
-            VehicleRegistrationInfo userDataForRegistration = new VehicleRegistrationInfo(registerNewVehicleRequest);
-            List<int> validationOutcome = userDataForRegistration.ValidateVehiceDataFormat();
-
-            // TODO: a validáció simán mehetne a reg classba és akkor már a gui -n lehetne javítani, ha valami hiba van
-
-            if (validationOutcome.Count != 0)
-            {
-                ErrorMessageHandler(validationOutcome);                
-            }            
-
-            ProcessUserDataForRegistration(userDataForRegistration);
-
-        }*/
-
-        public static class CommandConstants
-        {
-            public const string RegisterNewVehicle = "register_new_vehicle";
-            public const string LoadVehicleData = "load_vehicle_data";
+            LoadVehicleDataRequest loadVehicleDataRequest = JsonHandler.Deserialize<LoadVehicleDataRequest>(request);
+            LoadVehicleManager(loadVehicleDataRequest.RegistrationNumber);
         }
 
         public void RegisterNewVehicle(string request)

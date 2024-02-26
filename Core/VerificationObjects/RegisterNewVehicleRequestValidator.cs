@@ -7,7 +7,7 @@ namespace Core.VerificationObjects
 {
     internal class RegisterNewVehicleRequestValidator
     {
-        private readonly ErrorData _error = new BoundaryHelper.ErrorData();
+        //private readonly ErrorData _error = new ErrorData();
 
         private const int MaxFirstNameLength = 30;
         private const int MaxLastNameLength = 30;

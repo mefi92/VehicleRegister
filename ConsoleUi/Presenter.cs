@@ -142,13 +142,6 @@ namespace ConsoleUi
             _view.DisplayMessage("Össztömeg: " + vehicleParameters.MaxMass);
             _view.DisplayMessage("Fékezett vontatmány: " + vehicleParameters.BrakedTrailer);
             _view.DisplayMessage("Fékezetlen vontatmány: " + vehicleParameters.UnbrakedTrailer);
-        }
-
-        public void displayMessage(string message)
-        {
-            // benthagytam, hogy a másikkal ui al még müködjön. Törölni kell majd
-            throw new NotImplementedException();
-        }
-
+        } 
     }
 }

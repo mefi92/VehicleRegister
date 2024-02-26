@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 namespace Core
 {
     public interface IVehicleManagerPresenterOutBoundary
-    {
-        void displayMessage(string message);
-
+    {  
         void DisplayVehicleData(string vehicleDataResponse);
 
         void DisplayRegistrationResult(string registrationResultResponse);

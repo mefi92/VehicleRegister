@@ -1,6 +1,4 @@
 ﻿
-
-
 namespace ConsoleUi
 {
     public class Model

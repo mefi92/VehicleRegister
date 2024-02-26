@@ -1,7 +1,6 @@
 ﻿using Core;
 using BoundaryHelper;
 
-
 namespace ConsoleUi
 {
     public class Presenter : IVehicleManagerPresenterOutBoundary
@@ -83,7 +82,15 @@ namespace ConsoleUi
 
         public void DisplayRegistrationResult(string registrationResultResponse)
         {
-            _model.RegistrationNumber = JsonHandler.Deserialize<RegisterNewVehicleResponse>(registrationResultResponse).RegistrationNumber;
+            RegisterNewVehicleResponse registerNewVehicleResponse = JsonHandler.Deserialize<RegisterNewVehicleResponse>(registrationResultResponse);
+            
+            if (registerNewVehicleResponse.Error != null)
+            {
+                _view.DisplayMessage(registerNewVehicleResponse.Error.Message);
+                return;
+            }
+
+            _model.RegistrationNumber = registerNewVehicleResponse.RegistrationNumber;
             _view.DisplayVehicleRegistration(_model.RegistrationNumber);
         }
 

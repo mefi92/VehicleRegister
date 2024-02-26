@@ -1,14 +1,10 @@
 ﻿using BoundaryHelper;
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Core.VerificationObjects
 {
     internal class RegisterNewVehicleRequestValidator
-    {
-        //private readonly ErrorData _error = new ErrorData();
-
+    {  
         private const int MaxFirstNameLength = 30;
         private const int MaxLastNameLength = 30;
 
@@ -38,17 +34,17 @@ namespace Core.VerificationObjects
         {
             if (string.IsNullOrEmpty(firstName))
             {
-                result.Errors.Add(CreateError("A keresztnév nem lehet null vagy üres!", ErrorInvalidFirstNameCode));
+                result.Errors.Add(CreateError("\nA keresztnév nem lehet null vagy üres!", ErrorInvalidFirstNameCode));
             }
 
             if (firstName.Length > MaxFirstNameLength)
             {
-                result.Errors.Add(CreateError($"A keresztnév nem lehet hosszabb {MaxFirstNameLength} karakternél!", ErrorInvalidFirstNameCode));
+                result.Errors.Add(CreateError($"\nA keresztnév nem lehet hosszabb {MaxFirstNameLength} karakternél!", ErrorInvalidFirstNameCode));
             }
 
             if (!IsAllLetters(firstName))
             {
-                result.Errors.Add(CreateError("A keresztvén csak betűkből állhat.", ErrorInvalidFirstNameCode));
+                result.Errors.Add(CreateError("\nA keresztvén csak betűkből állhat.", ErrorInvalidFirstNameCode));
             }
         }
 
@@ -56,17 +52,17 @@ namespace Core.VerificationObjects
         {
             if (string.IsNullOrEmpty(lastName))
             {
-                result.Errors.Add(CreateError("A vezetéknév nem lehet null vagy üres!", ErrorInvalidLastNameCode));
+                result.Errors.Add(CreateError("\nA vezetéknév nem lehet null vagy üres!", ErrorInvalidLastNameCode));
             }
 
             if (lastName.Length > MaxLastNameLength)
             {
-                result.Errors.Add(CreateError($"A vezetéknév nem lehet hosszabb {MaxLastNameLength} karakternél!", ErrorInvalidLastNameCode));
+                result.Errors.Add(CreateError($"\nA vezetéknév nem lehet hosszabb {MaxLastNameLength} karakternél!", ErrorInvalidLastNameCode));
             }
 
             if (!IsAllLetters(lastName))
             {
-                result.Errors.Add(CreateError("A vezetéknév csak betűkből állhat.", ErrorInvalidLastNameCode));
+                result.Errors.Add(CreateError("\nA vezetéknév csak betűkből állhat.", ErrorInvalidLastNameCode));
             }
         }
 
@@ -75,7 +71,7 @@ namespace Core.VerificationObjects
             string pattern = @"^\d{4}$";
             if (!PatternChecker(pattern, postalCode))
             {
-                result.Errors.Add(CreateError("Hibás irányítószám formátum.", ErrorInvalidPostalCodeCode));
+                result.Errors.Add(CreateError("\nHibás irányítószám formátum.", ErrorInvalidPostalCodeCode));
             }
         }
 
@@ -84,7 +80,7 @@ namespace Core.VerificationObjects
             string[] validInputs = { "M1", "N1", "N2", "N3", "O1", "O2", "O3", "L3E" };
             if (!Array.Exists(validInputs, validInput => string.Equals(validInput, vehicleType, StringComparison.OrdinalIgnoreCase)))
             {
-                result.Errors.Add(CreateError("Nem létező jármű kategória!\nVálassz az alábbiak közül:\n\t M1, N1, N2, N3, O1, O2, O3, L3E\n", ErrorVehicleTypeCode));
+                result.Errors.Add(CreateError("\nNem létező jármű kategória!\nVálassz az alábbiak közül: M1, N1, N2, N3, O1, O2, O3, L3E", ErrorVehicleTypeCode));
             }
         }
 
@@ -93,7 +89,7 @@ namespace Core.VerificationObjects
             string pattern = @"^[A-Z]{2}\d{12}$";
             if (!PatternChecker(pattern, engineNumber))
             {
-                result.Errors.Add(CreateError("A megadott rendszám nem megfelelő!", ErrorInvalidEngineNumberCode));
+                result.Errors.Add(CreateError("\nHibás motorszám formátum! Két betű, majd tizenkét szám. Pl: AB123456789000", ErrorInvalidEngineNumberCode));
             }
         }
 

@@ -1,4 +1,5 @@
-﻿namespace BoundaryHelper
+﻿
+namespace BoundaryHelper
 {
     public class LoadVehicleDataRequest
     {

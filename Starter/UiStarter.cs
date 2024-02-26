@@ -2,7 +2,6 @@
 using Persistence;
 using ConsoleUi;
 
-
 namespace Starter
 {
     public class UiStarter

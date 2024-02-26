@@ -25,29 +25,12 @@ namespace Core
         public void LoadVehicleManager(string registrationNumber)
         {
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
-            LoadVehicleDataResponse loadVehicleDataResponse = new LoadVehicleDataResponse();
-
-            if (vehicle == null)
-            {
-                HandleError(loadVehicleDataResponse);
-            }
-            else
-            {
-                LoadVehicleDetails(vehicle, loadVehicleDataResponse);
-            }
-
+            LoadVehicleDataResponse loadVehicleDataResponse = new LoadVehicleDataResponse();  
+            
+            LoadVehicleDetails(vehicle, loadVehicleDataResponse);
             presenterManager.DisplayVehicleData(JsonHandler.Serialize(loadVehicleDataResponse));
         }
 
-        private void HandleError(LoadVehicleDataResponse loadVehicleDataResponse)
-        {
-            // TODO: ezt valaki külön class ba szervezni!!!
-            loadVehicleDataResponse.Error = new ErrorData
-            {
-                Message = "A megadott rendszám nem létezik!\nPróbálja újra.",
-                ErrorCode = 102
-            };
-        }
 
         private void LoadVehicleDetails(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
         {
@@ -88,7 +71,26 @@ namespace Core
         public void LoadVehicleData(string request)
         {
             LoadVehicleDataRequest loadVehicleDataRequest = JsonHandler.Deserialize<LoadVehicleDataRequest>(request);
-            LoadVehicleManager(loadVehicleDataRequest.RegistrationNumber);
+            LoadVehicleDataRequestValidator validator = new LoadVehicleDataRequestValidator();
+
+            ValidatorResult validatorResult = validator.Validate(loadVehicleDataRequest);
+
+            
+            if (validatorResult.IsValid)
+            {
+                LoadVehicleManager(loadVehicleDataRequest.RegistrationNumber);
+            }
+            else
+            {
+                LoadVehicleDataResponse vehicleResponse = new LoadVehicleDataResponse();
+
+                foreach (ErrorData error in validatorResult.Errors)
+                {
+                    vehicleResponse.Error = error;
+
+                    presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(vehicleResponse));
+                }
+            }
         }
 
         public void RegisterNewVehicle(string request)
@@ -103,10 +105,14 @@ namespace Core
                 ProcessUserDataForRegistration(registerNewVehicleRequest);
             }
             else
-            {                
-                foreach (BoundaryHelper.ErrorData error in validatorResult.Errors)
+            {
+                RegisterNewVehicleResponse vehicleResponse = new RegisterNewVehicleResponse();
+
+                foreach (ErrorData error in validatorResult.Errors)
                 {
-                    // response to ui
+                    vehicleResponse.Error = error;
+
+                    presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(vehicleResponse));
                 }
             }
 

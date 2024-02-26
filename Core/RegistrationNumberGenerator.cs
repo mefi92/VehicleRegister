@@ -1,6 +1,4 @@
-﻿using Entity;
-using System.Text;
-
+﻿using System.Text;
 
 namespace Core
 {

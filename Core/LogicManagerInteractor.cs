@@ -16,12 +16,17 @@ namespace Core
             this.presenterManager = presenterManager;
         }
 
+        //TODO sorrendezés: mi, hol van az osztályban
+
+        //ez miért public, amikor csak osztályon belül hívják?
         public void ProcessUserDataForRegistration(RegisterNewVehicleRequest validatedUserData)
         {
             VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway, presenterManager);
             registerManager.SeparatePersonalAndVehicelData(validatedUserData);
         }
 
+        //ez miért public, amikor csak osztályon belül hívják?
+        //a nevéből nem igazán értem, hogy mit is csinál ez a metódus, mi az a Manager?
         public void LoadVehicleManager(string registrationNumber)
         {
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
@@ -41,6 +46,7 @@ namespace Core
             LoadVehicleProperties(vehicle, loadVehicleDataResponse);
         }
 
+        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni
         private void LoadPersonDetails(Person person, LoadVehicleDataResponse loadVehicleDataResponse)
         {
             loadVehicleDataResponse.FirstName = person.FirstName;
@@ -51,6 +57,7 @@ namespace Core
             loadVehicleDataResponse.AdStreetNumber = person.AdStreetNumber;
         }
 
+        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni
         private void LoadVehicleProperties(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
         {
             loadVehicleDataResponse.VehicleType = vehicle.VehicleType;

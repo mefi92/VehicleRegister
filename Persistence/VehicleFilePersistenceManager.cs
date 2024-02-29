@@ -64,7 +64,8 @@ namespace Persistence
 
         private static void SaveObjectToTextFile<T>(string filePath, T inputObject)
         {
-            // itt esetleg dobni egy exceptiont, ha sikertelen a mentés. 
+            // itt esetleg dobni egy exceptiont, ha sikertelen a mentés.
+            // igen, a hibakezelés biztos hiányzik
             string jsonData = JsonConvert.SerializeObject(inputObject);
             File.WriteAllText(filePath, jsonData);  
         }

@@ -2,7 +2,8 @@
 
 namespace Core
 {
-    public interface IPersistentVehicleGateway
+    //ezt lehet, hogy külön választanám két interfészbe, mert teljesen elkülönül a két dolog
+    public interface IPersistentVehicleGateway 
     {
         Vehicle LoadVehicle(string carRegistrationNumber);
 

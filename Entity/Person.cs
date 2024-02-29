@@ -6,6 +6,7 @@ namespace Entity
 {
     public class Person
     {
+        //nem biztos, hogy ez szerencsés megoldás, hogy a set-et kiveszed belőle, majd erről beszéljünk!
         public string FirstName { get; }
         public string LastName { get; }
         public string AdPostalCode { get; }

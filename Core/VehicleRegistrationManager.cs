@@ -22,6 +22,9 @@ namespace Core
             { 
                 ErrorData error = new ErrorData
                 {
+                    //értem, hogy majd a megjelenítéshez kell a soremelés az elején, de ennek nem itt van a felelőssége
+                    //itt csak tiszta szöveget kellene berakni, hogy formázva hogy fog kikerülni a felületre az más tészta
+                    //másik: nem kellene beégetni a kódba ezeket, majd beszéljünk róla!
                     Message = "\nA megadott motorszámmal már regisztráltak járművet!",
                     ErrorCode = 100
                 };
@@ -39,7 +42,8 @@ namespace Core
         }
 
         private Person RegisterPerson(RegisterNewVehicleRequest validatedUserData)
-        {            
+        {     
+            //ez is itt egyfajta map, nem biztos, hogy itt szerencsés
             Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
                                         validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
             
@@ -56,6 +60,7 @@ namespace Core
 
         private RegisterNewVehicleResponse RegisterVehice(RegisterNewVehicleRequest validatedUserData, Person person, string registrationNumber)
         {
+            //ez is itt egyfajta map, nem biztos, hogy itt szerencsés
             Vehicle vehicle = new Vehicle(registrationNumber, validatedUserData.VehicleType, validatedUserData.Make, validatedUserData.Model,
                                             validatedUserData.EngineNumber, validatedUserData.MotorEmissionType, validatedUserData.FirstRegistrationDate,
                                             validatedUserData.NumberOfSeats, validatedUserData.Color, validatedUserData.MassInService, validatedUserData.MaxMass,

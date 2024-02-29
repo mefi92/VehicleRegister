@@ -3,8 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Core.VerificationObjects
 {
+    //statikus?
     internal class RegisterNewVehicleRequestValidator
-    {  
+    {
+        //ezt nem biztos, hogy ide égetném be
         private const int MaxFirstNameLength = 30;
         private const int MaxLastNameLength = 30;
 

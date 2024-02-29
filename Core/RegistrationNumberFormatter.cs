@@ -1,7 +1,7 @@
 ﻿
 namespace Core
 {
-    public class RegistrationNumberFormatter
+    public class RegistrationNumberFormatter //ebből statikust csinálnék, hogy ne kellejen példányosítani
     {
         public string FormatRegistrationNumber(string registrationNumber)
         {

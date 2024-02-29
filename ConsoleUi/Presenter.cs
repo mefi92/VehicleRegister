@@ -5,6 +5,7 @@ namespace ConsoleUi
 {
     public class Presenter : IVehicleManagerPresenterOutBoundary
     {
+        //kell az aláhúzás a név elé?
         private Model _model;
         private ConsoleView _view;
         private IVehicleManagerInBoundary vehicleManager;
@@ -15,6 +16,8 @@ namespace ConsoleUi
             this._view = view;
         }
 
+        //itt valami nem jó, ezt miért nem konstruktorban van?
+        //lásd még: UiStarter!
         public void SetVehicleManager(IVehicleManagerInBoundary vehicleManager)
         {
             this.vehicleManager = vehicleManager;
@@ -60,6 +63,7 @@ namespace ConsoleUi
         {
             RegisterNewVehicleRequest vehicleParameters = new RegisterNewVehicleRequest();
 
+            //soremelés az elején nem ide tartozik, nem égetném be a szöveget a kódba
             _view.DisplayMessage("\nAdja meg következő adatokat");
 
             GatherPersonalDetails(vehicleParameters);
@@ -76,6 +80,7 @@ namespace ConsoleUi
             LoadVehicleDataRequest vehicleParameters = new LoadVehicleDataRequest();
 
             _view.DisplayMessage("Írja be a rendszámot a következő formátumba: AAAA123");
+            //input kezelés kliens oldalon: némi ellenőrzés ide is kellene (pl.: ha nem írok be semmit)
             vehicleParameters.RegistrationNumber = _view.GetUserInput().ToUpper();            
             vehicleManager.LoadVehicleData(JsonHandler.Serialize(vehicleParameters));
         }

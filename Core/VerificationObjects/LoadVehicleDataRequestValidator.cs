@@ -3,8 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Core.VerificationObjects
 {
+    //statikus?
     internal class LoadVehicleDataRequestValidator
     {
+        //ezt nem biztos, hogy ide égetném be
         private const int ErrorInvalidRegistrationNumber = 501;
 
         public ValidatorResult Validate(LoadVehicleDataRequest request)

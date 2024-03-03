@@ -1,6 +1,6 @@
 ﻿using Core;
 using Persistence;
-using ConsoleUi;
+using ConsoleApplication;
 
 namespace Starter
 {
@@ -10,10 +10,10 @@ namespace Starter
         static void Main(string[] args)
         {
             ConsoleView consoleView = new ConsoleView();
-            Model model = new Model();
-            Presenter presenter = new Presenter(model, consoleView);
+
             IPersistentVehicleGateway persistentVehicleGateway = new VehicleFilePersistenceManager();
-            IVehicleManagerInBoundary vehicleManagerInBoundary = new LogicManagerInteractor(persistentVehicleGateway, presenter);
+            Presenter presenter = new Presenter(consoleView);            
+            IVehicleManagerInBoundary vehicleManagerInBoundary = new LogicManagerInteractor(persistentVehicleGateway, presenter);  
 
             //itt valami nem stimmel, oda-vissza kapcsolat van az interactor és a presenter között
             presenter.SetVehicleManager(vehicleManagerInBoundary);            

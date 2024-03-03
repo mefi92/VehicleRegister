@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Starter", "Starter\Starter.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoundaryHelper", "BoundaryHelper\BoundaryHelper.csproj", "{542004BC-4A4B-40C2-A870-65710F80BA1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUi", "ConsoleUi\ConsoleUi.csproj", "{D78B5F36-6451-4E52-BBAC-C015DEFD53E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication", "ConsoleUi\ConsoleApplication.csproj", "{D78B5F36-6451-4E52-BBAC-C015DEFD53E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

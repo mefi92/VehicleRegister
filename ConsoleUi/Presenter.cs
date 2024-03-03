@@ -1,19 +1,19 @@
 ﻿using Core;
 using BoundaryHelper;
+using ConsoleApplication.Verification;
+using System.Text.RegularExpressions;
 
-namespace ConsoleUi
+namespace ConsoleApplication
 {
     public class Presenter : IVehicleManagerPresenterOutBoundary
     {
-        //kell az aláhúzás a név elé?
-        private Model _model;
-        private ConsoleView _view;
+        //kell az aláhúzás a név elé? - done
+        private ConsoleView view;
         private IVehicleManagerInBoundary vehicleManager;
 
-        public Presenter(Model model, ConsoleView view)
+        public Presenter(ConsoleView view)
         {
-            this._model = model;
-            this._view = view;
+            this.view = view;
         }
 
         //itt valami nem jó, ezt miért nem konstruktorban van?
@@ -29,8 +29,8 @@ namespace ConsoleUi
 
             while (!isExiting)
             {
-                _view.DisplayMenu();
-                string input = _view.GetUserInput();
+                view.DisplayMenu();
+                string input = view.GetUserInput();
                 isExiting = OperationSelection(input);
             }
         }
@@ -40,21 +40,21 @@ namespace ConsoleUi
             switch (input.ToLower())
             {
                 case "r":                    
-                    _view.DisplayMessage("Új jármű regisztrálása.");
+                    view.DisplayMessage("Új jármű regisztrálása.");
                     RegisterNewVehicleInput();
                     return false;
 
                 case "l":                    
-                    _view.DisplayMessage("Jármű adatai rendszám alapján.");
+                    view.DisplayMessage("Jármű adatai rendszám alapján.");
                     LoadVehicleDataInput();
                     return false;
 
                 case "q":
-                    _view.DisplayMessage("Kilépés az applikációból.");
+                    view.DisplayMessage("Kilépés az applikációból.");
                     return true;
 
                 default:
-                    _view.DisplayMessage("Helytelen választás, próbáld újra!");
+                    view.DisplayMessage("Helytelen választás, próbáld újra!");
                     return false;
             }
         }
@@ -64,7 +64,7 @@ namespace ConsoleUi
             RegisterNewVehicleRequest vehicleParameters = new RegisterNewVehicleRequest();
 
             //soremelés az elején nem ide tartozik, nem égetném be a szöveget a kódba
-            _view.DisplayMessage("\nAdja meg következő adatokat");
+            view.DisplayMessage("Adja meg következő adatokat");
 
             GatherPersonalDetails(vehicleParameters);
 
@@ -79,9 +79,8 @@ namespace ConsoleUi
         {
             LoadVehicleDataRequest vehicleParameters = new LoadVehicleDataRequest();
 
-            _view.DisplayMessage("Írja be a rendszámot a következő formátumba: AAAA123");
-            //input kezelés kliens oldalon: némi ellenőrzés ide is kellene (pl.: ha nem írok be semmit)
-            vehicleParameters.RegistrationNumber = _view.GetUserInput().ToUpper();            
+            string registrationNumber = GetVerifiedInput("Írja be a rendszámot a következő formátumban [AAAA123]", IsValidRegistrationNumber);            
+            vehicleParameters.RegistrationNumber = registrationNumber;
             vehicleManager.LoadVehicleData(JsonHandler.Serialize(vehicleParameters));
         }
 
@@ -91,69 +90,170 @@ namespace ConsoleUi
             
             if (registerNewVehicleResponse.Error != null)
             {
-                _view.DisplayMessage(registerNewVehicleResponse.Error.Message);
+                view.DisplayMessage(registerNewVehicleResponse.Error.Message);
                 return;
             }
 
-            _model.RegistrationNumber = registerNewVehicleResponse.RegistrationNumber;
-            _view.DisplayVehicleRegistration(_model.RegistrationNumber);
+            view.DisplayVehicleRegistration(registerNewVehicleResponse.RegistrationNumber);
         }
 
         private void GatherPersonalDetails(RegisterNewVehicleRequest vehicleParameters)
         {
-            _view.DisplayMessage("\nSzemélyes adatok");
-            _view.DisplayMessage("-----------------");
-            vehicleParameters.LastName = _view.GetInput("Vezetéknév").ToUpper();
-            vehicleParameters.FirstName = _view.GetInput("Keresztnév").ToUpper();
+            view.DisplayMessage("Személyes adatok");
+            view.DisplayMessage("-----------------");
+            vehicleParameters.LastName = GetVerifiedInput("Vezetéknév", IsValidName);
+            vehicleParameters.FirstName = GetVerifiedInput("Keresztnév", IsValidName);
         }
 
         private void GatherAddressDetails(RegisterNewVehicleRequest vehicleParameters)
         {
-            _view.DisplayMessage("\nLakcím adatok");
-            _view.DisplayMessage("-------------");
-            vehicleParameters.AdPostalCode = _view.GetInput("Irányítószám").ToUpper();
-            vehicleParameters.AdCity = _view.GetInput("Város").ToUpper();
-            vehicleParameters.AdStreet = _view.GetInput("Utca").ToUpper();
-            vehicleParameters.AdStreetNumber = _view.GetInput("Házszám").ToUpper();
+            view.DisplayMessage("Lakcím adatok");
+            view.DisplayMessage("-------------");
+            vehicleParameters.AdPostalCode = GetVerifiedInput("Irányítószám", IsValidPostalCode);
+            vehicleParameters.AdCity = GetVerifiedInput("Város", IsValidName);
+            vehicleParameters.AdStreet = GetVerifiedInput("Utca", IsValidName);
+            vehicleParameters.AdStreetNumber = GetVerifiedInput("Házszám", IsValidStreetNumber);
         }
 
         private void GatherVehicleDetails(RegisterNewVehicleRequest vehicleParameters)
         {
-            _view.DisplayMessage("\nJármű adatok");
-            _view.DisplayMessage("-------------");
-            vehicleParameters.VehicleType = _view.GetInput("Kategória").ToUpper();
-            vehicleParameters.Make = _view.GetInput("Gyártmány").ToUpper();
-            vehicleParameters.Model = _view.GetInput("Típus").ToUpper();
-            vehicleParameters.EngineNumber = _view.GetInput("Motorszám").ToUpper();
-            vehicleParameters.MotorEmissionType = _view.GetInput("Környezetvédelmi osztályba sorolás").ToUpper();
-            vehicleParameters.FirstRegistrationDate = _view.GetInput("Első nyilvántartásba vétel időpontja").ToUpper();
-            vehicleParameters.NumberOfSeats = _view.GetIntegerInput("Ülések száma");
-            vehicleParameters.Color = _view.GetInput("Szín").ToUpper();
-            vehicleParameters.MassInService = _view.GetIntegerInput("Saját tömeg");
-            vehicleParameters.MaxMass = _view.GetIntegerInput("Össztömeg");
-            vehicleParameters.BrakedTrailer = _view.GetIntegerInput("Fékezett vontatmány");
-            vehicleParameters.UnbrakedTrailer = _view.GetIntegerInput("Fékezetlen vontatmány");
+            view.DisplayMessage("Jármű adatok");
+            view.DisplayMessage("-------------");
+            vehicleParameters.VehicleType = GetVerifiedInput("Kategória", IsValidCategory);
+            vehicleParameters.Make = GetVerifiedInput("Gyártmány", IsValidName);
+            vehicleParameters.Model = GetVerifiedInput("Típus", IsValidName);
+            vehicleParameters.EngineNumber = GetVerifiedInput("Motorszám", IsValidEngineNumber);
+            vehicleParameters.MotorEmissionType = GetVerifiedInput("Környezetvédelmi osztályba sorolás", IsValidEmissionType);
+            vehicleParameters.FirstRegistrationDate = GetVerifiedInput("Első nyilvántartásba vétel időpontja", IsValidDate);
+            vehicleParameters.NumberOfSeats = GetVerifiedIntegerInput("Ülések száma", IsValidNumberOfSeats);
+            vehicleParameters.Color = GetVerifiedInput("Szín", IsValidColor);
+            vehicleParameters.MassInService = GetVerifiedIntegerInput("Saját tömeg", IsValidWeight);
+            vehicleParameters.MaxMass = GetVerifiedIntegerInput("Össztömeg", IsValidWeight);
+            vehicleParameters.BrakedTrailer = GetVerifiedIntegerInput("Fékezett vontatmány", IsValidTrailerWeight);
+            vehicleParameters.UnbrakedTrailer = GetVerifiedIntegerInput("Fékezetlen vontatmány", IsValidTrailerWeight);
         }
 
         public void DisplayVehicleData(string vehicleDataResponse)
         {
             LoadVehicleDataResponse vehicleParameters = JsonHandler.Deserialize<LoadVehicleDataResponse>(vehicleDataResponse);
             
-            _view.DisplayMessage("\nJármű adatok");
-            _view.DisplayMessage("--------------");
-            _view.DisplayMessage("Tulajdonos: " + vehicleParameters.LastName + " " + vehicleParameters.FirstName);
-            _view.DisplayMessage($"Rendszám: {vehicleParameters.RegistrationNumber}");
-            _view.DisplayMessage("Kategória: " + vehicleParameters.VehicleType);
-            _view.DisplayMessage("Gyártmány: " + vehicleParameters.Make);
-            _view.DisplayMessage("Típus: " + vehicleParameters.Model);
-            _view.DisplayMessage("Motorszám: " + vehicleParameters.EngineNumber);
-            _view.DisplayMessage("Környezetvédelmi osztályba sorolás: " + vehicleParameters.MotorEmissionType);
-            _view.DisplayMessage("Ülések száma: " + vehicleParameters.NumberOfSeats);
-            _view.DisplayMessage("Szín: " + vehicleParameters.Color);
-            _view.DisplayMessage("Saját tömeg: " + vehicleParameters.MassInService);
-            _view.DisplayMessage("Össztömeg: " + vehicleParameters.MaxMass);
-            _view.DisplayMessage("Fékezett vontatmány: " + vehicleParameters.BrakedTrailer);
-            _view.DisplayMessage("Fékezetlen vontatmány: " + vehicleParameters.UnbrakedTrailer);
-        } 
+            view.DisplayMessage("Jármű adatok");
+            view.DisplayMessage("--------------");
+            view.DisplayMessage("Tulajdonos: " + vehicleParameters.LastName + " " + vehicleParameters.FirstName);
+            view.DisplayMessage($"Rendszám: {vehicleParameters.RegistrationNumber}");
+            view.DisplayMessage("Kategória: " + vehicleParameters.VehicleType);
+            view.DisplayMessage("Gyártmány: " + vehicleParameters.Make);
+            view.DisplayMessage("Típus: " + vehicleParameters.Model);
+            view.DisplayMessage("Motorszám: " + vehicleParameters.EngineNumber);
+            view.DisplayMessage("Környezetvédelmi osztályba sorolás: " + vehicleParameters.MotorEmissionType);
+            view.DisplayMessage("Ülések száma: " + vehicleParameters.NumberOfSeats);
+            view.DisplayMessage("Szín: " + vehicleParameters.Color);
+            view.DisplayMessage("Saját tömeg: " + vehicleParameters.MassInService);
+            view.DisplayMessage("Össztömeg: " + vehicleParameters.MaxMass);
+            view.DisplayMessage("Fékezett vontatmány: " + vehicleParameters.BrakedTrailer);
+            view.DisplayMessage("Fékezetlen vontatmány: " + vehicleParameters.UnbrakedTrailer);
+        }
+
+        private string GetVerifiedInput(string prompt, Func<string, bool> validationFunction)
+        {
+            while (true)
+            {
+                string userInput = view.GetInput(prompt);
+                if (!string.IsNullOrWhiteSpace(userInput) && validationFunction(userInput))
+                {
+                    return userInput.ToUpper();
+                }
+                else
+                {
+                    view.DisplayMessage($"Hibás adat! Ellenőrizze, majd próbálja a újra.");
+                }
+            }
+        }
+
+        private int GetVerifiedIntegerInput(string prompt, Func<int, bool> validationFunction)
+        {
+            while (true)
+            {
+                string userInput = view.GetInput(prompt);
+                if (int.TryParse(userInput, out int intValue) && validationFunction(intValue))
+                {
+                    return intValue;
+                }
+                else
+                {
+                    view.DisplayMessage($"Hibás adat! Ellenőrizze, majd próbálja a újra.");
+                }
+            }
+        }
+
+        private bool IsValidRegistrationNumber(string registrationNumber)
+        {
+            string pattern = @"^[A-Z]{4}\d{3}$";
+            if (!PatternChecker(pattern, registrationNumber))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private static bool PatternChecker(string pattern, string data)
+        {
+            return !string.IsNullOrEmpty(data) && Regex.IsMatch(data, pattern);
+        }
+
+        private bool IsValidName(string input)
+        {
+            return true;
+        }
+
+        private bool IsValidPostalCode(string input)
+        {
+            return true;
+        }
+
+        private bool IsValidStreetNumber(string input)
+        {
+            return true;
+        }
+
+        private bool IsValidWeight(int value)
+        {
+            return true;
+        }
+
+        private bool IsValidColor(string arg)
+        {
+            return true;
+        }
+
+        private bool IsValidNumberOfSeats(int arg)
+        {
+            return true;
+        }
+
+        private bool IsValidDate(string arg)
+        {
+            return true;
+        }
+
+        private bool IsValidEmissionType(string arg)
+        {
+            return true;
+        }
+
+        private bool IsValidEngineNumber(string arg)
+        {
+            return true;
+        }
+
+        private bool IsValidCategory(string arg)
+        {
+            return true;
+        }
+
+        private bool IsValidTrailerWeight(int value)
+        {
+            return true;
+        }
     }
 }

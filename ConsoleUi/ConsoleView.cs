@@ -1,11 +1,11 @@
 ﻿
-namespace ConsoleUi
+namespace ConsoleApplication
 {
     public class ConsoleView
     {
         public void DisplayMenu()
         {
-            Console.WriteLine("\nVálassz tevékenységet!\r\nÚj jármű regisztrálása (r), Adatlekérdezés rendszám alapján (l),  Kilépés (q):");
+            Console.WriteLine("\nVálassz tevékenységet!\r\nÚj jármű regisztrálása (r), Adatlekérdezés rendszám alapján (l), Kilépés (q):");
         }
 
         public string GetUserInput()

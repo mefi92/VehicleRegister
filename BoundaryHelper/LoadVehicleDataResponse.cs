@@ -1,7 +1,7 @@
 ﻿
 namespace BoundaryHelper
 {
-    public class LoadVehicleDataResponse
+    public class LoadVehicleDataResponse : Response
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -22,6 +22,5 @@ namespace BoundaryHelper
         public int BrakedTrailer { get; set; }
         public int UnbrakedTrailer { get; set; }
         public string MotorEmissionType { get; set; }
-        public ErrorData Error { get; set; }
     }
 }

@@ -6,12 +6,14 @@ namespace Core
     internal class VehicleRegistrationManager
     {
         private IPersistentVehicleGateway persistentVehicleGateway;
+        IPersistentPersonGateway persistentPersonGateway;
         private IVehicleManagerPresenterOutBoundary presenterManager;
 
-        public VehicleRegistrationManager(IPersistentVehicleGateway persistentVehicleGateway, IVehicleManagerPresenterOutBoundary presenterManager)
+        public VehicleRegistrationManager(IPersistentVehicleGateway persistentVehicleGateway, IPersistentPersonGateway persistentPersonGateway, IVehicleManagerPresenterOutBoundary presenterManager)
         {
             this.persistentVehicleGateway = persistentVehicleGateway;
             this.presenterManager = presenterManager;
+            this.persistentPersonGateway = persistentPersonGateway;
         }
 
         public void SeparatePersonalAndVehicelData(RegisterNewVehicleRequest validatedUserData)
@@ -52,7 +54,7 @@ namespace Core
             
             if (!persistentVehicleGateway.IsItemInUse(personHash))
             {
-                persistentVehicleGateway.SavePerson(person);
+                persistentPersonGateway.SavePerson(person);
             }
             
             return person;

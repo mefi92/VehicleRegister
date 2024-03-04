@@ -77,6 +77,7 @@ namespace ConsoleApplication
 
         public void LoadVehicleDataInput()
         {
+            //input kezelés kliens oldalon: némi ellenőrzés ide is kellene (pl.: ha nem írok be semmit) -> a helyet elkészítettem hozzá
             LoadVehicleDataRequest vehicleParameters = new LoadVehicleDataRequest();
 
             string registrationNumber = GetVerifiedInput("Írja be a rendszámot a következő formátumban [AAAA123]", IsValidRegistrationNumber);            
@@ -136,22 +137,29 @@ namespace ConsoleApplication
         public void DisplayVehicleData(string vehicleDataResponse)
         {
             LoadVehicleDataResponse vehicleParameters = JsonHandler.Deserialize<LoadVehicleDataResponse>(vehicleDataResponse);
-            
-            view.DisplayMessage("Jármű adatok");
-            view.DisplayMessage("--------------");
-            view.DisplayMessage("Tulajdonos: " + vehicleParameters.LastName + " " + vehicleParameters.FirstName);
-            view.DisplayMessage($"Rendszám: {vehicleParameters.RegistrationNumber}");
-            view.DisplayMessage("Kategória: " + vehicleParameters.VehicleType);
-            view.DisplayMessage("Gyártmány: " + vehicleParameters.Make);
-            view.DisplayMessage("Típus: " + vehicleParameters.Model);
-            view.DisplayMessage("Motorszám: " + vehicleParameters.EngineNumber);
-            view.DisplayMessage("Környezetvédelmi osztályba sorolás: " + vehicleParameters.MotorEmissionType);
-            view.DisplayMessage("Ülések száma: " + vehicleParameters.NumberOfSeats);
-            view.DisplayMessage("Szín: " + vehicleParameters.Color);
-            view.DisplayMessage("Saját tömeg: " + vehicleParameters.MassInService);
-            view.DisplayMessage("Össztömeg: " + vehicleParameters.MaxMass);
-            view.DisplayMessage("Fékezett vontatmány: " + vehicleParameters.BrakedTrailer);
-            view.DisplayMessage("Fékezetlen vontatmány: " + vehicleParameters.UnbrakedTrailer);
+
+            if (vehicleParameters.Error == null )
+            {
+                view.DisplayMessage("Jármű adatok");
+                view.DisplayMessage("--------------");
+                view.DisplayMessage("Tulajdonos: " + vehicleParameters.LastName + " " + vehicleParameters.FirstName);
+                view.DisplayMessage($"Rendszám: {vehicleParameters.RegistrationNumber}");
+                view.DisplayMessage("Kategória: " + vehicleParameters.VehicleType);
+                view.DisplayMessage("Gyártmány: " + vehicleParameters.Make);
+                view.DisplayMessage("Típus: " + vehicleParameters.Model);
+                view.DisplayMessage("Motorszám: " + vehicleParameters.EngineNumber);
+                view.DisplayMessage("Környezetvédelmi osztályba sorolás: " + vehicleParameters.MotorEmissionType);
+                view.DisplayMessage("Ülések száma: " + vehicleParameters.NumberOfSeats);
+                view.DisplayMessage("Szín: " + vehicleParameters.Color);
+                view.DisplayMessage("Saját tömeg: " + vehicleParameters.MassInService);
+                view.DisplayMessage("Össztömeg: " + vehicleParameters.MaxMass);
+                view.DisplayMessage("Fékezett vontatmány: " + vehicleParameters.BrakedTrailer);
+                view.DisplayMessage("Fékezetlen vontatmány: " + vehicleParameters.UnbrakedTrailer);
+            }
+            else
+            {
+                view.DisplayMessage(vehicleParameters.Error.Message);
+            }            
         }
 
         private string GetVerifiedInput(string prompt, Func<string, bool> validationFunction)

@@ -7,39 +7,59 @@ namespace Core
     public class LogicManagerInteractor : IVehicleManagerInBoundary
     {
         private IPersistentVehicleGateway persistentVehicleGateway;
-        private IVehicleManagerPresenterOutBoundary presenterManager;
+        private IPersistentPersonGateway persistentPersonGateway;
+        private IVehicleManagerPresenterOutBoundary presenterManager;        
 
-        public LogicManagerInteractor(IPersistentVehicleGateway persistentVehicleGateway, IVehicleManagerPresenterOutBoundary presenterManager)
+        public LogicManagerInteractor(IPersistentVehicleGateway persistentVehicleGateway, IPersistentPersonGateway persistentPersonGateway, IVehicleManagerPresenterOutBoundary presenterManager)
         {
             this.persistentVehicleGateway = persistentVehicleGateway;
+            this.persistentPersonGateway = persistentPersonGateway;
 
             this.presenterManager = presenterManager;
+            this.persistentPersonGateway = persistentPersonGateway;
         }
 
         //TODO sorrendezés: mi, hol van az osztályban
 
-        //ez miért public, amikor csak osztályon belül hívják?
-        public void ProcessUserDataForRegistration(RegisterNewVehicleRequest validatedUserData)
+        //ez miért public, amikor csak osztályon belül hívják? x
+        private void ProcessUserDataForRegistration(RegisterNewVehicleRequest validatedUserData)
         {
-            VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway, presenterManager);
+            VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway,persistentPersonGateway, presenterManager);
             registerManager.SeparatePersonalAndVehicelData(validatedUserData);
         }
 
-        //ez miért public, amikor csak osztályon belül hívják?
-        //a nevéből nem igazán értem, hogy mit is csinál ez a metódus, mi az a Manager?
-        public void LoadVehicleManager(string registrationNumber)
+        //ez miért public, amikor csak osztályon belül hívják? x
+        //a nevéből nem igazán értem, hogy mit is csinál ez a metódus, mi az a Manager? x
+        private void LoadAndDisplayVehicleDetails(string registrationNumber)
         {
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
-            LoadVehicleDataResponse loadVehicleDataResponse = new LoadVehicleDataResponse();  
-            
-            LoadVehicleDetails(vehicle, loadVehicleDataResponse);
+            LoadVehicleDataResponse loadVehicleDataResponse = new LoadVehicleDataResponse();
+
+            if (vehicle != null)
+            {            
+                LoadVehicleDetails(vehicle, loadVehicleDataResponse);                
+            }
+            else
+            {
+                CreateRegistrationNumberNotFoundError(loadVehicleDataResponse);
+
+            }
             presenterManager.DisplayVehicleData(JsonHandler.Serialize(loadVehicleDataResponse));
         }
 
+        private static void CreateRegistrationNumberNotFoundError(LoadVehicleDataResponse loadVehicleDataResponse)
+        {
+            loadVehicleDataResponse.Error = new ErrorData
+            {
+                Message = "A rendszám még nem létezik.",
+                ErrorCode = 1234
+            };
+        }
 
         private void LoadVehicleDetails(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
         {
-            Person person = persistentVehicleGateway.LoadPerson(vehicle.OwnerHash);
+            
+            Person person = persistentPersonGateway.LoadPerson(vehicle.OwnerHash);
 
             LoadPersonDetails(person, loadVehicleDataResponse);
 
@@ -85,7 +105,7 @@ namespace Core
             
             if (validatorResult.IsValid)
             {
-                LoadVehicleManager(loadVehicleDataRequest.RegistrationNumber);
+                LoadAndDisplayVehicleDetails(loadVehicleDataRequest.RegistrationNumber);
             }
             else
             {

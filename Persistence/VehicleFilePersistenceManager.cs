@@ -1,6 +1,5 @@
 ﻿using Core;
 using Entity;
-using Newtonsoft.Json;
 
 namespace Persistence
 {
@@ -48,7 +47,7 @@ namespace Persistence
             vehicleRegistrationNumber = FindFileByRegistrationNumber(vehicleRegistrationNumber);
             if (vehicleRegistrationNumber != null) 
             {
-                Vehicle vehicle = LoadJsonDataFromFile<Vehicle>(vehicleRegistrationNumber);
+                Vehicle vehicle = FilePersistenceUtility.LoadJsonDataFromFile<Vehicle>(vehicleRegistrationNumber);
                 return vehicle; 
             }
             return null;            
@@ -59,29 +58,7 @@ namespace Persistence
             string registrationNumber = new RegistrationNumberFormatter().CleanRegistrationNumber(vehicle.RegistrationNumber);
             string engineNumber = vehicle.EngineNumber;
             string filePath = registrationNumber + "_" + engineNumber + ".txt";
-            SaveObjectToTextFile(filePath, vehicle);
-        }
-
-        private static void SaveObjectToTextFile<T>(string filePath, T inputObject)
-        {
-            // itt esetleg dobni egy exceptiont, ha sikertelen a mentés.
-            // igen, a hibakezelés biztos hiányzik
-            string jsonData = JsonConvert.SerializeObject(inputObject);
-            File.WriteAllText(filePath, jsonData);  
-        }
-
-        private T LoadJsonDataFromFile<T>(string filePath)
-        {
-            try
-            {
-                string jsonData = File.ReadAllText(filePath);
-                T result = JsonConvert.DeserializeObject<T>(jsonData);
-                return result;
-            }
-            catch
-            {
-                return default(T);
-            }
+            FilePersistenceUtility.SaveObjectToTextFile(filePath, vehicle);
         }
 
         private static string FindFileByRegistrationNumber(string registrationNumber)
@@ -112,21 +89,6 @@ namespace Persistence
                 return null;
             }
         }
-
-        public Person LoadPerson(string hashNumber)
-        {
-            if (hashNumber != null)
-            {
-                Person person = LoadJsonDataFromFile<Person>($"{hashNumber}.txt");
-                return person;
-            }
-            return null;
-        }
-
-        public void SavePerson(Person person)
-        {
-            string filePath = person.Hash + ".txt";
-            SaveObjectToTextFile<Person>(filePath, person);
-        }
+        
     }
 }

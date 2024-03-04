@@ -9,10 +9,6 @@ namespace Core
 
         void SaveVehicle(Vehicle vehicle);
 
-        Person LoadPerson(string hashNumber);
-
-        void SavePerson(Person person);
-
         string GetLatestRegNumber();
 
         bool IsItemInUse(string engineNumber);

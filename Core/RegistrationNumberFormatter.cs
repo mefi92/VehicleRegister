@@ -1,9 +1,9 @@
 ﻿
 namespace Core
 {
-    public class RegistrationNumberFormatter //ebből statikust csinálnék, hogy ne kellejen példányosítani
+    public static class RegistrationNumberFormatter //ebből statikust csinálnék, hogy ne kellejen példányosítani x
     {
-        public string FormatRegistrationNumber(string registrationNumber)
+        public static string FormatRegistrationNumber(string registrationNumber)
         {
             if (registrationNumber.Length >= 7)
             {                
@@ -13,7 +13,7 @@ namespace Core
             return registrationNumber;
         }
 
-        public string CleanRegistrationNumber(string registrationNumber)
+        public static string CleanRegistrationNumber(string registrationNumber)
         {
             string cleanedRegistrationNumber = new string(registrationNumber.Where(c => Char.IsLetterOrDigit(c)).ToArray());
             return cleanedRegistrationNumber;

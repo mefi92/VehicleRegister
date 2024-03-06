@@ -5,8 +5,7 @@ namespace Core
     public class RegistrationNumberGenerator
     {
         public string GetNextRegistrationNumber(string plateNumber)
-        {
-            RegistrationNumberFormatter registrationNumberFormatter = new RegistrationNumberFormatter(); 
+        {             
             string firstPart = plateNumber.Substring(0, 4); 
             int secondPartValue = ExtractSecondPartValue(plateNumber);
 
@@ -14,7 +13,7 @@ namespace Core
             string incrementedFirstPart = IncrementFirstPart(firstPart, increment);
             string mergedRegistrationNumber = $"{incrementedFirstPart}{secondPartValue:D3}";
 
-            return registrationNumberFormatter.FormatRegistrationNumber(mergedRegistrationNumber);
+            return RegistrationNumberFormatter.FormatRegistrationNumber(mergedRegistrationNumber);
         }
 
         private int ExtractSecondPartValue(string plateNumber)

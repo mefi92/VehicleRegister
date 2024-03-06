@@ -73,7 +73,7 @@ namespace Core
             PersonMapper.MapPersonToResponse(person, loadVehicleDataResponse);
         }
 
-        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni
+        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni x
         private void LoadVehicleProperties(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
         {
             VehicleMapper.MapVehicleToResponse(vehicle, loadVehicleDataResponse);           

@@ -1,4 +1,5 @@
 ﻿using BoundaryHelper;
+using Core.Mappers;
 using Core.VerificationObjects;
 using Entity;
 
@@ -66,33 +67,16 @@ namespace Core
             LoadVehicleProperties(vehicle, loadVehicleDataResponse);
         }
 
-        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni
+        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni x
         private void LoadPersonDetails(Person person, LoadVehicleDataResponse loadVehicleDataResponse)
         {
-            loadVehicleDataResponse.FirstName = person.FirstName;
-            loadVehicleDataResponse.LastName = person.LastName;
-            loadVehicleDataResponse.AdPostalCode = person.AdPostalCode;
-            loadVehicleDataResponse.AdCity = person.AdCity;
-            loadVehicleDataResponse.AdStreet = person.AdStreet;
-            loadVehicleDataResponse.AdStreetNumber = person.AdStreetNumber;
+            PersonMapper.MapPersonToResponse(person, loadVehicleDataResponse);
         }
 
         //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni
         private void LoadVehicleProperties(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
         {
-            loadVehicleDataResponse.VehicleType = vehicle.VehicleType;
-            loadVehicleDataResponse.RegistrationNumber = vehicle.RegistrationNumber;
-            loadVehicleDataResponse.EngineNumber = vehicle.EngineNumber;
-            loadVehicleDataResponse.FirstRegistrationDate = vehicle.FirstRegistrationDate;
-            loadVehicleDataResponse.Make = vehicle.Make;
-            loadVehicleDataResponse.Model = vehicle.Model;
-            loadVehicleDataResponse.NumberOfSeats = vehicle.NumberOfSeats;
-            loadVehicleDataResponse.Color = vehicle.Color;
-            loadVehicleDataResponse.MassInService = vehicle.MassInService;
-            loadVehicleDataResponse.MaxMass = vehicle.MaxMass;
-            loadVehicleDataResponse.BrakedTrailer = vehicle.BrakedTrailer;
-            loadVehicleDataResponse.UnbrakedTrailer = vehicle.UnbrakedTrailer;
-            loadVehicleDataResponse.MotorEmissionType = vehicle.MotorEmissionType;
+            VehicleMapper.MapVehicleToResponse(vehicle, loadVehicleDataResponse);           
         }
 
         public void LoadVehicleData(string request)

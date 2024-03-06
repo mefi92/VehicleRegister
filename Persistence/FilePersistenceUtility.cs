@@ -7,8 +7,8 @@ namespace Persistence
     {
         public static void SaveObjectToTextFile<T>(string filePath, T inputObject)
         {
-            // itt esetleg dobni egy exceptiont, ha sikertelen a mentés.
-            // igen, a hibakezelés biztos hiányzik
+            // itt esetleg dobni egy exceptiont, ha sikertelen a mentés. x
+            // igen, a hibakezelés biztos hiányzik x
             if (string.IsNullOrWhiteSpace(filePath))
             {
                 throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
@@ -39,8 +39,7 @@ namespace Persistence
                 return result;
             }
             catch (Exception ex)
-            {
-                // Log or handle the exception appropriately
+            {                
                 throw new FilePersistenceException("Error loading object from file.", ex);
             }
         }

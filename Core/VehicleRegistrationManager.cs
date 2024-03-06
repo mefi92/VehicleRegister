@@ -1,4 +1,5 @@
 ﻿using BoundaryHelper;
+using Core.Mappers;
 using Entity;
 
 namespace Core
@@ -24,10 +25,10 @@ namespace Core
             { 
                 ErrorData error = new ErrorData
                 {
-                    //értem, hogy majd a megjelenítéshez kell a soremelés az elején, de ennek nem itt van a felelőssége
-                    //itt csak tiszta szöveget kellene berakni, hogy formázva hogy fog kikerülni a felületre az más tészta
+                    //értem, hogy majd a megjelenítéshez kell a soremelés az elején, de ennek nem itt van a felelőssége x
+                    //itt csak tiszta szöveget kellene berakni, hogy formázva hogy fog kikerülni a felületre az más tészta x
                     //másik: nem kellene beégetni a kódba ezeket, majd beszéljünk róla!
-                    Message = "\nA megadott motorszámmal már regisztráltak járművet!",
+                    Message = "A megadott motorszámmal már regisztráltak járművet!",
                     ErrorCode = 100
                 };
                 response.Error = error;
@@ -44,11 +45,14 @@ namespace Core
         }
 
         private Person RegisterPerson(RegisterNewVehicleRequest validatedUserData)
-        {     
+        {
             //ez is itt egyfajta map, nem biztos, hogy itt szerencsés
             Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
                                         validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
-            
+
+            //Person person = new Person();
+            //PersonMapper.MapResponseToPerson(validatedUserData, person);  // ezt a függvényt jó lenne valahogy oda vissza mappolásra képessé tenni :D
+
             string personHash = person.Hash;
 
             

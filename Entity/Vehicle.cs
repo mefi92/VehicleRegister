@@ -3,20 +3,20 @@ namespace Entity
 {
     public class Vehicle
     {
-        public string RegistrationNumber { get; }
-        public string VehicleType { get; }
-        public string Make { get; }
-        public string Model { get; }
-        public string EngineNumber { get; }
-        public string MotorEmissionType { get; }
-        public string FirstRegistrationDate { get; }
-        public int NumberOfSeats { get; }
-        public string Color { get; }
-        public int MassInService { get; }
-        public int MaxMass { get; }
-        public int BrakedTrailer { get; }
-        public int UnbrakedTrailer { get; }        
-        public string OwnerHash { get; set; }
+        public string RegistrationNumber { set; get; }
+        public string VehicleType { set; get; }
+        public string Make { set; get; }
+        public string Model { set; get; }
+        public string EngineNumber { set; get; }
+        public string MotorEmissionType { set; get; }
+        public string FirstRegistrationDate { set; get; }
+        public int NumberOfSeats { set; get; }
+        public string Color { set; get; }
+        public int MassInService { set; get; }
+        public int MaxMass { set; get; }
+        public int BrakedTrailer { set; get; }
+        public int UnbrakedTrailer { set; get; }        
+        public string OwnerHash { set; get;  }
 
         public Vehicle(string registrationNumber, string vehicleType, string make, string model, string engineNumber, string motorEmissionType,
                         string firstRegistrationDate, int numberOfSeats, string color, int massInService, int maxMass, int brakedTrailer,

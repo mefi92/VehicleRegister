@@ -1,7 +1,7 @@
 ﻿
 namespace BoundaryHelper
 {
-    public class LoadVehicleDataResponse : Response
+    public class LoadVehicleDataResponse : Response, IPersonData, IVehicleData
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

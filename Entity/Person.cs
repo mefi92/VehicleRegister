@@ -6,16 +6,18 @@ namespace Entity
 {
     public class Person
     {
-        //nem biztos, hogy ez szerencsés megoldás, hogy a set-et kiveszed belőle, majd erről beszéljünk!
-        public string FirstName { get; }
-        public string LastName { get; }
-        public string AdPostalCode { get; }
-        public string AdCity { get; }
-        public string AdStreet { get; }
-        public string AdStreetNumber { get; }
+        //nem biztos, hogy ez szerencsés megoldás, hogy a set-et kiveszed belőle, majd erről beszéljünk! M: üres person-t nem tudok létrehozni és utólag feltölteni
+        public string FirstName { set; get; }
+        public string LastName { set; get; }
+        public string AdPostalCode { set; get; }
+        public string AdCity { set; get; }
+        public string AdStreet { set; get; }
+        public string AdStreetNumber { set; get; }
 
         [JsonIgnore]
-        public string Hash { get; }
+        public string Hash { set; get; }
+
+        public Person() { }
 
         public Person(string firstName, string lastName, string postalCode, string city, string street, string streetnumber)
         {

@@ -1,7 +1,8 @@
 ﻿
+
 namespace BoundaryHelper
 {
-    public class RegisterNewVehicleRequest
+    public class RegisterNewVehicleRequest : IPersonData, IVehicleData
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

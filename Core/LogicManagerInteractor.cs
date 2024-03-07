@@ -50,11 +50,7 @@ namespace Core
 
         private static void CreateRegistrationNumberNotFoundError(LoadVehicleDataResponse loadVehicleDataResponse)
         {
-            loadVehicleDataResponse.Error = new ErrorData
-            {
-                Message = "A rendszám még nem létezik.",
-                ErrorCode = 1234
-            };
+            loadVehicleDataResponse.Error = ErrorCollection.RegistrationNumberNotExistsYet;
         }
 
         private void LoadVehicleDetails(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)

@@ -30,7 +30,7 @@ namespace Entity
             Hash = GenerateHash();
         }
 
-        private string GenerateHash()
+        public string GenerateHash()
         {
             string dataToHash = $"{FirstName}{LastName}{AdPostalCode}{AdCity}{AdStreet}{AdStreetNumber}";
 

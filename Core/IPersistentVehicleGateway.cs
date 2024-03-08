@@ -1,8 +1,7 @@
 ﻿using Entity;
 
 namespace Core
-{
-    //ezt lehet, hogy külön választanám két interfészbe, mert teljesen elkülönül a két dolog x
+{    
     public interface IPersistentVehicleGateway 
     {
         Vehicle LoadVehicle(string carRegistrationNumber);

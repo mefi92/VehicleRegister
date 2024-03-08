@@ -117,7 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RegistrationNumberNotExistsYet" xml:space="preserve">
+  <data name="EngineNumberDoesNotExist" xml:space="preserve">
+    <value>A megadott motorszámmal már regisztráltak járművet!</value>
+  </data>
+  <data name="InvalidEngineNumber" xml:space="preserve">
+    <value>Hibás motorszám formátum! Két betű, majd tizenkét szám. Pl: AB123456789000</value>
+  </data>
+  <data name="InvalidFirstNameChar" xml:space="preserve">
+    <value>A keresztvén csak betűkből állhat.</value>
+  </data>
+  <data name="InvalidFirstNameLength" xml:space="preserve">
+    <value>A keresztnév túl sok karakterből áll.</value>
+  </data>
+  <data name="InvalidFirstNameNull" xml:space="preserve">
+    <value>A keresztnév nem lehet null vagy üres!</value>
+  </data>
+  <data name="InvalidLastNameChar" xml:space="preserve">
+    <value>A vezetéknév csak betűkből állhat.</value>
+  </data>
+  <data name="InvalidLastNameLength" xml:space="preserve">
+    <value>A vezetéknév túl sok karakterből áll.</value>
+  </data>
+  <data name="InvalidLastNameNull" xml:space="preserve">
+    <value>A vezetéknév nem lehet null vagy üres!</value>
+  </data>
+  <data name="InvalidPostalCode" xml:space="preserve">
+    <value>Hibás irányítószám formátum.</value>
+  </data>
+  <data name="InvalidVehicleType" xml:space="preserve">
+    <value>Nem létező jármű kategória! Válassz az alábbiak közül: M1, N1, N2, N3, O1, O2, O3, L3E</value>
+  </data>
+  <data name="RegistrationNumberDoesNotExist" xml:space="preserve">
     <value>A rendszám még nem létezik.</value>
   </data>
 </root>

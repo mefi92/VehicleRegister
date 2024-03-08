@@ -1,107 +1,87 @@
 ﻿using BoundaryHelper;
+using Core.Resources;
 using System.Text.RegularExpressions;
 
 namespace Core.VerificationObjects
 {
-    //statikus?
-    internal class RegisterNewVehicleRequestValidator
+    internal static class RegisterNewVehicleRequestValidator
     {
-        //ezt nem biztos, hogy ide égetném be
-        private const int MaxFirstNameLength = 30;
-        private const int MaxLastNameLength = 30;
-
-        private const int ErrorInvalidFirstNameCode = 201;
-        private const int ErrorInvalidLastNameCode = 202;
-                
-        private const int ErrorInvalidPostalCodeCode = 301;
-
-        private const int ErrorVehicleTypeCode = 401;
-        private const int ErrorInvalidEngineNumberCode = 402;        
-
-        public ValidatorResult Validate(RegisterNewVehicleRequest request)
+        public static ValidatorResult Validate(RegisterNewVehicleRequest request)
         {
             ValidatorResult result = new ValidatorResult();
 
             ValidateFirstName(request.FirstName, result);
             ValidateLastName(request.LastName, result);
+            ValidatePostalCode(request.AdPostalCode, result);
             ValidateEngineNumber(request.EngineNumber, result);
-            ValidateVehicleType(request.VehicleType, result);
+            ValidateVehicleType(request.VehicleType, result);            
 
             return result;
         }
 
         // TODO: TBC
 
-        private void ValidateFirstName(string firstName, ValidatorResult result)
+        private static void ValidateFirstName(string firstName, ValidatorResult result)
         {
             if (string.IsNullOrEmpty(firstName))
             {
-                result.Errors.Add(CreateError("\nA keresztnév nem lehet null vagy üres!", ErrorInvalidFirstNameCode));
+                result.Errors.Add(ErrorCollection.InvalidFirstNameNull);
             }
 
-            if (firstName.Length > MaxFirstNameLength)
+            if (firstName.Length > ConstantCollection.MaxFirstNameLength)
             {
-                result.Errors.Add(CreateError($"\nA keresztnév nem lehet hosszabb {MaxFirstNameLength} karakternél!", ErrorInvalidFirstNameCode));
+                result.Errors.Add(ErrorCollection.InvalidFirstNameLength);
             }
 
             if (!IsAllLetters(firstName))
             {
-                result.Errors.Add(CreateError("\nA keresztvén csak betűkből állhat.", ErrorInvalidFirstNameCode));
+                result.Errors.Add(ErrorCollection.InvalidFirstNameChar);
             }
         }
 
-        private void ValidateLastName(string lastName, ValidatorResult result)
+        private static void ValidateLastName(string lastName, ValidatorResult result)
         {
             if (string.IsNullOrEmpty(lastName))
             {
-                result.Errors.Add(CreateError("\nA vezetéknév nem lehet null vagy üres!", ErrorInvalidLastNameCode));
+                result.Errors.Add(ErrorCollection.InvalidLastNameNull);
             }
 
-            if (lastName.Length > MaxLastNameLength)
+            if (lastName.Length > ConstantCollection.MaxLastNameLength)
             {
-                result.Errors.Add(CreateError($"\nA vezetéknév nem lehet hosszabb {MaxLastNameLength} karakternél!", ErrorInvalidLastNameCode));
+                result.Errors.Add(ErrorCollection.InvalidLastNameLength);
             }
 
             if (!IsAllLetters(lastName))
             {
-                result.Errors.Add(CreateError("\nA vezetéknév csak betűkből állhat.", ErrorInvalidLastNameCode));
+                result.Errors.Add(ErrorCollection.InvalidLastNameChar);
             }
         }
 
-        private void ValidatePostalCode(string postalCode, ValidatorResult result)
+        private static void ValidatePostalCode(string postalCode, ValidatorResult result)
         {
             string pattern = @"^\d{4}$";
             if (!PatternChecker(pattern, postalCode))
             {
-                result.Errors.Add(CreateError("\nHibás irányítószám formátum.", ErrorInvalidPostalCodeCode));
+                result.Errors.Add(ErrorCollection.InvalidPostalCode);
             }
         }
 
-        private void ValidateVehicleType(string vehicleType, ValidatorResult result)
+        private static void ValidateVehicleType(string vehicleType, ValidatorResult result)
         {
             string[] validInputs = { "M1", "N1", "N2", "N3", "O1", "O2", "O3", "L3E" };
             if (!Array.Exists(validInputs, validInput => string.Equals(validInput, vehicleType, StringComparison.OrdinalIgnoreCase)))
             {
-                result.Errors.Add(CreateError("\nNem létező jármű kategória!\nVálassz az alábbiak közül: M1, N1, N2, N3, O1, O2, O3, L3E", ErrorVehicleTypeCode));
+                result.Errors.Add(ErrorCollection.InvalidVehicleType);
             }
         }
 
-        private void ValidateEngineNumber(string engineNumber, ValidatorResult result)
+        private static void ValidateEngineNumber(string engineNumber, ValidatorResult result)
         {
             string pattern = @"^[A-Z]{2}\d{12}$";
             if (!PatternChecker(pattern, engineNumber))
             {
-                result.Errors.Add(CreateError("\nHibás motorszám formátum! Két betű, majd tizenkét szám. Pl: AB123456789000", ErrorInvalidEngineNumberCode));
+                result.Errors.Add(ErrorCollection.InvalidEngineNumber);
             }
-        }
-
-        private ErrorData CreateError(string message, int errorCode)
-        {
-            return new ErrorData
-            {
-                Message = message,
-                ErrorCode = errorCode
-            };
         }
 
         private static bool PatternChecker(string pattern, string data)

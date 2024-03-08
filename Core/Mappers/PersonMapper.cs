@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.Mappers
 {
-    public class PersonMapper
+    public static class PersonMapper
     {
         public static void MapPersonToResponse(Person person, IPersonData response)
         {

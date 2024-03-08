@@ -1,5 +1,6 @@
 ﻿using BoundaryHelper;
 using Core.Mappers;
+using Core.Resources;
 using Core.VerificationObjects;
 using Entity;
 
@@ -7,30 +8,25 @@ namespace Core
 {
     public class LogicManagerInteractor : IVehicleManagerInBoundary
     {
-        private IPersistentVehicleGateway persistentVehicleGateway;
-        private IPersistentPersonGateway persistentPersonGateway;
-        private IVehicleManagerPresenterOutBoundary presenterManager;        
+        private readonly IPersistentVehicleGateway persistentVehicleGateway;
+        private readonly IPersistentPersonGateway persistentPersonGateway;
+        private readonly IVehicleManagerPresenterOutBoundary presenterManager;        
 
         public LogicManagerInteractor(IPersistentVehicleGateway persistentVehicleGateway, IPersistentPersonGateway persistentPersonGateway, IVehicleManagerPresenterOutBoundary presenterManager)
         {
             this.persistentVehicleGateway = persistentVehicleGateway;
             this.persistentPersonGateway = persistentPersonGateway;
-
             this.presenterManager = presenterManager;
-            this.persistentPersonGateway = persistentPersonGateway;
         }
 
         //TODO sorrendezés: mi, hol van az osztályban
 
-        //ez miért public, amikor csak osztályon belül hívják? x
         private void ProcessUserDataForRegistration(RegisterNewVehicleRequest validatedUserData)
         {
             VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway,persistentPersonGateway, presenterManager);
             registerManager.SeparatePersonalAndVehicelData(validatedUserData);
         }
 
-        //ez miért public, amikor csak osztályon belül hívják? x
-        //a nevéből nem igazán értem, hogy mit is csinál ez a metódus, mi az a Manager? x
         private void LoadAndDisplayVehicleDetails(string registrationNumber)
         {
             Vehicle vehicle = persistentVehicleGateway.LoadVehicle(registrationNumber);
@@ -42,15 +38,9 @@ namespace Core
             }
             else
             {
-                CreateRegistrationNumberNotFoundError(loadVehicleDataResponse);
-
+                loadVehicleDataResponse.Error = ErrorCollection.RegistrationNumberDoesNotExist;
             }
             presenterManager.DisplayVehicleData(JsonHandler.Serialize(loadVehicleDataResponse));
-        }
-
-        private static void CreateRegistrationNumberNotFoundError(LoadVehicleDataResponse loadVehicleDataResponse)
-        {
-            loadVehicleDataResponse.Error = ErrorCollection.RegistrationNumberNotExistsYet;
         }
 
         private void LoadVehicleDetails(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
@@ -63,13 +53,11 @@ namespace Core
             LoadVehicleProperties(vehicle, loadVehicleDataResponse);
         }
 
-        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni x
         private void LoadPersonDetails(Person person, LoadVehicleDataResponse loadVehicleDataResponse)
         {
             PersonMapper.MapPersonToResponse(person, loadVehicleDataResponse);
         }
 
-        //ez egy tipikus mapper, lehet így is hívni, és kezelni, de mindenképpen érdemes lenne kiszervezni x
         private void LoadVehicleProperties(Vehicle vehicle, LoadVehicleDataResponse loadVehicleDataResponse)
         {
             VehicleMapper.MapVehicleToResponse(vehicle, loadVehicleDataResponse);           
@@ -103,9 +91,8 @@ namespace Core
         public void RegisterNewVehicle(string request)
         {
             RegisterNewVehicleRequest registerNewVehicleRequest = JsonHandler.Deserialize<RegisterNewVehicleRequest>(request);
-            RegisterNewVehicleRequestValidator validator = new RegisterNewVehicleRequestValidator();
 
-            ValidatorResult validatorResult = validator.Validate(registerNewVehicleRequest);
+            ValidatorResult validatorResult = RegisterNewVehicleRequestValidator.Validate(registerNewVehicleRequest);
 
             if (validatorResult.IsValid)
             {

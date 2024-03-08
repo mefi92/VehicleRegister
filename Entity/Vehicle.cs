@@ -18,6 +18,8 @@ namespace Entity
         public int UnbrakedTrailer { set; get; }        
         public string OwnerHash { set; get;  }
 
+        public Vehicle() { }
+
         public Vehicle(string registrationNumber, string vehicleType, string make, string model, string engineNumber, string motorEmissionType,
                         string firstRegistrationDate, int numberOfSeats, string color, int massInService, int maxMass, int brakedTrailer,
                             int unbrakedTrailer, string ownerHash)

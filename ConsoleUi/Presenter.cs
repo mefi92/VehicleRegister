@@ -7,7 +7,6 @@ namespace ConsoleApplication
 {
     public class Presenter : IVehicleManagerPresenterOutBoundary
     {
-        //kell az aláhúzás a név elé? - done
         private ConsoleView view;
         private IVehicleManagerInBoundary vehicleManager;
 
@@ -16,8 +15,6 @@ namespace ConsoleApplication
             this.view = view;
         }
 
-        //itt valami nem jó, ezt miért nem konstruktorban van?
-        //lásd még: UiStarter!
         public void SetVehicleManager(IVehicleManagerInBoundary vehicleManager)
         {
             this.vehicleManager = vehicleManager;
@@ -63,7 +60,6 @@ namespace ConsoleApplication
         {
             RegisterNewVehicleRequest vehicleParameters = new RegisterNewVehicleRequest();
 
-            //soremelés az elején nem ide tartozik, nem égetném be a szöveget a kódba
             view.DisplayMessage("Adja meg következő adatokat");
 
             GatherPersonalDetails(vehicleParameters);
@@ -77,7 +73,6 @@ namespace ConsoleApplication
 
         public void LoadVehicleDataInput()
         {
-            //input kezelés kliens oldalon: némi ellenőrzés ide is kellene (pl.: ha nem írok be semmit) -> a helyet elkészítettem hozzá
             LoadVehicleDataRequest vehicleParameters = new LoadVehicleDataRequest();
 
             string registrationNumber = GetVerifiedInput("Írja be a rendszámot a következő formátumban [AAAA123]", IsValidRegistrationNumber);            

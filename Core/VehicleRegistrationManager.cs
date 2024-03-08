@@ -1,14 +1,15 @@
 ﻿using BoundaryHelper;
 using Core.Mappers;
+using Core.Resources;
 using Entity;
 
 namespace Core
 {
     internal class VehicleRegistrationManager
     {
-        private IPersistentVehicleGateway persistentVehicleGateway;
-        IPersistentPersonGateway persistentPersonGateway;
-        private IVehicleManagerPresenterOutBoundary presenterManager;
+        private readonly IPersistentVehicleGateway persistentVehicleGateway;
+        private readonly IPersistentPersonGateway persistentPersonGateway;
+        private readonly IVehicleManagerPresenterOutBoundary presenterManager;
 
         public VehicleRegistrationManager(IPersistentVehicleGateway persistentVehicleGateway, IPersistentPersonGateway persistentPersonGateway, IVehicleManagerPresenterOutBoundary presenterManager)
         {
@@ -22,16 +23,8 @@ namespace Core
             RegisterNewVehicleResponse response = new RegisterNewVehicleResponse();
 
             if (persistentVehicleGateway.IsItemInUse(validatedUserData.EngineNumber))
-            { 
-                ErrorData error = new ErrorData
-                {
-                    //értem, hogy majd a megjelenítéshez kell a soremelés az elején, de ennek nem itt van a felelőssége x
-                    //itt csak tiszta szöveget kellene berakni, hogy formázva hogy fog kikerülni a felületre az más tészta x
-                    //másik: nem kellene beégetni a kódba ezeket, majd beszéljünk róla!
-                    Message = "A megadott motorszámmal már regisztráltak járművet!",
-                    ErrorCode = 100
-                };
-                response.Error = error;
+            {
+                response.Error = ErrorCollection.EngineNumberDoesNotExist;
             }
             else
             {
@@ -39,19 +32,16 @@ namespace Core
                 string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
 
                 Person person = RegisterPerson(validatedUserData);
-                response = RegisterVehice(validatedUserData, person, newRegistrationNumber);                
+                response = RegisterVehice(validatedUserData, newRegistrationNumber, person.Hash);                
             }
             presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(response));
         }
 
         private Person RegisterPerson(RegisterNewVehicleRequest validatedUserData)
         {
-            //ez is itt egyfajta map, nem biztos, hogy itt szerencsés
-            Person person = new Person(validatedUserData.FirstName, validatedUserData.LastName, validatedUserData.AdPostalCode,
-                                        validatedUserData.AdCity, validatedUserData.AdStreet, validatedUserData.AdStreetNumber);
-
-            //Person person = new Person();
-            //PersonMapper.MapResponseToPerson(validatedUserData, person);  // ezt a függvényt jó lenne valahogy oda vissza mappolásra képessé tenni :D
+            Person person = new Person();
+            PersonMapper.MapResponseToPerson(validatedUserData, person);
+            person.Hash = person.GenerateHash();
 
             string personHash = person.Hash;
 
@@ -64,14 +54,10 @@ namespace Core
             return person;
         }
 
-        private RegisterNewVehicleResponse RegisterVehice(RegisterNewVehicleRequest validatedUserData, Person person, string registrationNumber)
+        private RegisterNewVehicleResponse RegisterVehice(RegisterNewVehicleRequest validatedUserData, string registrationNumber, string ownerHash)
         {
-            //ez is itt egyfajta map, nem biztos, hogy itt szerencsés
-            Vehicle vehicle = new Vehicle(registrationNumber, validatedUserData.VehicleType, validatedUserData.Make, validatedUserData.Model,
-                                            validatedUserData.EngineNumber, validatedUserData.MotorEmissionType, validatedUserData.FirstRegistrationDate,
-                                            validatedUserData.NumberOfSeats, validatedUserData.Color, validatedUserData.MassInService, validatedUserData.MaxMass,
-                                            validatedUserData.BrakedTrailer, validatedUserData.UnbrakedTrailer, person.Hash);
-
+            Vehicle vehicle = new Vehicle();
+            VehicleMapper.MapResponseToVehicle(validatedUserData, vehicle, registrationNumber, ownerHash);
             persistentVehicleGateway.SaveVehicle(vehicle);
            
             return new RegisterNewVehicleResponse { RegistrationNumber = registrationNumber };

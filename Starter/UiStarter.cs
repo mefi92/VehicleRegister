@@ -1,6 +1,7 @@
 ﻿using Core;
 using Persistence;
 using ConsoleApplication;
+using Core.Interfaces;
 
 namespace Starter
 {

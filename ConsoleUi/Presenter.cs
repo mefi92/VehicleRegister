@@ -1,7 +1,7 @@
-﻿using Core;
-using BoundaryHelper;
+﻿using BoundaryHelper;
 using ConsoleApplication.Verification;
 using System.Text.RegularExpressions;
+using Core.Interfaces;
 
 namespace ConsoleApplication
 {

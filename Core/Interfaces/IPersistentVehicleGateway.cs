@@ -1,8 +1,8 @@
 ﻿using Entity;
 
-namespace Core
-{    
-    public interface IPersistentVehicleGateway 
+namespace Core.Interfaces
+{
+    public interface IPersistentVehicleGateway
     {
         Vehicle LoadVehicle(string carRegistrationNumber);
 

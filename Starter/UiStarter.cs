@@ -14,14 +14,13 @@ namespace Starter
 
             IPersistentVehicleGateway persistentVehicleGateway = new VehicleFilePersistenceManager();
             IPersistentPersonGateway persistentPersonGateway = new PersonFilePersistenceManager();
+
             Presenter presenter = new Presenter(consoleView);            
-            IVehicleManagerInBoundary vehicleManagerInBoundary = new LogicManagerInteractor(persistentVehicleGateway, persistentPersonGateway, presenter);  
+            IVehicleManagerInBoundary vehicleManagerInBoundary = new LogicManagerInteractor(persistentVehicleGateway, persistentPersonGateway, presenter);
+            Controller controller = new Controller(consoleView, vehicleManagerInBoundary);
+          
+            controller.StartApplication();
 
-            //itt valami nem stimmel, oda-vissza kapcsolat van az interactor és a presenter között
-            presenter.SetVehicleManager(vehicleManagerInBoundary);            
-            presenter.StartApplication();
-
-            //a controller hiányzik a buliból!
         }
         
     }

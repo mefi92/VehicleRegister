@@ -15,7 +15,13 @@ namespace Entity
         public string AdStreetNumber { set; get; }
 
         [JsonIgnore]
-        public string Hash { set; get; }
+        public string Hash 
+        { private set { }
+            get
+            {
+                return GenerateHash();                 
+            }
+        }
 
         public Person() { }
 
@@ -30,7 +36,7 @@ namespace Entity
             Hash = GenerateHash();
         }
 
-        public string GenerateHash()
+        private string GenerateHash()
         {
             string dataToHash = $"{FirstName}{LastName}{AdPostalCode}{AdCity}{AdStreet}{AdStreetNumber}";
 

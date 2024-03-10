@@ -42,7 +42,6 @@ namespace Core
         {
             Person person = new Person();
             PersonMapper.MapResponseToPerson(validatedUserData, person);
-            person.Hash = person.GenerateHash();
 
             string personHash = person.Hash;
 

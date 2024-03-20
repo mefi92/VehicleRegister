@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Core.VerificationObjects
 {
-    internal static class RegisterNewVehicleRequestValidator
+    public static class RegisterNewVehicleRequestValidator
     {
         public static ValidatorResult Validate(RegisterNewVehicleRequest request)
         {

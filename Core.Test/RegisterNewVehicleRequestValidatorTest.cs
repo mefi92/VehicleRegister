@@ -20,10 +20,30 @@ namespace Core.Test
                 EngineNumber = "AB123456789123",
                 VehicleType = "M1",
             };
+            int expected = 0;
 
             var result = RegisterNewVehicleRequestValidator.Validate(request);
 
-            Assert.AreEqual(0, result.Errors.Count);
+            Assert.AreEqual(expected, result.Errors.Count);
+        }
+
+        [TestMethod]
+        public void Validate_WithLowerCaseStringInputs_ShouldReturnNoErrors()
+        {
+            var request = new RegisterNewVehicleRequest
+            {
+                FirstName = "teszt",
+                LastName = "teszt",
+                AdPostalCode = "4000",
+                EngineNumber = "ab123456789123",
+                VehicleType = "m1",
+            };
+
+            int expected = 0;
+
+            var result = RegisterNewVehicleRequestValidator.Validate(request);
+
+            Assert.AreEqual(expected, result.Errors.Count);
         }
 
         [TestMethod]
@@ -129,6 +149,5 @@ namespace Core.Test
 
             Assert.AreEqual(expected, result.Errors.Count);
         }
-
     }
 }

@@ -14,6 +14,11 @@ namespace Core.VerificationObjects
         {
             ValidatorResult result = new ValidatorResult();
 
+            request.FirstName = TryConvertStringToUppercase(request.FirstName);
+            request.LastName = TryConvertStringToUppercase(request.LastName);
+            request.EngineNumber = TryConvertStringToUppercase(request.EngineNumber);
+            request.VehicleType = TryConvertStringToUppercase(request.VehicleType);
+
             ValidateFirstName(request.FirstName, result);
             ValidateLastName(request.LastName, result);
             ValidatePostalCode(request.AdPostalCode, result);
@@ -103,6 +108,11 @@ namespace Core.VerificationObjects
                 }
             }
             return true;
+        }
+
+        private static string TryConvertStringToUppercase(string input)
+        {
+            try { return input.ToUpper(); } catch { return input; }
         }
     }
 }

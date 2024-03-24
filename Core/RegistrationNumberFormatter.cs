@@ -5,7 +5,7 @@ namespace Core
     {
         public static string FormatRegistrationNumber(string registrationNumber)
         {
-            return registrationNumber.Insert(2, ":").Insert(5, "-"); ;
+            return registrationNumber.Insert(2, ":").Insert(5, "-");
         }
 
         public static string CleanRegistrationNumber(string registrationNumber)

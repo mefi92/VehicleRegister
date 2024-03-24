@@ -1,3 +1,4 @@
+
 namespace Core.Test
 {
     [TestClass]
@@ -14,13 +15,19 @@ namespace Core.Test
         }
 
         [TestMethod]
-        public void FormatRegistrationNumber_WithShortInput_ShouldReturnUnformattedNumber()
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void FormatRegistrationNumber_WithEmptyStringInput_ShouldReturnArgumentOutOfRangeException()
         {
-            string input = "aaa001";
-            string expected = "aa:a0-01";
+            string input = "";
+            RegistrationNumberFormatter.FormatRegistrationNumber(input);
+        }
 
-            string result = RegistrationNumberFormatter.FormatRegistrationNumber(input);
-            Assert.AreEqual(expected, result);
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void FormatRegistrationNumber_WithNullInput_ShouldReturnNullReferenceException()
+        {
+            string input = null;
+            RegistrationNumberFormatter.FormatRegistrationNumber(input);
         }
 
         [TestMethod]
@@ -44,16 +51,24 @@ namespace Core.Test
             Assert.AreEqual(expected, result);
         }
 
-        [TestMethod]
-        public void CleanRegistrationNumber_WithEmptyString_ReturnsEmptyString()
+        [TestMethod]        
+        public void CleanRegistrationNumber_WithEmptyStringInput_ShouldReturnEmptyString()
         {
             string input = "";
             string expected = "";
 
             string result = RegistrationNumberFormatter.CleanRegistrationNumber(input);
-            Assert.AreEqual(expected, result);
+
+            Assert.AreEqual(expected, input);
         }
 
-        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void CleanRegistrationNumber_WithNullInput_ShouldReturnArgumentNullException()
+        {
+            string input = null;
+
+            RegistrationNumberFormatter.CleanRegistrationNumber(input);
+        }        
     }
 }

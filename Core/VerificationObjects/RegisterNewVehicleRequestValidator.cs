@@ -1,10 +1,14 @@
 ﻿using BoundaryHelper;
 using Core.Resources;
+using System.Runtime.CompilerServices;
+
 using System.Text.RegularExpressions;
+[assembly: InternalsVisibleTo("Core.Test")]
 
 namespace Core.VerificationObjects
 {
-    public static class RegisterNewVehicleRequestValidator
+
+    internal static class RegisterNewVehicleRequestValidator
     {
         public static ValidatorResult Validate(RegisterNewVehicleRequest request)
         {

@@ -30,7 +30,7 @@ namespace Core
             else
             {
                 string previousRegistrationNumber = persistentVehicleGateway.GetLatestRegNumber();
-                string newRegistrationNumber = new RegistrationNumberGenerator().GetNextRegistrationNumber(previousRegistrationNumber);
+                string newRegistrationNumber = RegistrationNumberGenerator.GetNextRegistrationNumber(previousRegistrationNumber);
 
                 Person person = RegisterPerson(validatedUserData);
                 response = RegisterVehice(validatedUserData, newRegistrationNumber, person.Hash);                

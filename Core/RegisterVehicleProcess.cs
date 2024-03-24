@@ -1,11 +1,14 @@
 ﻿using BoundaryHelper;
+using Core.Exceptions;
 using Core.Interfaces;
+using Core.Resources;
 using Core.VerificationObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Core
 {
@@ -28,14 +31,23 @@ namespace Core
 
             ValidatorResult validatorResult = RegisterNewVehicleRequestValidator.Validate(registerNewVehicleRequest);
 
+            RegisterNewVehicleResponse vehicleResponse = new RegisterNewVehicleResponse();
+
             if (validatorResult.IsValid)
             {
-                ProcessUserDataForRegistration(registerNewVehicleRequest);
+                try
+                {
+                    ProcessUserDataForRegistration(registerNewVehicleRequest);
+                }
+                catch (OutOfRegistrationNumberException)
+                {
+                    vehicleResponse.Error = ErrorCollection.OutOfRegistrationNumber;
+                    presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(vehicleResponse));
+                }
+                
             }
             else
             {
-                RegisterNewVehicleResponse vehicleResponse = new RegisterNewVehicleResponse();
-
                 foreach (ErrorData error in validatorResult.Errors)
                 {
                     vehicleResponse.Error = error;
@@ -43,7 +55,6 @@ namespace Core
                     presenterManager.DisplayRegistrationResult(JsonHandler.Serialize(vehicleResponse));
                 }
             }
-
         }
         private void ProcessUserDataForRegistration(RegisterNewVehicleRequest validatedUserData)
         {

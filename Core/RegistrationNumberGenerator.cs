@@ -1,11 +1,18 @@
-﻿using System.Text;
+﻿using Core.Exceptions;
+using Core.Resources;
+using System.Text;
 
 namespace Core
 {
-    public class RegistrationNumberGenerator
+    public static class RegistrationNumberGenerator
     {
-        public string GetNextRegistrationNumber(string plateNumber)
-        {             
+        public static string GetNextRegistrationNumber(string plateNumber)
+        {
+            if (plateNumber == "ZZZZ999")
+            {
+                throw new OutOfRegistrationNumberException(Messages.OutOfRegistrationNumber, null);
+            }
+
             string firstPart = plateNumber.Substring(0, 4); 
             int secondPartValue = ExtractSecondPartValue(plateNumber);
 
@@ -16,26 +23,26 @@ namespace Core
             return RegistrationNumberFormatter.FormatRegistrationNumber(mergedRegistrationNumber);
         }
 
-        private int ExtractSecondPartValue(string plateNumber)
+        private static int ExtractSecondPartValue(string plateNumber)
         {
             string secondPart = plateNumber.Substring(4, 3).TrimStart('0');
             return string.IsNullOrEmpty(secondPart) ? 0 : int.Parse(secondPart);
         }
 
-        private int UpdateSecondPartValue(int value, out bool increment)
+        private static int UpdateSecondPartValue(int value, out bool increment)
         {
             increment = false;
 
-            if (value > 999)
+            if (value >= 999)
             {
-                value = 1;
+                value = 0;
                 increment = true;
             }
 
             return value + 1;
         }
 
-        private string IncrementFirstPart(string firstPart, bool increment)
+        private static string IncrementFirstPart(string firstPart, bool increment)
         {
             var sb = new StringBuilder();
 

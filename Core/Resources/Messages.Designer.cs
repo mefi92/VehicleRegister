@@ -160,6 +160,15 @@ namespace Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elfogytak a szabad rendszámok..
+        /// </summary>
+        internal static string OutOfRegistrationNumber {
+            get {
+                return ResourceManager.GetString("OutOfRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A rendszám még nem létezik..
         /// </summary>
         internal static string RegistrationNumberDoesNotExist {

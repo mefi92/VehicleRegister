@@ -142,6 +142,15 @@ namespace Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hibás rendszám formátum. Példa: AABB001.
+        /// </summary>
+        internal static string InvalidRegistrationNumber {
+            get {
+                return ResourceManager.GetString("InvalidRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nem létező jármű kategória! Válassz az alábbiak közül: M1, N1, N2, N3, O1, O2, O3, L3E.
         /// </summary>
         internal static string InvalidVehicleType {

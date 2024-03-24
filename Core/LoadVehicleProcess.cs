@@ -64,10 +64,8 @@ namespace Core
         public void ProcessLoadVehicleRequest(string request)
         {
             LoadVehicleDataRequest loadVehicleDataRequest = JsonHandler.Deserialize<LoadVehicleDataRequest>(request);
-            LoadVehicleDataRequestValidator validator = new LoadVehicleDataRequestValidator();
 
-            ValidatorResult validatorResult = validator.Validate(loadVehicleDataRequest);
-
+            ValidatorResult validatorResult = LoadVehicleDataRequestValidator.Validate(loadVehicleDataRequest);
 
             if (validatorResult.IsValid)
             {

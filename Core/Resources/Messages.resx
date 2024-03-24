@@ -144,6 +144,9 @@
   <data name="InvalidPostalCode" xml:space="preserve">
     <value>Hibás irányítószám formátum.</value>
   </data>
+  <data name="InvalidRegistrationNumber" xml:space="preserve">
+    <value>Hibás rendszám formátum. Példa: AABB001</value>
+  </data>
   <data name="InvalidVehicleType" xml:space="preserve">
     <value>Nem létező jármű kategória! Válassz az alábbiak közül: M1, N1, N2, N3, O1, O2, O3, L3E</value>
   </data>

@@ -14,6 +14,7 @@ namespace Core.Resources
         public static ErrorData EngineNumberDoesNotExist = new ErrorData { ErrorCode = 101, Message = Messages.EngineNumberDoesNotExist };
         public static ErrorData InvalidVehicleType = new ErrorData { ErrorCode = 102, Message = Messages.InvalidVehicleType };
         public static ErrorData InvalidEngineNumber = new ErrorData { ErrorCode = 103, Message = Messages.InvalidEngineNumber };
+        public static ErrorData InvalidRegistrationNumber = new ErrorData { ErrorCode = 104, Message = Messages.InvalidRegistrationNumber };
 
         // Person related data
         public static ErrorData InvalidFirstNameNull = new ErrorData { ErrorCode = 201, Message = Messages.InvalidFirstNameNull };

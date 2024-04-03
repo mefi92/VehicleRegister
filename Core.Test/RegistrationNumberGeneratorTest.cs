@@ -10,6 +10,8 @@ namespace Core.Test
     [TestClass]
     public class RegistrationNumberGeneratorTest
     {
+
+
         [TestMethod]
         public void GetNextRegistrationNumber_FirstRegNumberUnformatted_NextRegistrationNumber()
         {
@@ -65,8 +67,6 @@ namespace Core.Test
 
             RegistrationNumberGenerator.GetNextRegistrationNumber(lastRegistrationNumber);
         }
-
-
 
         [TestMethod]
         [ExpectedException(typeof(FormatException))]

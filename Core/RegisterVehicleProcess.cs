@@ -61,9 +61,5 @@ namespace Core
             VehicleRegistrationManager registerManager = new VehicleRegistrationManager(persistentVehicleGateway, persistentPersonGateway, presenterManager);
             registerManager.SeparatePersonalAndVehicelData(validatedUserData);
         }
-
-
     }
-
-
 }

@@ -8,7 +8,7 @@ namespace Core
     {
         public static string GetNextRegistrationNumber(string plateNumber)
         {
-            if (plateNumber == "ZZZZ999")
+            if (plateNumber == ConstantCollection.LastPlateNumber)
             {
                 throw new OutOfRegistrationNumberException(Messages.OutOfRegistrationNumber, null);
             }

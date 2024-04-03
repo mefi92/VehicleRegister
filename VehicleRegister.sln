@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoundaryHelper", "BoundaryH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication", "ConsoleUi\ConsoleApplication.csproj", "{D78B5F36-6451-4E52-BBAC-C015DEFD53E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Test", "Core.Test\Core.Test.csproj", "{BB4D5743-2B2C-4FF1-807C-A8405E9C541B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Test", "Core.Test\Core.Test.csproj", "{BB4D5743-2B2C-4FF1-807C-A8405E9C541B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Test", "Persistence.Test\Persistence.Test.csproj", "{AA0DE5B4-6007-4019-B71A-AE9888D3C136}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,10 @@ Global
 		{BB4D5743-2B2C-4FF1-807C-A8405E9C541B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB4D5743-2B2C-4FF1-807C-A8405E9C541B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB4D5743-2B2C-4FF1-807C-A8405E9C541B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA0DE5B4-6007-4019-B71A-AE9888D3C136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA0DE5B4-6007-4019-B71A-AE9888D3C136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA0DE5B4-6007-4019-B71A-AE9888D3C136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA0DE5B4-6007-4019-B71A-AE9888D3C136}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

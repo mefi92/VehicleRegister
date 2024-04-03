@@ -68,7 +68,7 @@ namespace Core.VerificationObjects
 
         private static void ValidatePostalCode(string postalCode, ValidatorResult result)
         {
-            string pattern = @"^\d{4}$";
+            string pattern = @"^[1-9]\d{3}$";
             if (!PatternChecker(pattern, postalCode))
             {
                 result.Errors.Add(ErrorCollection.InvalidPostalCode);
@@ -77,7 +77,7 @@ namespace Core.VerificationObjects
 
         private static void ValidateVehicleType(string vehicleType, ValidatorResult result)
         {
-            string[] validInputs = { "M1", "N1", "N2", "N3", "O1", "O2", "O3", "L3E" };
+            string[] validInputs = ["M1", "N1", "N2", "N3", "O1", "O2", "O3", "L3E"];
             if (!Array.Exists(validInputs, validInput => string.Equals(validInput, vehicleType, StringComparison.OrdinalIgnoreCase)))
             {
                 result.Errors.Add(ErrorCollection.InvalidVehicleType);

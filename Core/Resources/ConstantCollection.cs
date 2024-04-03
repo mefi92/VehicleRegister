@@ -10,5 +10,6 @@ namespace Core.Resources
     {
         public const int MaxFirstNameLength = 30;
         public const int MaxLastNameLength = 30;
+        public const string LastPlateNumber = "ZZZZ999";
     }
 }
